@@ -47,4 +47,33 @@ public class APIDataAccessObject {
 
 
     }
+
+    public void getPhaseSeeding() {
+        String q = "query GetPhaseSeeds($phaseId: ID!) { phase(id: $phaseId) { id numSeeds seeds(query: { page: 1, perPage: 60 }) { nodes { id seedNum entrant { id participants { id gamerTag } } } } } }";
+        String v = "{ \"phaseId\": 519453 }";
+
+        String json = "{ \"query\": \"" + q + "\", \"variables\": " + v + "}";
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+
+        RequestBody body = RequestBody.create(json, mediaType);
+        Request request = new Request.Builder()
+                .url(API_URL)
+                .addHeader("Authorization", "Bearer " + System.getenv(TOKEN))
+                .post(body)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if(!response.isSuccessful()){
+                throw new IOException("Unexpected code " + response);
+            }
+            String jsonResponse = response.body().string();
+            System.out.println(jsonResponse);
+        }
+        catch (IOException | JSONException event) {
+            throw new RuntimeException(event);
+        }
+
+
+    }
 }
