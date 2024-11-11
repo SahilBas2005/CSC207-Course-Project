@@ -15,7 +15,9 @@ import use_case.select_phase.SelectPhaseDataAccessInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class APIDataAccessObject implements SelectPhaseDataAccessInterface, MainDataAccessInterface {
 
@@ -48,7 +50,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface, Main
 
     @Override
     public Entrant[] getEntrantsInEvent(int eventID) {
-        String q = """
+        String q = "hi";/*"""
           query EventEntrants($eventId: ID!, $page: Int!, $perPage: Int!) {
           event(id: $eventId) {
             id
@@ -71,7 +73,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface, Main
             }
           }
         }
-                        """;
+                        """*/;
         String json = "{ \"query\": \"" + q + "\", \"variables\": { \"eventID\": \"" + eventID + "\", \"page\": 1, \"perPage\": 64}}";
 
         OkHttpClient client = new OkHttpClient();
@@ -95,8 +97,8 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface, Main
     }
 
     @Override
-    public int[] getPhaseIDs(int eventID) {
-        return new int[0];
+    public Map<String, Integer> getPhaseIDs(int eventID) {
+        return new HashMap<String, Integer>();
     }
 
     @Override
