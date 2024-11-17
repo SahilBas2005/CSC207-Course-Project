@@ -7,7 +7,7 @@ import interface_adapter.update_seeding.SeedingState;
 import java.util.List;
 
 /**
- * The controller for the Select Phase Use case
+ * The controller for the Mutate Seeding Use case
  */
 public class MutateSeedingController {
 
@@ -20,7 +20,7 @@ public class MutateSeedingController {
     }
 
     /**
-     * Execute the Select Phase use case
+     * Execute the report set use case
      */
     public void execute() {
 

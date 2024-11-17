@@ -12,13 +12,14 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import use_case.main.MainDataAccessInterface;
 import use_case.mutate_seeding.MutateSeedingDataAccessInterface;
+import use_case.report_set.ReportSetDataAccessInterface;
 import use_case.select_phase.SelectPhaseDataAccessInterface;
 
 import java.io.IOException;
 import java.util.*;
 
 public class APIDataAccessObject implements SelectPhaseDataAccessInterface, MainDataAccessInterface,
-        MutateSeedingDataAccessInterface {
+        MutateSeedingDataAccessInterface, ReportSetDataAccessInterface {
 
     private final String TOKEN = "token";
     private final String API_URL = "https://api.start.gg/gql/alpha";
@@ -290,5 +291,10 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface, Main
         catch (IOException | JSONException event) {
             throw new RuntimeException(event);
         }
+    }
+
+    @Override
+    public void reportSet(int setID, int winnerID, List<Map<String, Integer>> gameData) {
+
     }
 }

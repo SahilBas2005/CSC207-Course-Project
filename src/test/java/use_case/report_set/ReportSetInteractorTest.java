@@ -1,30 +1,30 @@
-package use_case.select_phase;
+package use_case.report_set;
 
 import data_access.APIDataAccessObject;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-class SelectPhaseInteractorTest {
+public class ReportSetInteractorTest {
 
     @Test
-    void selectPhaseFailureTest() {
-        SelectPhaseInputData inputData = new SelectPhaseInputData(0);
+    void mutateFailureTest() {
 
-        // Create new setSeeding method which throws an exception for this test
+        // Example
+        ReportSetInputData inputData = new ReportSetInputData();
+
+        // Create new reportSeeding method which throws an exception for this test
         APIDataAccessObject failDataAccessInterface = new APIDataAccessObject() {
             @Override
-            public List<Integer> getSeedingInPhase(int phaseID) {
+            public void reportSet() {
                 throw new UnsupportedOperationException("Failure");
             }
         };
 
-        SelectPhaseOutputBoundary failPresenter = new SelectPhaseOutputBoundary() {
+        ReportSetOutputBoundary failPresenter = new ReportSetOutputBoundary() {
             @Override
-            public void prepareSuccessView(SelectPhaseOutputData outputData) {
+            public void prepareSuccessView() {
                 fail("Use case success is unexpected.");
             }
 
@@ -34,7 +34,7 @@ class SelectPhaseInteractorTest {
             }
         };
 
-        SelectPhaseInputBoundary interactor = new SelectPhaseInteractor(failDataAccessInterface, failPresenter);
+        ReportSetInputBoundary interactor = new ReportSetInteractor(failDataAccessInterface, failPresenter);
         interactor.execute(inputData);
     }
 

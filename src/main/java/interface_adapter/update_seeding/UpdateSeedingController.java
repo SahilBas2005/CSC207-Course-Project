@@ -3,6 +3,9 @@ package interface_adapter.update_seeding;
 import use_case.update_seeding.UpdateSeedingInputData;
 import use_case.update_seeding.UpdateSeedingInputBoundary;
 
+/**
+ * The controller for the UpdateSeeding use case
+ */
 public class UpdateSeedingController {
 
     private final UpdateSeedingInputBoundary updateSeedingUseCaseInteractor;
