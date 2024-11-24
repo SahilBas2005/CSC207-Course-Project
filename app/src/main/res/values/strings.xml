@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CSC207 Course Project Android</string>
+    <string name="title_seeding">Seeding</string>
+    <string name="title_call">Call</string>
+    <string name="title_report">Report</string>
+    <string name="title_finance">Finance</string>
+    <string name="title_analysis">Analysis</string>
+    <string name="change_seed">Change seed</string>
+    <string name="to">to</string>
+    <string name="confirm_button">Confirm</string>
+    <string name="update_button">Upload to Start gg</string>
+</resources>
