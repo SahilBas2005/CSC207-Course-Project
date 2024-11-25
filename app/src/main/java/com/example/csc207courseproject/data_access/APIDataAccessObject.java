@@ -14,6 +14,7 @@ import com.example.csc207courseproject.use_case.select_phase.SelectPhaseDataAcce
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
+import java.util.stream.Collectors;
 
 public class APIDataAccessObject implements SelectPhaseDataAccessInterface, MainDataAccessInterface,
         MutateSeedingDataAccessInterface {
@@ -129,13 +130,50 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface, Main
                         sponsors[j] = jsonParticipants.getJSONObject(j).getString("prefix");
                     }
                 }
-                entrants[i] = new Entrant(names, sponsors, id, userIDs);
+                entrants[i] = new Entrant(names, sponsors, id, userIDs, false);
             }
             return entrants;
         }
         catch (JSONException event) {
             throw new RuntimeException(event);
         }
+    }
+
+    public HashMap<Integer, Boolean> getParticipantPaymentStatus(int eventID) {
+        // Create query
+        String q = "query GetTournamentBySlug($slug: String!, $participantQuery: ParticipantPaginationQuery!) {" +
+                "tournament(slug: $slug) {" +
+                "id name participants(query: $participantQuery, isAdmin: true) {" +
+                "pageInfo {total perPage page} " +
+                "nodes {id gamerTag email checkedIn verified}}}}";
+
+        String json = "{ \"query\": \"" + q + "\", " +
+                "\"variables\": { " +
+                "\"slug\": \"tournament/skipping-classes-world-championship-start-gg-api-test\", " + // replace the slg with the dynamic eventlink
+                "\"participantQuery\": { " +
+                "\"page\": 1, " +
+                "\"perPage\": 500, " +
+                "\"filter\": { \"unpaid\": true } " +
+                "} " +
+                "} }";
+        sendRequest(json);
+        try {
+            final JSONArray jsonParticipants = jsonResponse.getJSONObject("data").getJSONObject("tournament")
+                    .getJSONObject("participants").getJSONArray("nodes");
+            jsonResponse = null;
+            for (int i = 0; i < jsonParticipants.length(); i++) {
+                JSONObject participantObject = jsonParticipants.getJSONObject(i);
+
+//                int id = participantObject.getInt("id");
+                String gameTag = participantObject.getString("gamerTag");
+            }
+
+        }
+        catch (JSONException event) {
+            throw new RuntimeException(event);
+        }
+        HashMap<Integer, Boolean> participantPaymentStatus = new HashMap<>();// mapping participant id -> Participant(gamerTag, paid/unpaid status)
+        return participantPaymentStatus;
     }
 
     /**

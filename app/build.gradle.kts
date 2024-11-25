@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId = "com.example.csc207courseproject"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -18,12 +18,12 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "token", "\"PUT TOKEN HERE\"")
+            buildConfigField("String", "token", "\"f40579d780f236716f71e26206c6aad3\"")
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         release {
-            buildConfigField("String", "token", "\"PUT TOKEN HERE\"")
+            buildConfigField("String", "token", "\"f40579d780f236716f71e26206c6aad3\"")
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }

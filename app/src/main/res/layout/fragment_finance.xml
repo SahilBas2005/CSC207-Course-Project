@@ -1,23 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.finance.FinanceFragment" >
-
-    <TextView
-        android:id="@+id/text_finance"
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+        <!-- Main Screen Title -->
+        <TextView
+                android:id="@+id/text_finance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Finances Menu"
+                android:textSize="24sp"
+                android:textAlignment="center"
+                android:paddingBottom="16dp" />
+
+        <!-- JTable Placeholder -->
+        <ListView
+                android:id="@+id/seeds_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@android:color/darker_gray"
+                android:dividerHeight="1dp"
+                android:paddingTop="16dp" />
+
+        <!-- Player Input and Update Button -->
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="8dp">
+
+            <EditText
+                    android:id="@+id/player_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Enter Player ID"
+                    android:inputType="text" />
+
+            <Button
+                    android:id="@+id/update_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Update Specific Player"
+                    android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <!-- Export Button -->
+        <Button
+                android:id="@+id/export_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Export to Spreadsheet"
+                android:layout_marginTop="16dp" />
+
+        <!-- Popup Dialog Layout (Hidden Initially) -->
+        <LinearLayout
+                android:id="@+id/popup_dialog_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:background="@android:color/white"
+                android:visibility="gone">
+
+            <!-- Popup Title -->
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Finances Updater For (Player)"
+                    android:textSize="20sp"
+                    android:textAlignment="center"
+                    android:paddingBottom="16dp" />
+
+            <!-- Money Paid and Payment Type -->
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="8dp">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Money Paid:"
+                        android:layout_marginEnd="8dp" />
+
+                <EditText
+                        android:id="@+id/money_paid_input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Amount"
+                        android:inputType="numberDecimal" />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Payment Type:"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="8dp" />
+
+                <EditText
+                        android:id="@+id/payment_type_input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Type"
+                        android:inputType="text" />
+            </LinearLayout>
+
+            <!-- Special Notes -->
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Special Notes (If Applicable):"
+                    android:paddingBottom="8dp" />
+
+            <EditText
+                    android:id="@+id/special_notes_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter special notes"
+                    android:inputType="textMultiLine"
+                    android:lines="3" />
+
+            <!-- Update Button -->
+            <Button
+                    android:id="@+id/update_table_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Update Local Table"
+                    android:layout_marginTop="16dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

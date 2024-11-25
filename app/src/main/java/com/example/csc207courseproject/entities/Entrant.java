@@ -8,6 +8,7 @@ public class Entrant {
     private final String[] sponsors;
     private final int id;
     private final int[] userIDs;
+    private boolean paid;
 
     /**
      * Entrant constructor.
@@ -15,11 +16,12 @@ public class Entrant {
      * @param sponsors Entrant sponsors
      * @param id Entrant ID
      */
-    public Entrant(String[] names, String[] sponsors, int id, int[] userIDs) {
+    public Entrant(String[] names, String[] sponsors, int id, int[] userIDs, boolean paid) {
         this.names = names;
         this.sponsors = sponsors;
         this.id = id;
         this.userIDs = userIDs;
+        this.paid = paid;
     }
 
     public String[] getNames() {
@@ -36,6 +38,10 @@ public class Entrant {
 
     public int[] getUserIDs() {
         return userIDs;
+    }
+
+    public boolean getPaidStatus() {
+        return this.paid;
     }
 
     @Override
