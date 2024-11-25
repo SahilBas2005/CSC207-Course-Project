@@ -1,11 +1,13 @@
 package com.example.csc207courseproject.ui.finance;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -14,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.csc207courseproject.databinding.FragmentFinanceBinding;
+import com.example.csc207courseproject.databinding.PlayerFinancePopupBinding;
 
 import java.util.List;
 
@@ -46,10 +49,39 @@ public class FinanceFragment extends Fragment {
             if (entries != null) {
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, entries);
                 financialListView.setAdapter(adapter);
+
+                // Set item click listener to show popup
+                financialListView.setOnItemClickListener((parent, view, position, id) -> {
+                    String selectedEntry = entries.get(position);
+                    showPlayerFinancePopup(selectedEntry);
+                });
             } else {
                 showToast("No financial entries to display.");
             }
         });
+    }
+
+    private void showPlayerFinancePopup(String playerInfo) {
+        // Inflate custom popup layout
+        PlayerFinancePopupBinding popupBinding = PlayerFinancePopupBinding.inflate(LayoutInflater.from(mContext));
+
+        // Pre-fill data if necessary (e.g., player name)
+        popupBinding.popupTitle.setText(String.format("Finances Updater For (%s)", playerInfo));
+
+        // Build the AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setView(popupBinding.getRoot())
+                .setPositiveButton("Update", (dialog, which) -> {
+                    String cashAmount = popupBinding.cashInput.getText().toString();
+                    String eTransferAmount = popupBinding.eTransferInput.getText().toString();
+                    String specialNotes = popupBinding.specialNotesInput.getText().toString();
+
+                    // TODO: Pass these values to ViewModel or backend logic
+                    showToast("Updated financial information for: " + playerInfo);
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .create()
+                .show();
     }
 
     @Override

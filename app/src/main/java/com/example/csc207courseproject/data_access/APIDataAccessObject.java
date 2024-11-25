@@ -2,6 +2,7 @@ package com.example.csc207courseproject.data_access;
 
 import com.example.csc207courseproject.BuildConfig;
 import com.example.csc207courseproject.entities.Entrant;
+import com.example.csc207courseproject.entities.Participant;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -139,7 +140,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface, Main
         }
     }
 
-    public HashMap<Integer, Boolean> getParticipantPaymentStatus(int eventID) {
+    public HashMap<Integer, Participant> getParticipantPaymentStatus(int eventID, String slug) {
         // Create query
         String q = "query GetTournamentBySlug($slug: String!, $participantQuery: ParticipantPaginationQuery!) {" +
                 "tournament(slug: $slug) {" +
@@ -149,32 +150,52 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface, Main
 
         String json = "{ \"query\": \"" + q + "\", " +
                 "\"variables\": { " +
-                "\"slug\": \"tournament/skipping-classes-world-championship-start-gg-api-test\", " + // replace the slg with the dynamic eventlink
+                "\"slug\": \"" + slug + "\", " +
                 "\"participantQuery\": { " +
                 "\"page\": 1, " +
                 "\"perPage\": 500, " +
                 "\"filter\": { \"unpaid\": true } " +
                 "} " +
                 "} }";
-        sendRequest(json);
+
+        sendRequest(json); // Assuming sendRequest populates jsonResponse
+
+        HashMap<Integer, Participant> participantPaymentStatus = new HashMap<>();
+
         try {
-            final JSONArray jsonParticipants = jsonResponse.getJSONObject("data").getJSONObject("tournament")
-                    .getJSONObject("participants").getJSONArray("nodes");
-            jsonResponse = null;
+            final JSONArray jsonParticipants = jsonResponse.getJSONObject("data")
+                    .getJSONObject("tournament")
+                    .getJSONObject("participants")
+                    .getJSONArray("nodes");
+
             for (int i = 0; i < jsonParticipants.length(); i++) {
                 JSONObject participantObject = jsonParticipants.getJSONObject(i);
 
-//                int id = participantObject.getInt("id");
-                String gameTag = participantObject.getString("gamerTag");
-            }
+                int participantId = participantObject.getInt("id");
+                String gamerTag = participantObject.getString("gamerTag");
+                String name = gamerTag;  // Assuming gamerTag is used as the name (adjust if needed)
+                String sponsor = "";  // If sponsor information is available, replace with it (or leave empty for now)
+                boolean isUnpaid = !participantObject.getBoolean("verified"); // Assuming "verified" means "paid"
 
+                // Create Participant object with the data
+                Participant participant = new Participant(participantId, 0, name, sponsor); // User ID is assumed to be 0 for now
+                if (isUnpaid) {
+                    // Optionally mark as unpaid, if needed (e.g., mark the participant as paid if verified)
+                    participant.markAsPaid();  // This will mark the participant as paid if verified
+                }
+
+                // Add Participant object to the HashMap with participant ID as key
+                participantPaymentStatus.put(participantId, participant);
+            }
+        } catch (JSONException e) {
+            System.err.println("Error processing participant data: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to parse participant JSON response", e);
         }
-        catch (JSONException event) {
-            throw new RuntimeException(event);
-        }
-        HashMap<Integer, Boolean> participantPaymentStatus = new HashMap<>();// mapping participant id -> Participant(gamerTag, paid/unpaid status)
+
         return participantPaymentStatus;
     }
+
 
     /**
      * Gets all phase IDs for a given event.

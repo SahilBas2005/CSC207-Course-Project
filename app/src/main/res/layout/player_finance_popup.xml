@@ -1,0 +1,39 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="#ADD8E6">
+
+    <TextView
+            android:id="@+id/popupTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Finances Updater For (Player)"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+    <EditText
+            android:id="@+id/cashInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Cash" />
+
+    <EditText
+            android:id="@+id/eTransferInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="E-transfer"
+            android:layout_marginTop="8dp" />
+
+    <EditText
+            android:id="@+id/specialNotesInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Special Notes (If Applicable)"
+            android:layout_marginTop="8dp" />
+
+</LinearLayout>

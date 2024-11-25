@@ -10,6 +10,6 @@ public interface FinanceInputBoundary {
      * Executes the finance use case.
      * @param financeInputData the input data
      */
-    void execute(FinanceInputData financeInputData);
+   //void execute(FinanceInputData financeInputData);
 
 }
