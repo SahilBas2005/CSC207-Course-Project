@@ -1,5 +1,7 @@
 package com.example.csc207courseproject.use_case.finance;
 
+import com.example.csc207courseproject.entities.Participant;
+
 import java.util.Map;
 
 public interface FinanceDataAccessInterface {
@@ -9,6 +11,6 @@ public interface FinanceDataAccessInterface {
      * @param eventID The ID of the event
      * @return A map of all the phase IDs mapped to a participant entity
      */
-    Map<Integer, Boolean> getParticipantPaymentStatus(int eventID);
+    Map<Integer, Participant> getParticipantPaymentStatus(int eventID, String slug);
 
 }

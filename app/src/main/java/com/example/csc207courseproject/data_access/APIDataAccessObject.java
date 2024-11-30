@@ -3,6 +3,7 @@ package com.example.csc207courseproject.data_access;
 import com.example.csc207courseproject.BuildConfig;
 import com.example.csc207courseproject.entities.Entrant;
 import com.example.csc207courseproject.entities.Participant;
+import com.example.csc207courseproject.use_case.finance.FinanceDataAccessInterface;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -12,13 +13,18 @@ import com.example.csc207courseproject.use_case.main.MainDataAccessInterface;
 import com.example.csc207courseproject.use_case.mutate_seeding.MutateSeedingDataAccessInterface;
 import com.example.csc207courseproject.use_case.select_phase.SelectPhaseDataAccessInterface;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
 public class APIDataAccessObject implements SelectPhaseDataAccessInterface, MainDataAccessInterface,
-        MutateSeedingDataAccessInterface {
+        MutateSeedingDataAccessInterface, FinanceDataAccessInterface {
 
     private final String TOKEN = BuildConfig.token;
     private final String API_URL = "https://api.start.gg/gql/alpha";
@@ -142,6 +148,8 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface, Main
 
     public HashMap<Integer, Participant> getParticipantPaymentStatus(int eventID, String slug) {
         // Create query
+        String gotSlug = getTournamentSlug(String.valueOf(eventID), TOKEN) ;
+
         String q = "query GetTournamentBySlug($slug: String!, $participantQuery: ParticipantPaginationQuery!) {" +
                 "tournament(slug: $slug) {" +
                 "id name participants(query: $participantQuery, isAdmin: true) {" +
@@ -150,7 +158,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface, Main
 
         String json = "{ \"query\": \"" + q + "\", " +
                 "\"variables\": { " +
-                "\"slug\": \"" + slug + "\", " +
+                "\"slug\": \"" + gotSlug + "\", " +
                 "\"participantQuery\": { " +
                 "\"page\": 1, " +
                 "\"perPage\": 500, " +
@@ -195,6 +203,24 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface, Main
 
         return participantPaymentStatus;
     }
+    public String getTournamentSlug(String eventID, String apiKey) {
+        String query = "{ \"query\": \"query GetTournamentByEventID($eventID: ID!) { event(id: $eventID) { tournament { id slug name } } }\", " +
+                "\"variables\": { \"eventID\": \"" + eventID + "\" } }";
+
+        sendRequest(query);
+
+        // Parse the JSON response
+        try {
+            final JSONObject jsonTournamentObject = jsonResponse.getJSONObject("data")
+                    .getJSONObject("event")
+                    .getJSONObject("tournament");
+            return jsonTournamentObject.getString("slug");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 
     /**
@@ -332,4 +358,6 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface, Main
             throw new RuntimeException(event);
         }
     }
+
+
 }

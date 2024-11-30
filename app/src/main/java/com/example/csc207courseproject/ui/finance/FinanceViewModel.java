@@ -16,8 +16,8 @@ public class FinanceViewModel extends ViewModel {
     private final MutableLiveData<List<String>> financialEntries;
 
     public FinanceViewModel() {
-        int fakeGameID = 123;
-    APIDataAccessObject apiDataAccessObject = new APIDataAccessObject();
+        int fakeGameID = 1257516;
+        APIDataAccessObject apiDataAccessObject = new APIDataAccessObject();
         HashMap<Integer, Participant> participantPaymentStatus = apiDataAccessObject.getParticipantPaymentStatus( fakeGameID,"tournament/skipping-classes-world-championship-start-gg-api-test");
         financialEntries = new MutableLiveData<>();
         // Initialize with some default values
