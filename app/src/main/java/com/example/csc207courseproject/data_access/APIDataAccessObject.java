@@ -406,7 +406,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
     }
 
     @Override
-    public void reportSet(int setID, int winnerId, List<Game> games, boolean hasDQ) {
+    public void reportSet(int setID, int winnerId, List<Game> games, boolean hasDQ, int p1EntrantID, int p2EntrantID) {
         try {
 
             // Initialize and add the parameters that don't need data manipulation
@@ -432,10 +432,33 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
                     Game currGame = games.get(i);
                     game.put("winnerId", currGame.getWinnerID());
                     game.put("gameNum", i + 1);
+
+                    boolean p1CharSelected = !Objects.equals(currGame.getPlayer1Character(), "No Character");
+                    boolean p2CharSelected = !Objects.equals(currGame.getPlayer2Character(), "No Character");
+
+                    if (p1CharSelected || p2CharSelected) {
+                        JSONArray characterSelections = new JSONArray();
+
+                        if (p1CharSelected) {
+                            JSONObject p1SelectionInput = new JSONObject();
+                            int p1CharacterID = EventData.getCharacterIds().get(currGame.getPlayer1Character());
+                            p1SelectionInput.put("entrantId", p1EntrantID);
+                            p1SelectionInput.put("characterId", p1CharacterID);
+                            characterSelections.put(p1SelectionInput);
+                        }
+
+                        if (p2CharSelected) {
+                            JSONObject p2SelectionInput = new JSONObject();
+                            int p2CharacterID = EventData.getCharacterIds().get(currGame.getPlayer2Character());
+                            p2SelectionInput.put("entrantId", p2EntrantID);
+                            p2SelectionInput.put("characterId", p2CharacterID);
+                            characterSelections.put(p2SelectionInput);
+                        }
+                         game.put("selections", characterSelections);
+                    }
+
                     gameData.put(game);
                 }
-
-                //STILL NEED TO ADD CHARACTER INFO TO API CALL IF POSSIBLE
 
                 // Create query including the gameData parameter
                 q = "mutation reportSet($setId: ID!, $winnerId: ID!" +

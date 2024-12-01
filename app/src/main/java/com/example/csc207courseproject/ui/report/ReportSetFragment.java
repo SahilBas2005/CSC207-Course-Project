@@ -1,7 +1,6 @@
 package com.example.csc207courseproject.ui.report;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class ReportSetFragment extends AppFragment implements PropertyChangeListener {
 
@@ -99,13 +97,11 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
                         // Create p1/p2 win buttons and make them exclusive
                         ToggleButton p1WinButton = convertView.findViewById(R.id.player1_win);
                         boolean p1IsClicked = currentState.getP1ButtonPresses().get(position);
-                        Log.d("p1isclicked", String.valueOf(p1IsClicked));
                         p1WinButton.setChecked(p1IsClicked);
                         p1WinButton.setEnabled(!p1IsClicked);
 
                         ToggleButton p2WinButton = convertView.findViewById(R.id.player2_win);
                         boolean p2IsClicked = currentState.getP2ButtonPresses().get(position);
-                        Log.d("p2isclicked", String.valueOf(p2IsClicked));
                         p2WinButton.setChecked(p2IsClicked);
                         p2WinButton.setEnabled(!p2IsClicked);
 
@@ -115,7 +111,7 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
 
                             p1WinButton.setEnabled(false);
 
-                            reportGameController.execute(position + 1, 1, "", "");
+                            reportGameController.execute(position + 1, 1);
                             updateScore();
                         });
                         p2WinButton.setOnClickListener(view ->{
@@ -124,17 +120,39 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
 
                             p2WinButton.setEnabled(false);
 
-                            reportGameController.execute(position + 1, 2, "", "");
+                            reportGameController.execute(position + 1, 2);
                             updateScore();
                         });
 
                         // Create p1 character list
                         Spinner p1CharSelect = convertView.findViewById(R.id.p1_char_select);
-                        Set<String> possibleChars = EventData.getCharacters().keySet();
+                        List<String> possibleChars =new ArrayList<String>(EventData.getCharacterIds().keySet());
+                        possibleChars.add(0, "No Character");
+
                         ArrayAdapter<String> chars1Adapter = new ArrayAdapter<>(mContext,
-                                android.R.layout.simple_spinner_dropdown_item, new ArrayList<String>(possibleChars));
+                                android.R.layout.simple_spinner_dropdown_item, possibleChars);
                         chars1Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         p1CharSelect.setAdapter(chars1Adapter);
+
+                        // Set the selected character in the icon to the one stored in state
+                        String p1SelectedChar = currentState.getCurrentSet().
+                                getGame(position + 1).getPlayer1Character();
+                        p1CharSelect.setSelection(possibleChars.indexOf(p1SelectedChar));
+
+                        p1CharSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int i, long id) {
+                                String newP1Char = parent.getItemAtPosition(i).toString();
+                                currentState.getCurrentSet().getGame(position + 1)
+                                            .setPlayer1Character(newP1Char);
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+                                // When nothing is selected, the spinner should just stay on its value as before
+                            }
+                        });
 
                         // Create p2 character list
                         Spinner p2CharSelect = convertView.findViewById(R.id.p2_char_select);
@@ -143,6 +161,25 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
                         chars1Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         p2CharSelect.setAdapter(chars2Adapter);
 
+                        // Set the selected character stored in state
+                        String p2SelectedChar = currentState.getCurrentSet().
+                                getGame(position + 1).getPlayer2Character();
+                        p2CharSelect.setSelection(possibleChars.indexOf(p2SelectedChar));
+
+                        p2CharSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int i, long id) {
+                                String newP2Char = parent.getItemAtPosition(i).toString();
+                                currentState.getCurrentSet().getGame(position + 1)
+                                        .setPlayer2Character(newP2Char);
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+                                // When nothing is selected, the spinner should just stay on its value as before
+                            }
+                        });
 
                         return convertView;
                     }

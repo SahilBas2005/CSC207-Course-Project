@@ -107,17 +107,13 @@ public class EventData {
 
     public static Map<Integer, Station> getStations() {
         return stations;
-    }  
-      
-    public static SortedMap<String, Integer> getCharacterIds() {
-        return characterIds;
     }
 
     public static void setCharacterIds(SortedMap<String, Integer> characterIds) {
         EventData.characterIds = characterIds;
     }
 
-    public static SortedMap<String, Integer> getCharacters() {
+    public static SortedMap<String, Integer> getCharacterIds() {
         return characterIds;
     }
 }

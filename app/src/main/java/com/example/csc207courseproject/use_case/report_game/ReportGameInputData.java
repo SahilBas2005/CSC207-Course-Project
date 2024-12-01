@@ -8,15 +8,11 @@ public class ReportGameInputData {
     private int winnerId;
     private SetData currSet;
     private int gameNumber;
-    private String p1Character;
-    private String p2Character;
 
-    public ReportGameInputData(SetData currSet, int gameNumber, int winnerId, String p1Character, String p2Character) {
+    public ReportGameInputData(SetData currSet, int gameNumber, int winnerId) {
         this.winnerId = winnerId;
         this.currSet = currSet;
         this.gameNumber = gameNumber;
-        this.p1Character = p1Character;
-        this.p2Character = p2Character;
     }
 
     public int getWinnerID() { return winnerId; }
@@ -25,8 +21,5 @@ public class ReportGameInputData {
 
     public int getGameNumber() { return gameNumber; }
 
-    public String getP1Character() { return p1Character; }
-
-    public String getP2Character() { return p2Character; }
 
 }
