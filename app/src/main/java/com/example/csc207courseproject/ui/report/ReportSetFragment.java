@@ -98,24 +98,31 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
 
                         // Create p1/p2 win buttons and make them exclusive
                         ToggleButton p1WinButton = convertView.findViewById(R.id.player1_win);
-                        p1WinButton.setChecked(currentState.getP1ButtonPresses().get(position));
+                        boolean p1IsClicked = currentState.getP1ButtonPresses().get(position);
+                        Log.d("p1isclicked", String.valueOf(p1IsClicked));
+                        p1WinButton.setChecked(p1IsClicked);
+                        p1WinButton.setEnabled(!p1IsClicked);
+
                         ToggleButton p2WinButton = convertView.findViewById(R.id.player2_win);
-                        p2WinButton.setChecked(currentState.getP2ButtonPresses().get(position));
+                        boolean p2IsClicked = currentState.getP2ButtonPresses().get(position);
+                        Log.d("p2isclicked", String.valueOf(p2IsClicked));
+                        p2WinButton.setChecked(p2IsClicked);
+                        p2WinButton.setEnabled(!p2IsClicked);
 
                         p1WinButton.setOnClickListener(view -> {
                             p2WinButton.setChecked(false);
-                            p2WinButton.setClickable(true);
+                            p2WinButton.setEnabled(true);
 
-                            p1WinButton.setClickable(false);
+                            p1WinButton.setEnabled(false);
 
                             reportGameController.execute(position + 1, 1, "", "");
                             updateScore();
                         });
                         p2WinButton.setOnClickListener(view ->{
                             p1WinButton.setChecked(false);
-                            p1WinButton.setClickable(true);
+                            p1WinButton.setEnabled(true);
 
-                            p2WinButton.setClickable(false);
+                            p2WinButton.setEnabled(false);
 
                             reportGameController.execute(position + 1, 2, "", "");
                             updateScore();
