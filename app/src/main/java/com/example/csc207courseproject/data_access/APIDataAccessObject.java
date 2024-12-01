@@ -1,10 +1,10 @@
 package com.example.csc207courseproject.data_access;
 
-import android.util.Log;
 import com.example.csc207courseproject.BuildConfig;
 import com.example.csc207courseproject.entities.Entrant;
 import com.example.csc207courseproject.entities.Participant;
 import com.example.csc207courseproject.use_case.report_set.ReportSetDataAccessInterface;
+import com.example.csc207courseproject.use_case.tournament_description.TournamentDescriptionDataAccessInterface;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -19,9 +19,9 @@ import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
 public class APIDataAccessObject implements SelectPhaseDataAccessInterface, MainDataAccessInterface,
-        MutateSeedingDataAccessInterface, ReportSetDataAccessInterface {
+        MutateSeedingDataAccessInterface, ReportSetDataAccessInterface, TournamentDescriptionDataAccessInterface {
 
-    private final String TOKEN = BuildConfig.token;
+    private final String TOKEN = BuildConfig.TOKEN;
     private final String API_URL = "https://api.start.gg/gql/alpha";
     private Map<Integer, Integer> idToSeedID = new HashMap<>();
     private int initialPhaseID;

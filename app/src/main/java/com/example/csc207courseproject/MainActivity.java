@@ -20,10 +20,13 @@ private ActivityMainBinding binding;
         // Build app
         mainBuilder.createEventData()
                 .addSeedingView()
+                .addAnalysisView()
                 .addMutateSeedingUseCase()
                 .addUpdateSeedingUseCase()
                 .addSelectPhaseUseCase()
+                .addTournamentDescriptionUseCase()
                 .addCallView();
+
 
         super.onCreate(savedInstanceState);
 

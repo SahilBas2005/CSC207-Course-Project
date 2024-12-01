@@ -17,6 +17,10 @@ import com.example.csc207courseproject.ui.seeding.SeedingViewModel;
 import com.example.csc207courseproject.interface_adapter.update_seeding.UpdateSeedingController;
 import com.example.csc207courseproject.interface_adapter.update_seeding.UpdateSeedingPresenter;
 import com.example.csc207courseproject.ui.seeding.SeedingFragment;
+import com.example.csc207courseproject.ui.analysis.AnalysisFragment;
+import com.example.csc207courseproject.ui.analysis.AnalysisViewModel;
+import com.example.csc207courseproject.interface_adapter.tournament_description.TournamentDescriptionController;
+import com.example.csc207courseproject.interface_adapter.tournament_description.TournamentDescriptionPresenter;
 import com.example.csc207courseproject.ui.call.CallFragment;
 import com.example.csc207courseproject.use_case.mutate_seeding.MutateSeedingInputBoundary;
 import com.example.csc207courseproject.use_case.mutate_seeding.MutateSeedingInteractor;
@@ -27,6 +31,9 @@ import com.example.csc207courseproject.use_case.select_phase.SelectPhaseOutputBo
 import com.example.csc207courseproject.use_case.update_seeding.UpdateSeedingInputBoundary;
 import com.example.csc207courseproject.use_case.update_seeding.UpdateSeedingInteractor;
 import com.example.csc207courseproject.use_case.update_seeding.UpdateSeedingOutputBoundary;
+import com.example.csc207courseproject.use_case.tournament_description.TournamentDescriptionOutputBoundary;
+import com.example.csc207courseproject.use_case.tournament_description.TournamentDescriptionInteractor;
+import com.example.csc207courseproject.use_case.tournament_description.TournamentDescriptionInputBoundary;
 import com.example.csc207courseproject.view.ViewManager;
 
 import java.util.Map;
@@ -41,6 +48,7 @@ public class MainBuilder {
 
     private LoginViewModel loginViewModel;
     private SeedingViewModel seedingViewModel;
+    private AnalysisViewModel analysisViewModel;
     private MainViewModel mainViewModel;
     private CallViewModel callViewModel;
 
@@ -63,6 +71,15 @@ public class MainBuilder {
     public MainBuilder addSeedingView() {
         seedingViewModel = new SeedingViewModel();
         SeedingFragment.setSeedingViewModel(seedingViewModel);
+        return this;
+    }
+
+    /**
+     * Adds the Seeding View to the application.
+     * @return this builder
+     */
+    public MainBuilder addAnalysisView() {
+        analysisViewModel = new AnalysisViewModel();
         return this;
     }
 
@@ -101,6 +118,21 @@ public class MainBuilder {
         final SelectPhaseController controller = new SelectPhaseController(selectPhaseInteractor,
                 seedingViewModel.getState());
         SeedingFragment.setSelectPhaseController(controller);
+        return this;
+    }
+
+    /**
+     * Add the generate tournament description Use Case to the application
+     * @return this builder
+     */
+    public MainBuilder addTournamentDescriptionUseCase() {
+        final TournamentDescriptionOutputBoundary tournamentDescriptionOutputBoundary = new TournamentDescriptionPresenter(
+                viewManagerModel, analysisViewModel);
+        final TournamentDescriptionInputBoundary tournamentDescriptionInteractor = new TournamentDescriptionInteractor(
+                apiDataAccessObject, tournamentDescriptionOutputBoundary);
+
+        final TournamentDescriptionController controller = new TournamentDescriptionController(tournamentDescriptionInteractor);
+        AnalysisFragment.setTournamentDescriptionController(controller);
         return this;
     }
 
