@@ -1,16 +1,10 @@
 package com.example.csc207courseproject.use_case.login;
 
-import android.content.Context;
-import android.util.Log;
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.csc207courseproject.data_access.APIDataAccessObject;
 import com.example.csc207courseproject.use_case.select_tournament.SelectTournamentDataAccessInterface;
 import org.json.JSONException;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.List;
-import java.util.Map;
 
 /**
  * The Login Interactor
@@ -31,12 +25,13 @@ public class LoginInteractor implements LoginInputBoundary, PropertyChangeListen
     }
 
     @Override
-    public void execute(AppCompatActivity activity) {
+    public String execute() {
         try {
-            loginDataAccessObject.getAuthCode(activity);
+            return loginDataAccessObject.getAuthUrl();
         }
         catch(RuntimeException e) {
             loginPresenter.prepareFailView();
+            return null;
         }
     }
 
@@ -48,7 +43,7 @@ public class LoginInteractor implements LoginInputBoundary, PropertyChangeListen
             if (token == null) {
                 loginPresenter.prepareFailView();
             }
-            selectTournamentDataAccessObject.setTOKEN(token);
+            selectTournamentDataAccessObject.setToken(token);
             final LoginOutputData loginOutputData = new LoginOutputData(selectTournamentDataAccessObject.getTournaments());
             loginPresenter.prepareSuccessView(loginOutputData);
         }

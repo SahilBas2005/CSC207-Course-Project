@@ -14,5 +14,5 @@ public interface SelectTournamentDataAccessInterface {
     /**
      * Store the user's access token in the DAO.
      */
-    void setTOKEN(String token);
+    void setToken(String token);
 }
