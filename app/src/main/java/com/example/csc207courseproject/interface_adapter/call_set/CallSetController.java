@@ -1,6 +1,5 @@
 package com.example.csc207courseproject.interface_adapter.call_set;
 
-import android.util.Log;
 import com.example.csc207courseproject.use_case.call_set.CallSetInputBoundary;
 import com.example.csc207courseproject.use_case.call_set.CallSetInputData;
 

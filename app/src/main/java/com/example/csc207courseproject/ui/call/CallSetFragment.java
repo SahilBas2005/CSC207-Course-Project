@@ -56,8 +56,7 @@ public class CallSetFragment extends AppFragment implements PropertyChangeListen
     public void createSetTitle(){
         CallSetState currentState = callViewModel.getState();
         TextView text = binding.selectedText;
-        String outputText = currentState.getCurrentSet().toString() + " " +
-                currentState.getCurrentSet().getStation().toString();
+        String outputText = currentState.getCurrentSet().toString();
         text.setText(outputText);
     }
 

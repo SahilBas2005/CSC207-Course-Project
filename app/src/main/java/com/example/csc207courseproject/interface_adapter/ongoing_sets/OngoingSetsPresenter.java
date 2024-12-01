@@ -1,6 +1,6 @@
 package com.example.csc207courseproject.interface_adapter.ongoing_sets;
 
-import com.example.csc207courseproject.entities.SetData;
+import com.example.csc207courseproject.entities.ReportSetData;
 import com.example.csc207courseproject.interface_adapter.report_set.ReportSetState;
 import com.example.csc207courseproject.ui.report.ReportViewModel;
 import com.example.csc207courseproject.use_case.ongoing_sets.OngoingSetsOutputBoundary;
@@ -21,12 +21,12 @@ public class OngoingSetsPresenter implements OngoingSetsOutputBoundary {
     public void prepareSuccessView(OngoingSetsOutputData outputData) {
         final ReportSetState currentState = viewModel.getState();
 
-        List<SetData> sets = outputData.getOngoingSets();
-        List<SetData> repeats = new ArrayList<>();
+        List<ReportSetData> sets = outputData.getOngoingSets();
+        List<ReportSetData> repeats = new ArrayList<>();
 
         // Remove the recently reported sets from the state's ongoing sets variable
 
-        for (SetData set : sets) {
+        for (ReportSetData set : sets) {
             if (currentState.getReportedSetIDs().contains(set.getSetID())) {
                 repeats.add(set);
             }

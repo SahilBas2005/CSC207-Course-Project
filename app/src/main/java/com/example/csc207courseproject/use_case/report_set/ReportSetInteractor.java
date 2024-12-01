@@ -1,10 +1,8 @@
 package com.example.csc207courseproject.use_case.report_set;
 
-
-import android.util.Log;
 import com.example.csc207courseproject.data_access.api.APIDataAccessException;
 import com.example.csc207courseproject.entities.Game;
-import com.example.csc207courseproject.entities.SetData;
+import com.example.csc207courseproject.entities.ReportSetData;
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class ReportSetInteractor implements ReportSetInputBoundary {
         try {
             int setID = reportSetInputData.getSetID();
             int winnerID = reportSetInputData.getWinnerId();
-            SetData currSet = reportSetInputData.getCurrSet();
+            ReportSetData currSet = reportSetInputData.getCurrSet();
 
             if (winnerID < 0) {
                 reportSetPresenter.prepareFailView("incompletesetinfo");

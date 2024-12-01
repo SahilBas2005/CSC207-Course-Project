@@ -1,10 +1,6 @@
 package com.example.csc207courseproject.use_case.decline_set;
 
-
-import com.example.csc207courseproject.entities.SetData;
-import com.example.csc207courseproject.entities.Station;
-
-import java.util.List;
+import com.example.csc207courseproject.entities.CallSetData;
 
 public class DeclineSetInteractor implements DeclineSetInputBoundary {
 
@@ -23,7 +19,7 @@ public class DeclineSetInteractor implements DeclineSetInputBoundary {
         String tag = inputData.getTag();
         boolean p1Applies = inputData.getP1Applies();
         boolean p2Applies = inputData.getP2Applies();
-        SetData currentSet = inputData.getCurrentSet();
+        CallSetData currentSet = inputData.getCurrentSet();
 
         // Apply the tag to player one if their checkbox was ticked
         if (p1Applies && !currentSet.getPlayers()[0].getTags().contains(tag)) {

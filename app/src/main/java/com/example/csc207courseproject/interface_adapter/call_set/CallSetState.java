@@ -1,16 +1,16 @@
 package com.example.csc207courseproject.interface_adapter.call_set;
 
-import com.example.csc207courseproject.entities.SetData;
+import com.example.csc207courseproject.entities.CallSetData;
 import com.example.csc207courseproject.entities.Station;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CallSetState {
-        private SetData currentSet;
+        private CallSetData currentSet;
         private List<Station> stations;
         private final List<Station> localStations = new ArrayList<>();
-        private List<SetData> upcomingSets;
+        private List<CallSetData> upcomingSets;
         private boolean eventStarted = false;
         private Station openStream;
 
@@ -19,9 +19,9 @@ public class CallSetState {
         // calls update, which can take up to a minute
         private final List<Integer> calledSetIDs = new ArrayList<>();
 
-        public SetData getCurrentSet() {return currentSet;}
+        public CallSetData getCurrentSet() {return currentSet;}
 
-        public void setCurrentSet(SetData currentSet) {this.currentSet = currentSet;}
+        public void setCurrentSet(CallSetData currentSet) {this.currentSet = currentSet;}
 
         public List<Integer> getCalledSetIDs() {return calledSetIDs;}
 
@@ -29,11 +29,11 @@ public class CallSetState {
 
         public boolean isEventStarted() {return eventStarted;}
 
-        public void setUpcomingSets(List<SetData> upcomingSets) {
+        public void setUpcomingSets(List<CallSetData> upcomingSets) {
                 this.upcomingSets = upcomingSets;
         }
 
-        public List<SetData> getUpcomingSets() {
+        public List<CallSetData> getUpcomingSets() {
                 return upcomingSets;
         }
 

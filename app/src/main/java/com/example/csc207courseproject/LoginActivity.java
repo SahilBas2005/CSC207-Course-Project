@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity implements PropertyChangeLi
                 .addReportView()
                 .addLoginUseCase()
                 .addSelectTournamentUseCase()
+                .addGetPhasesUseCase()
                 .addSelectEventUseCase()
                 .addMutateSeedingUseCase()
                 .addUpdateSeedingUseCase()
@@ -51,12 +52,7 @@ public class LoginActivity extends AppCompatActivity implements PropertyChangeLi
     protected void onStart() {
         super.onStart();
         Button loginButton = findViewById(R.id.loginButton);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginController.execute(LoginActivity.this);
-            }
-        });
+        loginButton.setOnClickListener(view -> loginController.execute(LoginActivity.this));
     }
 
     public void propertyChange(PropertyChangeEvent evt) {

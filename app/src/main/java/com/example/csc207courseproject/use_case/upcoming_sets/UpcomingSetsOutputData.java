@@ -1,19 +1,19 @@
 package com.example.csc207courseproject.use_case.upcoming_sets;
 
-import com.example.csc207courseproject.entities.SetData;
+import com.example.csc207courseproject.entities.CallSetData;
 
 import java.util.List;
 
 public class UpcomingSetsOutputData {
 
-    private final List<SetData> upcomingSets;
+    private final List<CallSetData> upcomingSets;
 
 
-    public UpcomingSetsOutputData(List<SetData> upcomingSets) {
+    public UpcomingSetsOutputData(List<CallSetData> upcomingSets) {
         this.upcomingSets = upcomingSets;
     }
 
-    public List<SetData> getUpcomingSets() {
+    public List<CallSetData> getUpcomingSets() {
         return upcomingSets;
     }
 }

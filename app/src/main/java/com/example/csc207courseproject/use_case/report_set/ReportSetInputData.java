@@ -1,10 +1,7 @@
 
 package com.example.csc207courseproject.use_case.report_set;
 
-import com.example.csc207courseproject.entities.Game;
-import com.example.csc207courseproject.entities.SetData;
-
-import java.util.List;
+import com.example.csc207courseproject.entities.ReportSetData;
 
 /**
  * The Input Data for the SetReporting Use Case.
@@ -13,10 +10,10 @@ public class ReportSetInputData {
 
     private int setID;
     private int winnerId;
-    private SetData currSet;
+    private ReportSetData currSet;
 
     private boolean hasDQ;
-    public ReportSetInputData(int setID, int winnerId, SetData currSet, boolean hasDQ) {
+    public ReportSetInputData(int setID, int winnerId, ReportSetData currSet, boolean hasDQ) {
         this.setID = setID;
         this.winnerId = winnerId;
         this.currSet = currSet;
@@ -35,7 +32,7 @@ public class ReportSetInputData {
         return winnerId;
     }
 
-    public SetData getCurrSet() {
+    public ReportSetData getCurrSet() {
         return currSet;
     }
 

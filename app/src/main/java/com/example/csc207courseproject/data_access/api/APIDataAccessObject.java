@@ -6,10 +6,8 @@ import com.example.csc207courseproject.use_case.add_station.AddStationDataAccess
 import com.example.csc207courseproject.use_case.call_set.CallSetDataAccessInterface;
 import com.example.csc207courseproject.use_case.get_stations.GetStationsDataAccessInterface;
 import com.example.csc207courseproject.use_case.ongoing_sets.OngoingSetsDataAccessInterface;
-import com.example.csc207courseproject.entities.Entrant;
 import com.example.csc207courseproject.use_case.select_event.SelectEventDataAccessInterface;
 import com.example.csc207courseproject.use_case.select_tournament.SelectTournamentDataAccessInterface;
-import com.example.csc207courseproject.entities.Participant;
 import com.example.csc207courseproject.use_case.report_set.ReportSetDataAccessInterface;
 import com.example.csc207courseproject.use_case.upcoming_sets.UpcomingSetsDataAccessInterface;
 import okhttp3.*;
@@ -477,7 +475,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
     }
 
 
-    public List<SetData> getOngoingSets(int eventID) {
+    public List<ReportSetData> getOngoingSets(int eventID) {
         //Sorts them in reverse starting order of start time
 
         try {
@@ -498,7 +496,6 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
                     "        id" +
                     "        totalGames" +
                     "        slots {" +
-                    "          id" +
                     "          entrant {" +
                     "            id" +
                     "            name" +
@@ -530,7 +527,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
             jsonResponse = null;
 
             // Create list of SetData and fill it in the specified order of the API call
-            List<SetData> sets = new ArrayList<>();
+            List<ReportSetData> sets = new ArrayList<>();
 
             for (int i = 0; i < jsonSets.length(); i++) {
                 int setID = jsonSets.getJSONObject(i).getInt("id");
@@ -545,7 +542,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
                     players[j] = EventData.getEntrant(newId);
                 }
 
-                SetData newSet = new SetData(setID, players, bestOf);
+                ReportSetData newSet = new ReportSetData(setID, players, bestOf);
 
                 sets.add(newSet);
             }
@@ -558,7 +555,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
 
     }
 
-    public List<SetData> getUpcomingSets(int eventID) {
+    public List<CallSetData> getUpcomingSets(int eventID) {
         // Sorts them in callable order
 
         try {
@@ -577,9 +574,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
                     "      }" +
                     "      nodes {" +
                     "        id" +
-                    "        totalGames" +
                     "        slots {" +
-                    "          id" +
                     "          entrant {" +
                     "            id" +
                     "            name" +
@@ -611,7 +606,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
             jsonResponse = null;
 
             // Create list of SetData and fill it in the specified order of the API call
-            List<SetData> sets = new ArrayList<>();
+            List<CallSetData> sets = new ArrayList<>();
 
 
             // Check if the existing sets are in preview status, where the set ids will be strings with "preview"
@@ -631,7 +626,6 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
             for (int i = 0; i < jsonSets.length(); i++) {
                 boolean participantNull = false;
                 int setID = jsonSets.getJSONObject(i).getInt("id");
-                int bestOf = jsonSets.getJSONObject(i).getInt("totalGames");
 
                 JSONArray slots = jsonSets.getJSONObject(i).getJSONArray("slots");
                 Entrant[] players = new Entrant[slots.length()];
@@ -646,7 +640,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
                     }
                 }
                 if (!participantNull) {
-                    SetData newSet = new SetData(setID, players, bestOf);
+                    CallSetData newSet = new CallSetData(setID, players);
 
                     sets.add(newSet);
                 }
