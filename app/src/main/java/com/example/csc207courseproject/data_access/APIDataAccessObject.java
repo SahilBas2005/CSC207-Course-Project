@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
+import com.example.csc207courseproject.use_case.login.LoginDataAccessInterface;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +24,8 @@ import okhttp3.*;
  * A class responsible for making all API calls to start.gg.
  */
 public class APIDataAccessObject implements SelectPhaseDataAccessInterface, MutateSeedingDataAccessInterface,
-        SelectTournamentDataAccessInterface, ReportSetDataAccessInterface, SelectEventDataAccessInterface {
+        SelectTournamentDataAccessInterface, ReportSetDataAccessInterface, SelectEventDataAccessInterface,
+        LoginDataAccessInterface {
 
     private static final String API_URL = "https://api.start.gg/gql/alpha";
     private String token = BuildConfig.TOKEN;

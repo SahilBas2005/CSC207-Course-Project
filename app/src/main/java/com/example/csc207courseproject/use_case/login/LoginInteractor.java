@@ -5,30 +5,29 @@ import java.beans.PropertyChangeListener;
 
 import org.json.JSONException;
 
-import com.example.csc207courseproject.use_case.select_tournament.SelectTournamentDataAccessInterface;
-
 /**
  * Interactor for the Login Use Case.
  */
 public class LoginInteractor implements LoginInputBoundary, PropertyChangeListener {
-    private final LoginDataAccessInterface loginDataAccessObject;
+    private final LoginOAuthDataAccessInterface loginOAuthDataAccessObject;
     private final LoginOutputBoundary loginPresenter;
-    private final SelectTournamentDataAccessInterface selectTournamentDataAccessObject;
+    private final LoginDataAccessInterface loginDataAccessObject;
 
     /**
      * The class constructor.
-     * @param loginDataAccessInterface the DAO to set for loginDataAccessObject.
-     * @param loginOutputBoundary the presenter to set for loginPresenter
-     * @param selectTournamentDataAccessInterface the DAO to set for selectTournamentDataAccessObject
+     *
+     * @param loginOAuthDataAccessInterface the DAO to set for loginOAuthDataAccessObject.
+     * @param loginOutputBoundary           the presenter to set for loginPresenter
+     * @param loginDataAccessInterface      the DAO to set for loginDataAccessObject
      */
-    public LoginInteractor(LoginDataAccessInterface loginDataAccessInterface,
+    public LoginInteractor(LoginOAuthDataAccessInterface loginOAuthDataAccessInterface,
                            LoginOutputBoundary loginOutputBoundary,
-                           SelectTournamentDataAccessInterface selectTournamentDataAccessInterface) {
-        this.loginDataAccessObject = loginDataAccessInterface;
+                           LoginDataAccessInterface loginDataAccessInterface) {
+        this.loginOAuthDataAccessObject = loginOAuthDataAccessInterface;
         this.loginPresenter = loginOutputBoundary;
-        this.selectTournamentDataAccessObject = selectTournamentDataAccessInterface;
+        this.loginDataAccessObject = loginDataAccessInterface;
 
-        loginDataAccessObject.addListener(this);
+        loginOAuthDataAccessObject.addListener(this);
     }
 
     /**
@@ -38,7 +37,7 @@ public class LoginInteractor implements LoginInputBoundary, PropertyChangeListen
     @Override
     public String execute() {
         try {
-            return loginDataAccessObject.getAuthUrl();
+            return loginOAuthDataAccessObject.getAuthUrl();
         }
         catch (RuntimeException evt) {
             loginPresenter.prepareFailView();
@@ -54,18 +53,18 @@ public class LoginInteractor implements LoginInputBoundary, PropertyChangeListen
     public void propertyChange(PropertyChangeEvent evt) {
         final String token;
         try {
-            token = loginDataAccessObject.getToken();
+            token = loginOAuthDataAccessObject.getToken();
             if (token == null) {
                 loginPresenter.prepareFailView();
             }
-            selectTournamentDataAccessObject.setToken(token);
+            loginDataAccessObject.setToken(token);
             final LoginOutputData loginOutputData =
-                    new LoginOutputData(selectTournamentDataAccessObject.getTournaments());
+                    new LoginOutputData(loginDataAccessObject.getTournaments());
             loginPresenter.prepareSuccessView(loginOutputData);
         }
         catch (JSONException | InterruptedException event) {
             loginPresenter.prepareFailView();
         }
-        loginDataAccessObject.stopServer();
+        loginOAuthDataAccessObject.stopServer();
     }
 }

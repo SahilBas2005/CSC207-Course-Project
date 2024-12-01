@@ -1,34 +1,23 @@
 package com.example.csc207courseproject.use_case.login;
 
-import java.beans.PropertyChangeListener;
+import java.util.List;
+
+import org.json.JSONException;
 
 /**
  * DAI for the Login Use Case.
  */
 public interface LoginDataAccessInterface {
+    /**
+     * Gets a list of tournaments that the user is organizing or an admin of.
+     * @return a list containing tournament names (index 0) and ids (index 1)
+     * @throws JSONException if there is a problem with the JSON API
+     */
+    List<List> getTournaments() throws JSONException;
 
     /**
-     * Start the server where the auth code will be sent once the user logs in, and prompt the user to log in.
-     * @return the browser URL where the user can log in
+     * Store the user's access token in the DAO.
+     * @param token the user's access token
      */
-    String getAuthUrl();
-
-    /**
-     * Add a listener to listen in on when the auth code is received.
-     * @param listener the listener to add
-     */
-    void addListener(PropertyChangeListener listener);
-
-    /**
-     * Get the user's access token by using the auth code.
-     * @return the user's access token
-     * @throws InterruptedException if the thread is interrupted before or during the execution of this method
-     */
-    String getToken() throws InterruptedException;
-
-    /**
-     * Stop the HTTP Server.
-     */
-    void stopServer();
-
+    void setToken(String token);
 }

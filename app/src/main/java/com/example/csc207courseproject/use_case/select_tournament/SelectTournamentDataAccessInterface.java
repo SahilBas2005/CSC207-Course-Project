@@ -9,15 +9,10 @@ import org.json.JSONException;
  */
 public interface SelectTournamentDataAccessInterface {
     /**
-     * Gets a list of tournaments that the user is organizing or an admin of.
-     * @return a list containing tournament names (index 0) and ids (index 1)
+     * Get the events for a given tournament.
+     * @param tournamentID the id of the tournament
+     * @return A list containing event names (index 0) and event IDs (index 1)
      * @throws JSONException if there is a problem with the JSON API
      */
-    List<List> getTournaments() throws JSONException;
-
-    /**
-     * Store the user's access token in the DAO.
-     * @param token the user's access token
-     */
-    void setToken(String token);
+    List<List> getEventsInTournament(Integer tournamentID) throws JSONException;
 }
