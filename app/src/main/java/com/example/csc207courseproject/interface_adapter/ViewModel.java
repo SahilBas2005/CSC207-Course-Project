@@ -1,5 +1,7 @@
 package com.example.csc207courseproject.interface_adapter;
 
+import android.util.Log;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -59,7 +61,18 @@ public class ViewModel<T> {
      * @param listener The PropertyChangeListener to be added
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
+        // Make sure that the property change listeners are only created once,
+        // to avoid firing many repeated property changes
         this.support.addPropertyChangeListener(listener);
+
+    }
+
+    /**
+     * Remove a PropertyChangeListener from this ViewModel.
+     * @param listener The PropertyChangeListener to be removed
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        this.support.removePropertyChangeListener(listener);
     }
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         this.support.removePropertyChangeListener(listener);

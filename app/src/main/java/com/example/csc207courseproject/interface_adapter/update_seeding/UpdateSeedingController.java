@@ -1,5 +1,6 @@
 package com.example.csc207courseproject.interface_adapter.update_seeding;
 
+import android.util.Log;
 import com.example.csc207courseproject.use_case.update_seeding.UpdateSeedingInputBoundary;
 import com.example.csc207courseproject.use_case.update_seeding.UpdateSeedingInputData;
 
@@ -18,7 +19,7 @@ public class UpdateSeedingController {
         int maxSeed = seedingState.getSeeding().size();
 
         try {
-
+            Log.d("oldSeed", oldSeed);
             Integer.parseInt(oldSeed);
             Integer.parseInt(newSeed);
             int oldSeedValue = Integer.parseInt(oldSeed);

@@ -1,5 +1,7 @@
 package com.example.csc207courseproject.interface_adapter.login;
 
+import android.content.Context;
+import androidx.appcompat.app.AppCompatActivity;
 import com.example.csc207courseproject.use_case.login.LoginInputBoundary;
 
 /**
@@ -13,7 +15,8 @@ public class LoginController {
         this.loginInteractor = loginInteractor;
     }
 
-    public void execute() {
-        loginInteractor.execute();
+    public void execute(AppCompatActivity activity) {
+        loginInteractor.execute(activity);
     }
+
 }

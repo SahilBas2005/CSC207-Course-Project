@@ -1,29 +1,33 @@
 package com.example.csc207courseproject.interface_adapter.login;
 
 import com.example.csc207courseproject.interface_adapter.ViewManagerModel;
+import com.example.csc207courseproject.interface_adapter.select_tournament.SelectTournamentViewModel;
+import com.example.csc207courseproject.interface_adapter.select_tournament.TournamentState;
 import com.example.csc207courseproject.use_case.login.LoginOutputBoundary;
+import com.example.csc207courseproject.use_case.login.LoginOutputData;
 
 public class LoginPresenter implements LoginOutputBoundary {
 
     private final LoginViewModel loginViewModel;
-    private final ViewManagerModel viewManagerModel;
+    private final SelectTournamentViewModel selectTournamentViewModel;
 
     public LoginPresenter(LoginViewModel loginViewModel,
-                          ViewManagerModel viewManagerModel) {
+                          SelectTournamentViewModel selectTournamentViewModel) {
         this.loginViewModel = loginViewModel;
-        this.viewManagerModel = viewManagerModel;
+        this.selectTournamentViewModel = selectTournamentViewModel;
     }
 
     @Override
-    public void prepareSuccessView() {
-        // Change this once Tournament use case is completed
-        System.out.println("Login Successful!");
+    public void prepareSuccessView(LoginOutputData loginOutputData) {
+        final TournamentState tournamentState = selectTournamentViewModel.getState();
+        tournamentState.setTournamentNames(loginOutputData.getTournamentNames());
+        tournamentState.setTournamentIds(loginOutputData.getTournamentIds());
+        loginViewModel.firePropertyChanged("loginsuccess");
+
     }
 
     @Override
-    public void prepareFailView(String errorMessage) {
-        final LoginState loginState = loginViewModel.getState();
-        loginState.setError(errorMessage);
-        loginViewModel.firePropertyChanged();
+    public void prepareFailView() {
+        loginViewModel.firePropertyChanged("loginfail");
     }
 }

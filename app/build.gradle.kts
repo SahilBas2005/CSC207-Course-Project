@@ -4,7 +4,10 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
-val myToken = gradleLocalProperties(rootDir, providers).getProperty("token");
+// Fetch environment variables from local properties file
+val myToken = gradleLocalProperties(rootDir, providers).getProperty("token")
+val clientID = gradleLocalProperties(rootDir, providers).getProperty("client_id")
+val clientSecret = gradleLocalProperties(rootDir, providers).getProperty("client_secret")
 val cohereToken = gradleLocalProperties(rootDir, providers).getProperty("cohere-token")
 
 android {
@@ -20,7 +23,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "TOKEN", "\"${myToken}\"")
+        buildConfigField("String", "TOKEN", "\"" + myToken + "\"")
+        buildConfigField("String", "CLIENT_ID", "\"" + clientID +"\"")
+        buildConfigField("String", "CLIENT_SECRET", "\"" + clientSecret + "\"")
         buildConfigField("String", "COHERE", "\"${cohereToken}\"")
     }
 
@@ -57,6 +62,7 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.legacy.support.v4)
     testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter)
     testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

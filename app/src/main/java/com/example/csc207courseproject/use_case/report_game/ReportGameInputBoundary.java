@@ -1,7 +1,5 @@
 package com.example.csc207courseproject.use_case.report_game;
 
-import com.example.csc207courseproject.use_case.report_set.ReportSetInputData;
-
 public interface ReportGameInputBoundary {
 
     /**

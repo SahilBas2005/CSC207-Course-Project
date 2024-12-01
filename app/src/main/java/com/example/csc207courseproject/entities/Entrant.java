@@ -2,12 +2,17 @@ package com.example.csc207courseproject.entities;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * An entity representing an entrant in an event
  */
 public class Entrant {
     private final Participant[] participants;
     private final int entrantId;
+    private final List<String> tags = new ArrayList<>();
+    private Station currentStation; //The station a player is currently playing at
 
     /**
      * Entrant constructor.
@@ -35,4 +40,14 @@ public class Entrant {
         }
         return output;
     }
+
+    public Station getCurrentStation() {
+        return currentStation;
+    }
+
+    public void setCurrentStation(Station currentStation) {
+        this.currentStation = currentStation;
+    }
+
+    public List<String> getTags() {return tags;}
 }

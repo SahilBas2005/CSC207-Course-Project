@@ -17,6 +17,7 @@ public class SelectPhaseInteractor implements SelectPhaseInputBoundary {
     @Override
     public void execute(SelectPhaseInputData selectPhaseInputData) {
         int phaseID = selectPhaseInputData.getPhaseID();
+        Log.d("phaseID", String.valueOf(phaseID));
         try {
             SelectPhaseOutputData s = new SelectPhaseOutputData(dataAccess.getSeedingInPhase(phaseID));
             selectPhasePresenter.prepareSuccessView(s);

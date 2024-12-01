@@ -1,19 +1,12 @@
 package com.example.csc207courseproject.ui.report;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import com.example.csc207courseproject.interface_adapter.ViewModel;
+import com.example.csc207courseproject.interface_adapter.report_set.ReportSetState;
 
-public class ReportViewModel extends ViewModel {
-
-    private final MutableLiveData<String> mText;
+public class ReportViewModel extends ViewModel<ReportSetState> {
 
     public ReportViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("REPORT VIEW");
-    }
-
-    public LiveData<String> getText() {
-        return mText;
+        super("report");
+        setState(new ReportSetState());
     }
 }

@@ -2,16 +2,32 @@ package com.example.csc207courseproject.use_case.report_game;
 
 public class ReportGameOutputData {
 
-    private int winnerID;
-    private int gameNumber;
-    private String p1Character;
-    private String p2Character;
+    private int p2Score;
+    private int p1Score;
+    private boolean setOver;
+    private String p1Char;
+    private String p2Char;
 
 
-    public ReportGameOutputData(int winnerID, int gameNumber, String p1Character, String p2Character) {
-        this.winnerID = winnerID;
-        this.gameNumber = gameNumber;
-        this.p1Character = p1Character;
-        this.p2Character = p2Character;
+    public ReportGameOutputData(int p1Score, int p2Score, boolean setOver, String p1Char, String p2Char) {
+        this.p1Score = p1Score;
+        this.p2Score = p2Score;
+        this.setOver = setOver;
+        this.p1Char = p1Char;
+        this.p2Char = p2Char;
     }
+
+    public int getP1Score() {
+        return p1Score;
+    }
+
+    public int getP2Score() {
+        return p2Score;
+    }
+
+    public boolean getSetOver() {
+        return setOver;
+    }
+
+
 }

@@ -7,15 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import com.example.csc207courseproject.R;
 import com.example.csc207courseproject.databinding.FragmentCallBinding;
 import com.example.csc207courseproject.entities.SetData;
 import com.example.csc207courseproject.interface_adapter.call_set.CallSetState;
-import com.example.csc207courseproject.interface_adapter.mutate_seeding.MutateSeedingController;
-import com.example.csc207courseproject.interface_adapter.select_phase.SelectPhaseController;
-import com.example.csc207courseproject.interface_adapter.update_seeding.SeedingState;
-import com.example.csc207courseproject.interface_adapter.update_seeding.UpdateSeedingController;
+import com.example.csc207courseproject.interface_adapter.find_station.FindStationController;
+import com.example.csc207courseproject.interface_adapter.get_stations.GetStationsController;
+import com.example.csc207courseproject.interface_adapter.upcoming_sets.UpcomingSetsController;
 import com.example.csc207courseproject.ui.AppFragment;
-import com.example.csc207courseproject.ui.seeding.SeedingViewModel;
+import org.jetbrains.annotations.NotNull;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -25,66 +28,107 @@ import java.util.List;
 public class CallFragment extends AppFragment implements PropertyChangeListener {
 
     private static CallViewModel callViewModel;
+    private static UpcomingSetsController upcomingSetsController;
+    private static GetStationsController getStationsController;
+    private static FindStationController findStationController;
+    private NavController navc;
 
-private FragmentCallBinding binding;
+    private FragmentCallBinding binding;
+    private boolean navReady = false;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
+
         callViewModel.addPropertyChangeListener(this);
 
         binding = FragmentCallBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        createDisplay();
+        createStationButton();
+
+        upcomingSetsController.execute();
+        getStationsController.execute();
 
         return root;
     }
 
-    //TEST CODE DELETE LATER
+    @Override
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        CallSetFragment.setCallViewModel(callViewModel);
+        CallStationFragment.setCallViewModel(callViewModel);
+        navc = Navigation.findNavController(view);
+    }
+
     private void createDisplay() {
         CallSetState currentState = callViewModel.getState();
         List<String> setDisplay = new ArrayList<>();
         ListView setsView = binding.upcomingSets;
         List<SetData> sets = currentState.getUpcomingSets();
-        if(sets != null) {
-            for (int i = 0; i < sets.size(); i++) {
-                setDisplay.add((i + 1) + ". " + sets.get(i).toString());
+
+        // If there are no current upcoming sets, then display that there are no upcoming sets
+        // Otherwise, create the set display menu
+
+        if(!sets.isEmpty()) {
+            binding.noUpcomingSets.setVisibility(View.INVISIBLE);
+            binding.previewMessage.setVisibility(View.INVISIBLE);
+            for (SetData set : sets) {
+                setDisplay.add(set.toString());
             }
+        } else {
+            binding.noUpcomingSets.setVisibility(View.VISIBLE);
+            binding.previewMessage.setVisibility(View.VISIBLE);
         }
+
         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, setDisplay);
         setsView.setAdapter(itemsAdapter);
-        setsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> list, View view, int position, long id) {
-                showToast(setDisplay.get(position));
-
+        setsView.setOnItemClickListener((list, view, position, id) -> {
+            callViewModel.getState().setCurrentSet(sets.get(position));
+            findStationController.execute();
+            if (navReady) {
+                navc.navigate(R.id.action_nav_call_to_callSetFragment);
+                navReady = false;
             }
-
         });
+    }
+
+    private void createStationButton(){
+        Button configureButton = binding.configureButton;
+        configureButton.setOnClickListener(view -> navc.navigate(R.id.action_nav_call_to_callStationFragment));
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        callViewModel.removePropertyChangeListener(this);
         binding = null;
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-
+    public void propertyChange(PropertyChangeEvent evt) {
+        switch (evt.getPropertyName()) {
+            case "getsetssuccess": createDisplay(); break;
+            case "getsetsfail": break;
+            case "getstationssuccess": break;
+            case "getstationsfail": showToast("Stations can not be found."); break;
+            case "findsuccess": navReady = true; break;
+            case "findfail": showToast("No stations are available. Make sure stations are created."); break;
+        }
     }
 
-//    public static void setUpdateSeedingController(UpdateSeedingController controller) {
-//        updateSeedingController = controller;
-//    }
-//
-//    public static void setSelectPhaseController(SelectPhaseController controller) {
-//        selectPhaseController = controller;
-//    }
-//
-//    public static void setMutateSeedingController(MutateSeedingController controller) {
-//        mutateSeedingController = controller;
-//    }
+    public static void setUpcomingSetsController(UpcomingSetsController controller) {
+        upcomingSetsController = controller;
+    }
+
+    public static void setGetStationsController(GetStationsController controller) {
+        getStationsController = controller;
+    }
+
+    public static void setFindStationController(FindStationController controller) {
+        findStationController = controller;
+    }
 
     public static void setCallViewModel(CallViewModel viewModel) {
         callViewModel = viewModel;
