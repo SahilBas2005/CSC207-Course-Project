@@ -21,7 +21,7 @@ public class AddStationPresenter implements AddStationOutputBoundary {
     }
 
     @Override
-    public void prepareFailView(String errorMessage) {
+    public void prepareFailView() {
         viewModel.firePropertyChanged("addfail");
     }
 

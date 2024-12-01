@@ -12,12 +12,6 @@ public interface MutateSeedingOutputBoundary {
 
     /**
      * Prepares the failure view for the Mutate Seeding Use Case.
-     * @param errorMessage the explanation of the failure
      */
-    void prepareFailView(String errorMessage);
-
-    /**
-     * Switches to the Main Menu View.
-     */
-    void switchToMainMenuView();
+    void prepareFailView();
 }

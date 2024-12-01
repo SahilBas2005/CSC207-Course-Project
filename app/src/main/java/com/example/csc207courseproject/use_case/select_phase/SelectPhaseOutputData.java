@@ -1,5 +1,7 @@
 package com.example.csc207courseproject.use_case.select_phase;
 
+import com.example.csc207courseproject.entities.Entrant;
+
 import java.util.List;
 
 /**
@@ -7,13 +9,13 @@ import java.util.List;
  */
 public class SelectPhaseOutputData {
 
-    private List<Integer> seeds;
+    private List<Entrant> seeds;
 
-    public SelectPhaseOutputData(List<Integer> seeds) {
+    public SelectPhaseOutputData(List<Entrant> seeds) {
         this.seeds = seeds;
     }
 
-    public List<Integer> getSeeding() {
+    public List<Entrant> getSeeding() {
         return this.seeds;
     }
 

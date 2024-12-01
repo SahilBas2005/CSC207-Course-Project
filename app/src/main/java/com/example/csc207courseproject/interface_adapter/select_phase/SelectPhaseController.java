@@ -1,5 +1,6 @@
 package com.example.csc207courseproject.interface_adapter.select_phase;
 
+import com.example.csc207courseproject.entities.EventData;
 import com.example.csc207courseproject.interface_adapter.update_seeding.SeedingState;
 import com.example.csc207courseproject.use_case.select_phase.SelectPhaseInputBoundary;
 import com.example.csc207courseproject.use_case.select_phase.SelectPhaseInputData;
@@ -10,21 +11,15 @@ import com.example.csc207courseproject.use_case.select_phase.SelectPhaseInputDat
 public class SelectPhaseController {
 
     private final SelectPhaseInputBoundary selectphaseUseCaseInteractor;
-    private final SeedingState seedingState;
 
-    public SelectPhaseController(SelectPhaseInputBoundary selectphaseUseCaseInteractor, SeedingState seedingState) {
+    public SelectPhaseController(SelectPhaseInputBoundary selectphaseUseCaseInteractor) {
         this.selectphaseUseCaseInteractor = selectphaseUseCaseInteractor;
-        this.seedingState = seedingState;
     }
 
     /**
      * Execute the Select Phase use case
      */
     public void execute(String selectedPhase) {
-
-        int phaseID = seedingState.phaseNametoId(selectedPhase);
-        final SelectPhaseInputData selectPhaseInputData = new SelectPhaseInputData(phaseID);
-
-        selectphaseUseCaseInteractor.execute(selectPhaseInputData);
+        selectphaseUseCaseInteractor.execute(new SelectPhaseInputData(selectedPhase));
     }
 }

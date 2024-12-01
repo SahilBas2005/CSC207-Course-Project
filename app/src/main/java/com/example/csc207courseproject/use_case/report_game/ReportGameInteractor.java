@@ -1,7 +1,6 @@
 package com.example.csc207courseproject.use_case.report_game;
 
 import com.example.csc207courseproject.entities.Entrant;
-import com.example.csc207courseproject.entities.EventData;
 import com.example.csc207courseproject.entities.Game;
 import com.example.csc207courseproject.entities.SetData;
 

@@ -65,7 +65,7 @@ public class Station {
         return isStream;
     }
 
-    public boolean isOccupied() {return isOccupied;}
+    public boolean isNotOccupied() {return !isOccupied;}
 
     public void setOccupied(boolean isOccupied) {this.isOccupied = isOccupied;}
 

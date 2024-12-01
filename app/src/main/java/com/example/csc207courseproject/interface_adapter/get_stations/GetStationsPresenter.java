@@ -21,7 +21,7 @@ public class GetStationsPresenter implements GetStationsOutputBoundary {
     }
 
     @Override
-    public void prepareFailView(String errorMessage) {
+    public void prepareFailView() {
         viewModel.firePropertyChanged("getstationsfail");
     }
 

@@ -5,17 +5,13 @@ package com.example.csc207courseproject.use_case.select_phase;
  */
 public class SelectPhaseInputData {
 
-    private int phaseID;
+    private final String phaseName;
 
-    public SelectPhaseInputData(int phaseID) {
-        this.phaseID = phaseID;
+    public SelectPhaseInputData(String phaseName) {
+        this.phaseName = phaseName;
     }
 
-    public int getPhaseID() {
-        return phaseID;
-    }
-
-    public void setPhaseName(int phaseID) {
-        this.phaseID = phaseID;
+    public String getPhaseName() {
+        return phaseName;
     }
 }

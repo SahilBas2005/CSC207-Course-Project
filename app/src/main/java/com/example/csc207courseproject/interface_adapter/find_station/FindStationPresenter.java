@@ -21,7 +21,7 @@ public class FindStationPresenter implements FindStationOutputBoundary {
     }
 
     @Override
-    public void prepareFailView(String errorMessage) {
+    public void prepareFailView() {
         viewModel.firePropertyChanged("findfail");
     }
 

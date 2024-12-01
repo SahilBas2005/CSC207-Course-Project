@@ -32,7 +32,7 @@ public class GetStationsInteractor implements GetStationsInputBoundary {
 
             presenter.prepareSuccessView(s);
         } catch (Exception e) {
-            presenter.prepareFailView("Something went wrong with the API call, try again.");
+            presenter.prepareFailView();
         }
     }
 

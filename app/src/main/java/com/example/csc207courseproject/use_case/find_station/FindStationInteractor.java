@@ -19,14 +19,14 @@ public class FindStationInteractor implements FindStationInputBoundary {
     public void execute(FindStationInputData inputData) {
         // Try to find an available station
         for (Station station : inputData.getStations()) {
-            if (!station.isOccupied() && !station.isStream()
+            if (station.isNotOccupied() && !station.isStream()
                     && !inputData.getCurrentSet().conflictsWithStation(station)) {
                 FindStationOutputData outputData = new FindStationOutputData(station);
                 presenter.prepareSuccessView(outputData);
                 return;
             }
         }
-        presenter.prepareFailView("Could not find station.");
+        presenter.prepareFailView();
 
     }
 

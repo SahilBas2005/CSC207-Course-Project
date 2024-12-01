@@ -1,6 +1,5 @@
 package com.example.csc207courseproject.interface_adapter.call_set;
 
-import com.example.csc207courseproject.entities.Entrant;
 import com.example.csc207courseproject.entities.SetData;
 import com.example.csc207courseproject.entities.Station;
 
@@ -62,7 +61,7 @@ public class CallSetState {
          */
         public boolean isStreamOpen() {
                 for(Station station : stations) {
-                        if (station.isStream() && !station.isOccupied()){
+                        if (station.isStream() && station.isNotOccupied()){
                                 return true;
                         }
                 }
@@ -74,7 +73,7 @@ public class CallSetState {
          */
         public void findStream(){
                 for (Station station : stations) {
-                        if (!station.isOccupied() && station.isStream()) {
+                        if (station.isNotOccupied() && station.isStream()) {
                                 currentSet.setStation(station);
                         }
                 }

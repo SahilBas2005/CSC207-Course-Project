@@ -1,6 +1,7 @@
 package com.example.csc207courseproject.use_case.select_phase;
 
 import com.example.csc207courseproject.data_access.APIDataAccessObject;
+import com.example.csc207courseproject.entities.Entrant;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -17,7 +18,7 @@ class SelectPhaseInteractorTest {
         // Create new setSeeding method which throws an exception for this test
         APIDataAccessObject failDataAccessInterface = new APIDataAccessObject() {
             @Override
-            public List<Integer> getSeedingInPhase(int phaseID) {
+            public List<Entrant> getSeedingInPhase(int phaseID) {
                 throw new UnsupportedOperationException("Failure");
             }
         };
@@ -29,8 +30,8 @@ class SelectPhaseInteractorTest {
             }
 
             @Override
-            public void prepareFailView(String error) {
-                assertEquals("Something went wrong with the API call, try again.", error);
+            public void prepareFailView() {
+                assertEquals();
             }
         };
 

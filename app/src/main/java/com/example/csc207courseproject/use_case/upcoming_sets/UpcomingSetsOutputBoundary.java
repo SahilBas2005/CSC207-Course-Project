@@ -11,8 +11,7 @@ public interface UpcomingSetsOutputBoundary {
 
     /**
      * Prepares the failure view for the Update Seeding Use Case.
-     * @param errorMessage the explanation of the failure
      */
-    void prepareFailView(String errorMessage);
+    void prepareFailView();
 
 }

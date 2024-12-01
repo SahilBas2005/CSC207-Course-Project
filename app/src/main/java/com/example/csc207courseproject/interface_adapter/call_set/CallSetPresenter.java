@@ -21,7 +21,7 @@ public class CallSetPresenter implements CallSetOutputBoundary {
     }
 
     @Override
-    public void prepareFailView(String errorMessage) {
+    public void prepareFailView() {
         viewModel.firePropertyChanged("callfail");
     }
 

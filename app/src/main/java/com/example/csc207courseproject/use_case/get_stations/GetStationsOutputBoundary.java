@@ -11,8 +11,7 @@ public interface GetStationsOutputBoundary {
 
     /**
      * Prepares the failure view for the get stations use Case.
-     * @param errorMessage the explanation of the failure
      */
-    void prepareFailView(String errorMessage);
+    void prepareFailView();
 
 }

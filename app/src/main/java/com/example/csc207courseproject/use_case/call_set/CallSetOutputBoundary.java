@@ -11,8 +11,7 @@ public interface CallSetOutputBoundary {
 
     /**
      * Prepares the failure view for the call set use Case.
-     * @param errorMessage the explanation of the failure
      */
-    void prepareFailView(String errorMessage);
+    void prepareFailView();
 
 }

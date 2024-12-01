@@ -1,10 +1,6 @@
 package com.example.csc207courseproject.interface_adapter.ongoing_sets;
 
-import android.util.Log;
-import android.view.View;
 import com.example.csc207courseproject.entities.SetData;
-import com.example.csc207courseproject.interface_adapter.ViewManagerModel;
-import com.example.csc207courseproject.interface_adapter.call_set.CallSetState;
 import com.example.csc207courseproject.interface_adapter.report_set.ReportSetState;
 import com.example.csc207courseproject.ui.report.ReportViewModel;
 import com.example.csc207courseproject.use_case.ongoing_sets.OngoingSetsOutputBoundary;
@@ -12,16 +8,13 @@ import com.example.csc207courseproject.use_case.ongoing_sets.OngoingSetsOutputDa
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 public class OngoingSetsPresenter implements OngoingSetsOutputBoundary {
 
     private final ReportViewModel viewModel;
-    private final ViewManagerModel viewManagerModel;
 
-    public OngoingSetsPresenter(ReportViewModel viewModel, ViewManagerModel viewManagerModel) {
+    public OngoingSetsPresenter(ReportViewModel viewModel) {
         this.viewModel = viewModel;
-        this.viewManagerModel = viewManagerModel;
     }
 
     @Override
@@ -46,7 +39,7 @@ public class OngoingSetsPresenter implements OngoingSetsOutputBoundary {
     }
 
     @Override
-    public void prepareFailView(String errorMessage) {
+    public void prepareFailView() {
         viewModel.firePropertyChanged("getsetsfail");
     }
 

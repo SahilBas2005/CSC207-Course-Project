@@ -17,7 +17,6 @@ import com.example.csc207courseproject.entities.Game;
 import com.example.csc207courseproject.interface_adapter.report_game.ReportGameController;
 import com.example.csc207courseproject.interface_adapter.report_set.ReportSetController;
 import com.example.csc207courseproject.interface_adapter.report_set.ReportSetState;
-import com.example.csc207courseproject.interface_adapter.select_phase.SelectPhaseController;
 import com.example.csc207courseproject.ui.AppFragment;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class ReportSetFragment extends AppFragment implements PropertyChangeListener, AdapterView.OnItemSelectedListener {
+public class ReportSetFragment extends AppFragment implements PropertyChangeListener {
 
     private static ReportViewModel reportViewModel;
 
@@ -38,8 +37,6 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
     private NavController navController;
 
     private FragmentReportSetBinding binding;
-
-    private AdapterView.OnItemSelectedListener listener = this;
 
 
     @Override
@@ -131,7 +128,6 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
                                 android.R.layout.simple_spinner_dropdown_item, new ArrayList<String>(possibleChars));
                         chars1Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         p1CharSelect.setAdapter(chars1Adapter);
-                        p1CharSelect.setOnItemSelectedListener(listener);
 
                         // Create p2 character list
                         Spinner p2CharSelect = convertView.findViewById(R.id.p2_char_select);
@@ -139,7 +135,6 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
                                 android.R.layout.simple_spinner_dropdown_item, new ArrayList<String>(possibleChars));
                         chars1Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         p2CharSelect.setAdapter(chars2Adapter);
-                        p2CharSelect.setOnItemSelectedListener(listener);
 
 
                         return convertView;
@@ -198,16 +193,6 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
         Button mutateSetButton = binding.mutateSetButton;
         mutateSetButton.setOnClickListener(view -> reportSetController.execute(
                 binding.isP1DQ.isChecked(), binding.isP2DQ.isChecked()));
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String selectedOption = (String) adapterView.getItemAtPosition(i);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
 
 }

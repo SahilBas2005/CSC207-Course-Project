@@ -28,7 +28,7 @@ public class OngoingSetsInteractor implements OngoingSetsInputBoundary {
         } catch (Exception e) {
             Log.d("EXCEPTION", e.toString());
             Log.d("EXCEPTION", Arrays.toString(e.getStackTrace()));
-            ongoingSetsPresenter.prepareFailView("Something went wrong with the API call, try again.");
+            ongoingSetsPresenter.prepareFailView();
         }
     }
 
