@@ -19,7 +19,7 @@ public class CallSetPresenter implements CallSetOutputBoundary {
         CallSetState currentState = viewModel.getState();
         int setId = currentState.getCurrentSet().getSetID();
         List<Integer> calledSetIDs = currentState.getCalledSetIDs();
-        if (calledSetIDs.size() == 10) {
+        if (calledSetIDs.size() == 20) {
                 calledSetIDs.remove(0);
         }
         calledSetIDs.add(setId);

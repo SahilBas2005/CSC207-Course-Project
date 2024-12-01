@@ -173,7 +173,8 @@ public class MainBuilder {
         final UpcomingSetsInputBoundary upcomingSetsInteractor = new UpcomingSetsInteractor(
                 apiDataAccessObject, upcomingSetsOutputBoundary);
 
-        final UpcomingSetsController controller = new UpcomingSetsController(upcomingSetsInteractor);
+        final UpcomingSetsController controller = new UpcomingSetsController(upcomingSetsInteractor,
+                callViewModel.getState());
         CallFragment.setUpcomingSetsController(controller);
         return this;
     }
