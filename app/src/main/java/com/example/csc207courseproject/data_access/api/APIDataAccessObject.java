@@ -1,7 +1,6 @@
-package com.example.csc207courseproject.data_access;
+package com.example.csc207courseproject.data_access.api;
 
 import android.util.Log;
-import com.example.csc207courseproject.BuildConfig;
 import com.example.csc207courseproject.entities.*;
 import com.example.csc207courseproject.use_case.add_station.AddStationDataAccessInterface;
 import com.example.csc207courseproject.use_case.call_set.CallSetDataAccessInterface;
@@ -54,7 +53,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                throw new RuntimeException(e);
+                throw new APIDataAccessException(jsonResponse.toString());
             }
 
             @Override
@@ -64,7 +63,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
                     jsonResponse = new JSONObject(r);
                     countDownLatch.countDown();
                 } catch (IOException | JSONException e) {
-                    throw new RuntimeException(e);
+                    throw new APIDataAccessException(jsonResponse.toString());
                 }
 
             }
@@ -74,7 +73,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
             countDownLatch.await();
             Log.d("API Response", jsonResponse.toString());
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new APIDataAccessException(jsonResponse.toString());
         }
 
     }
@@ -450,7 +449,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
                         if (p2CharSelected) {
                             JSONObject p2SelectionInput = new JSONObject();
                             int p2CharacterID = EventData.getCharacterIds().get(currGame.getPlayer2Character());
-                            p2SelectionInput.put("entrantId", p2EntrantID);
+                            p2SelectionInput.put("entrantId ", p2EntrantID);
                             p2SelectionInput.put("characterId", p2CharacterID);
                             characterSelections.put(p2SelectionInput);
                         }

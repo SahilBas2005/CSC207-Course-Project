@@ -1,5 +1,21 @@
-package com.example.csc207courseproject.data_access;
+package com.example.csc207courseproject.data_access.OAuth;
 
+<<<<<<<< HEAD:app/src/main/java/com/example/csc207courseproject/data_access/OAuthOAuthDataAccessObject.java
+========
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
+import androidx.appcompat.app.AppCompatActivity;
+import com.example.csc207courseproject.BuildConfig;
+import fi.iki.elonen.NanoHTTPD;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+import com.example.csc207courseproject.use_case.login.LoginDataAccessInterface;
+
+>>>>>>>> 90c5f39 (Added defined subclasses of RuntimeException to be thrown and caught during data access operations from the API and OAuth):app/src/main/java/com/example/csc207courseproject/data_access/OAuth/OAuthDataAccessObject.java
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
@@ -35,18 +51,54 @@ public class OAuthOAuthDataAccessObject implements LoginOAuthDataAccessInterface
     private CountDownLatch latch;
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
+<<<<<<<< HEAD:app/src/main/java/com/example/csc207courseproject/data_access/OAuthOAuthDataAccessObject.java
     /**
      * Starts a local server and returns the URL for logging into start.gg.
      * @return the log in URL for start.gg
      */
     public String getAuthUrl() {
+========
+     class OAuthServer extends NanoHTTPD {
+
+        /**
+         * Starts a localhost server at port 8080.
+         */
+        public OAuthServer() throws IOException {
+            super(8080);                   // set port to 8080
+            start();                            // start server
+        }
+
+        /**
+         * Handles incoming HTTP requests.
+         * @param session contains information about the current request
+         */
+        @Override
+        public Response serve(IHTTPSession session) {
+            Map<String, List<String>> params = session.getParameters();
+            if (params.containsKey("code")) {
+                String authCode = params.get("code").get(0);
+                AUTH_CODE = authCode;
+                authCodeReceived();
+                return newFixedLengthResponse("Authorization code received! You may close this window.");             // message to send back to the user, who made the request
+            }
+            return null;
+        }
+    }
+
+    public void getAuthCode(AppCompatActivity activity) {
+>>>>>>>> 90c5f39 (Added defined subclasses of RuntimeException to be thrown and caught during data access operations from the API and OAuth):app/src/main/java/com/example/csc207courseproject/data_access/OAuth/OAuthDataAccessObject.java
 
         serverThread = new Thread(() -> {
             try {
                 oAuthServer = new OAuthServer();
+<<<<<<<< HEAD:app/src/main/java/com/example/csc207courseproject/data_access/OAuthOAuthDataAccessObject.java
             }
             catch (IOException evt) {
                 throw new RuntimeException("The server failed to start.");
+========
+            } catch (IOException e) {
+                throw new OAuthException("The server failed to start.");
+>>>>>>>> 90c5f39 (Added defined subclasses of RuntimeException to be thrown and caught during data access operations from the API and OAuth):app/src/main/java/com/example/csc207courseproject/data_access/OAuth/OAuthDataAccessObject.java
             }
         });
         serverThread.start();
@@ -90,7 +142,11 @@ public class OAuthOAuthDataAccessObject implements LoginOAuthDataAccessInterface
         client.newCall(request).enqueue(new Callback() {
             public void onFailure(@NotNull Call call, @NotNull IOException evt) {
                 latch.countDown();
+<<<<<<<< HEAD:app/src/main/java/com/example/csc207courseproject/data_access/OAuthOAuthDataAccessObject.java
                 throw new RuntimeException(evt.getMessage());
+========
+                throw new OAuthException(e.getMessage());
+>>>>>>>> 90c5f39 (Added defined subclasses of RuntimeException to be thrown and caught during data access operations from the API and OAuth):app/src/main/java/com/example/csc207courseproject/data_access/OAuth/OAuthDataAccessObject.java
             }
 
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
@@ -102,7 +158,11 @@ public class OAuthOAuthDataAccessObject implements LoginOAuthDataAccessInterface
                     }
                     catch (JSONException evt) {
                         latch.countDown();
+<<<<<<<< HEAD:app/src/main/java/com/example/csc207courseproject/data_access/OAuthOAuthDataAccessObject.java
                         throw new RuntimeException(evt);
+========
+                        throw new OAuthException(e.getMessage());
+>>>>>>>> 90c5f39 (Added defined subclasses of RuntimeException to be thrown and caught during data access operations from the API and OAuth):app/src/main/java/com/example/csc207courseproject/data_access/OAuth/OAuthDataAccessObject.java
                     }
                     try {
                         accessToken = jsonResponse.getString("access_token");
@@ -110,12 +170,16 @@ public class OAuthOAuthDataAccessObject implements LoginOAuthDataAccessInterface
                     }
                     catch (JSONException evt) {
                         latch.countDown();
+<<<<<<<< HEAD:app/src/main/java/com/example/csc207courseproject/data_access/OAuthOAuthDataAccessObject.java
                         throw new RuntimeException(evt);
+========
+                        throw new OAuthException(e.getMessage());
+>>>>>>>> 90c5f39 (Added defined subclasses of RuntimeException to be thrown and caught during data access operations from the API and OAuth):app/src/main/java/com/example/csc207courseproject/data_access/OAuth/OAuthDataAccessObject.java
                     }
                 }
                 else {
                     latch.countDown();
-                    throw new RuntimeException(response.message());
+                    throw new OAuthException(response.message());
                 }
             }
         });

@@ -2,6 +2,7 @@ package com.example.csc207courseproject.use_case.report_set;
 
 
 import android.util.Log;
+import com.example.csc207courseproject.data_access.api.APIDataAccessException;
 import com.example.csc207courseproject.entities.Game;
 import com.example.csc207courseproject.entities.SetData;
 
@@ -38,7 +39,7 @@ public class ReportSetInteractor implements ReportSetInputBoundary {
                 reportSetPresenter.prepareSuccessView();
             }
 
-        } catch (Exception e){
+        } catch (APIDataAccessException e){
             reportSetPresenter.prepareFailView("apicallerror");
         }
 

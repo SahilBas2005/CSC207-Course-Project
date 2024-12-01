@@ -1,6 +1,8 @@
 package com.example.csc207courseproject.interface_adapter.upcoming_sets;
 
+import android.util.Log;
 import com.example.csc207courseproject.entities.SetData;
+import com.example.csc207courseproject.interface_adapter.ViewManagerModel;
 import com.example.csc207courseproject.interface_adapter.call_set.CallSetState;
 import com.example.csc207courseproject.ui.call.CallViewModel;
 import com.example.csc207courseproject.use_case.upcoming_sets.UpcomingSetsOutputBoundary;
@@ -12,9 +14,11 @@ import java.util.List;
 public class UpcomingSetsPresenter implements UpcomingSetsOutputBoundary {
 
     private final CallViewModel viewModel;
+    private final ViewManagerModel viewManagerModel;
 
-    public UpcomingSetsPresenter(CallViewModel viewModel) {
+    public UpcomingSetsPresenter(CallViewModel viewModel, ViewManagerModel viewManagerModel) {
         this.viewModel = viewModel;
+        this.viewManagerModel = viewManagerModel;
     }
 
     @Override
@@ -35,15 +39,12 @@ public class UpcomingSetsPresenter implements UpcomingSetsOutputBoundary {
         sets.removeAll(repeats);
 
         currentState.setUpcomingSets(sets);
-
-        // 
-
         viewModel.firePropertyChanged("getsetssuccess");
     }
 
     @Override
-    public void prepareFailView() {
-        viewModel.firePropertyChanged("getsetsfail");
+    public void prepareFailView(String errorMessage) {
+        viewModel.firePropertyChanged(errorMessage);
     }
 
 }

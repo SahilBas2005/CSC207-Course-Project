@@ -1,70 +1,56 @@
 package com.example.csc207courseproject.use_case.login;
 
+import androidx.appcompat.app.AppCompatActivity;
+import com.example.csc207courseproject.data_access.OAuth.OAuthException;
+import com.example.csc207courseproject.use_case.select_tournament.SelectTournamentDataAccessInterface;
+import org.json.JSONException;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.json.JSONException;
-
 /**
- * Interactor for the Login Use Case.
+ * The Login Interactor
  */
 public class LoginInteractor implements LoginInputBoundary, PropertyChangeListener {
-    private final LoginOAuthDataAccessInterface loginOAuthDataAccessObject;
-    private final LoginOutputBoundary loginPresenter;
     private final LoginDataAccessInterface loginDataAccessObject;
+    private final LoginOutputBoundary loginPresenter;
+    private final SelectTournamentDataAccessInterface selectTournamentDataAccessObject;
 
-    /**
-     * The class constructor.
-     *
-     * @param loginOAuthDataAccessInterface the DAO to set for loginOAuthDataAccessObject.
-     * @param loginOutputBoundary           the presenter to set for loginPresenter
-     * @param loginDataAccessInterface      the DAO to set for loginDataAccessObject
-     */
-    public LoginInteractor(LoginOAuthDataAccessInterface loginOAuthDataAccessInterface,
+    public LoginInteractor(LoginDataAccessInterface loginDataAccessInterface,
                            LoginOutputBoundary loginOutputBoundary,
-                           LoginDataAccessInterface loginDataAccessInterface) {
-        this.loginOAuthDataAccessObject = loginOAuthDataAccessInterface;
-        this.loginPresenter = loginOutputBoundary;
+                           SelectTournamentDataAccessInterface selectTournamentDataAccessInterface) {
         this.loginDataAccessObject = loginDataAccessInterface;
+        this.loginPresenter = loginOutputBoundary;
+        this.selectTournamentDataAccessObject = selectTournamentDataAccessInterface;
 
-        loginOAuthDataAccessObject.addListener(this);
+        loginDataAccessObject.addListener(this);
     }
 
-    /**
-     * Executes the Login Use Case.
-     * @return the browser URL where the user can log in
-     */
     @Override
-    public String execute() {
+    public void execute(AppCompatActivity activity) {
         try {
-            return loginOAuthDataAccessObject.getAuthUrl();
+            loginDataAccessObject.getAuthCode(activity);
         }
-        catch (RuntimeException evt) {
+        catch(OAuthException e) {
             loginPresenter.prepareFailView();
-            return null;
         }
     }
 
-    /**
-     * Listens for when the local server receives the auth code, and then gets the user's access token.
-     * @param evt the event fired by the local server when it receives the auth code
-     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        final String token;
+        String token;
         try {
-            token = loginOAuthDataAccessObject.getToken();
+            token = loginDataAccessObject.getToken();
             if (token == null) {
                 loginPresenter.prepareFailView();
             }
-            loginDataAccessObject.setToken(token);
-            final LoginOutputData loginOutputData =
-                    new LoginOutputData(loginDataAccessObject.getTournaments());
+            selectTournamentDataAccessObject.setTOKEN(token);
+            final LoginOutputData loginOutputData = new LoginOutputData(selectTournamentDataAccessObject.getTournaments());
             loginPresenter.prepareSuccessView(loginOutputData);
         }
-        catch (JSONException | InterruptedException event) {
+        catch (JSONException | InterruptedException e) {
             loginPresenter.prepareFailView();
         }
-        loginOAuthDataAccessObject.stopServer();
+        loginDataAccessObject.stopServer();
     }
 }
