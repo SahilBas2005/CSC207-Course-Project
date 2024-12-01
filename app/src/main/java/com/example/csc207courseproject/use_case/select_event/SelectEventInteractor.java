@@ -1,6 +1,5 @@
 package com.example.csc207courseproject.use_case.select_event;
 
-import android.util.Log;
 import com.example.csc207courseproject.data_access.api.APIDataAccessException;
 import com.example.csc207courseproject.entities.Entrant;
 import com.example.csc207courseproject.entities.EventData;

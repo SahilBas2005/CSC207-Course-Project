@@ -1,11 +1,7 @@
 package com.example.csc207courseproject.use_case.ongoing_sets;
 
-
-import android.util.Log;
 import com.example.csc207courseproject.data_access.api.APIDataAccessException;
 import com.example.csc207courseproject.entities.EventData;
-
-import java.util.Arrays;
 
 public class OngoingSetsInteractor implements OngoingSetsInputBoundary {
 
@@ -21,7 +17,7 @@ public class OngoingSetsInteractor implements OngoingSetsInputBoundary {
     @Override
     public void execute() {
         // Check if API call is successful
-        int eventId = EventData.getEventId();
+        int eventId = EventData.getEventData().getEventId();
         try {
             OngoingSetsOutputData s = new OngoingSetsOutputData(dataAccess.getOngoingSets(eventId));
 

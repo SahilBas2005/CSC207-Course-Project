@@ -318,7 +318,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
             for (int i = 0; i < jsonSeeds.length(); i++) {
                 int id = jsonSeeds.getJSONObject(i).getJSONObject("entrant").getInt("id");
                 idToSeedID.put(id, jsonSeeds.getJSONObject(i).getInt("id"));
-                seeding.add(EventData.getEntrant(id));
+                seeding.add(EventData.getEventData().getEntrant(id));
             }
             overallSeeding = seeding;
         } catch (JSONException event) {
@@ -438,7 +438,8 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
 
                         if (p1CharSelected) {
                             JSONObject p1SelectionInput = new JSONObject();
-                            int p1CharacterID = EventData.getCharacterIds().get(currGame.getPlayer1Character());
+                            int p1CharacterID = EventData.getEventData().getCharacterIds()
+                                    .get(currGame.getPlayer1Character());
                             p1SelectionInput.put("entrantId", p1EntrantID);
                             p1SelectionInput.put("characterId", p1CharacterID);
                             characterSelections.put(p1SelectionInput);
@@ -446,7 +447,8 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
 
                         if (p2CharSelected) {
                             JSONObject p2SelectionInput = new JSONObject();
-                            int p2CharacterID = EventData.getCharacterIds().get(currGame.getPlayer2Character());
+                            int p2CharacterID = EventData.getEventData().getCharacterIds()
+                                    .get(currGame.getPlayer2Character());
                             p2SelectionInput.put("entrantId ", p2EntrantID);
                             p2SelectionInput.put("characterId", p2CharacterID);
                             characterSelections.put(p2SelectionInput);
@@ -539,7 +541,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
                 //Store the players in Entrant Objects and exporting that
                 for (int j = 0; j < slots.length(); j++) {
                     int newId = slots.getJSONObject(j).getJSONObject("entrant").getInt("id");
-                    players[j] = EventData.getEntrant(newId);
+                    players[j] = EventData.getEventData().getEntrant(newId);
                 }
 
                 ReportSetData newSet = new ReportSetData(setID, players, bestOf);
@@ -634,7 +636,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
                 for (int j = 0; j < slots.length(); j++) {
                     try {
                         int newId = slots.getJSONObject(j).getJSONObject("entrant").getInt("id");
-                        players[j] = EventData.getEntrant(newId);
+                        players[j] = EventData.getEventData().getEntrant(newId);
                     } catch (JSONException event) {
                         participantNull = true;
                     }
@@ -675,12 +677,12 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
             List<Station> stations = new ArrayList<>();
             for (int i = 0; i < jsonStations.length(); i++) {
                 int id = jsonStations.getJSONObject(i).getInt("id");
-                if(EventData.getStations().containsKey(id)) {
-                    stations.add(EventData.getStations().get(id));
+                if(EventData.getEventData().getStations().containsKey(id)) {
+                    stations.add(EventData.getEventData().getStations().get(id));
                 }else{
                     int number = jsonStations.getJSONObject(i).getInt("number");
                     Station newStation = new Station(id, number);
-                    EventData.getStations().put(id, newStation);
+                    EventData.getEventData().getStations().put(id, newStation);
                     stations.add(newStation);
                 }
 

@@ -21,7 +21,7 @@ public class UpcomingSetsInteractor implements UpcomingSetsInputBoundary {
     @Override
     public void execute() {
         // Check if API call is successful
-        int eventId = EventData.getEventId();
+        int eventId = EventData.getEventData().getEventId();
         try {
             List<CallSetData> upcomingSets = dataAccess.getUpcomingSets(eventId);
 

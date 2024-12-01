@@ -1,7 +1,5 @@
 package com.example.csc207courseproject.interface_adapter.select_phase;
 
-import com.example.csc207courseproject.entities.EventData;
-import com.example.csc207courseproject.interface_adapter.update_seeding.SeedingState;
 import com.example.csc207courseproject.use_case.select_phase.SelectPhaseInputBoundary;
 import com.example.csc207courseproject.use_case.select_phase.SelectPhaseInputData;
 

@@ -2,7 +2,6 @@ package com.example.csc207courseproject.use_case.call_set;
 
 
 import com.example.csc207courseproject.data_access.api.APIDataAccessException;
-import com.example.csc207courseproject.entities.EventData;
 import com.example.csc207courseproject.entities.Station;
 
 public class CallSetInteractor implements CallSetInputBoundary {

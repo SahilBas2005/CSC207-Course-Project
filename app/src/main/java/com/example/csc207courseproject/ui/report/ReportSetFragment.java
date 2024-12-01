@@ -126,7 +126,8 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
 
                         // Create p1 character list
                         Spinner p1CharSelect = convertView.findViewById(R.id.p1_char_select);
-                        List<String> possibleChars =new ArrayList<String>(EventData.getCharacterIds().keySet());
+                        List<String> possibleChars = new ArrayList<>(
+                                EventData.getEventData().getCharacterIds().keySet());
                         possibleChars.add(0, "No Character");
 
                         ArrayAdapter<String> chars1Adapter = new ArrayAdapter<>(mContext,

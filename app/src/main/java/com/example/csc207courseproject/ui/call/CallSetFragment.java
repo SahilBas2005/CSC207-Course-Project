@@ -69,7 +69,7 @@ public class CallSetFragment extends AppFragment implements PropertyChangeListen
         CallSetState currentState = callViewModel.getState();
         // Create dropdown
         Spinner tagsView = binding.declineTagSelect;
-        List<String> tags = EventData.getPossibleTags();
+        List<String> tags = EventData.getEventData().getPossibleTags();
         ArrayAdapter<String> tagsAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item,
                 tags);
         tagsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

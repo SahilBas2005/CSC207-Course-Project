@@ -21,12 +21,12 @@ public class GetPhasesInteractor implements GetPhasesInputBoundary {
     @Override
     public void execute() {
         // Get the phases from eventData
-        SortedMap<String, Integer> phaseMap = EventData.getPhaseIds();
+        SortedMap<String, Integer> phaseMap = EventData.getEventData().getPhaseIds();
 
         if (phaseMap == null){
             presenter.prepareFailView();
         } else {
-            List<String> phases = new ArrayList(EventData.getPhaseIds().keySet());
+            List<String> phases = new ArrayList<>(phaseMap.keySet());
             presenter.prepareSuccessView(new GetPhasesOutputData(phases));
         }
     }
