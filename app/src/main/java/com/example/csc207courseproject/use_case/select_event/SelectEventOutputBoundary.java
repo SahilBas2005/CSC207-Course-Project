@@ -6,12 +6,12 @@ package com.example.csc207courseproject.use_case.select_event;
 public interface SelectEventOutputBoundary {
 
     /**
-     * Prepares the success view for the Select Event Use Case.
+     * Prepares a view for when the use case is executed successfully.
      */
     void prepareSuccessView();
 
     /**
-     * Prepares the failure view for the Select Event Use Case.
+     * Prepares a view for when the use case fails.
      */
     void prepareFailView();
 }

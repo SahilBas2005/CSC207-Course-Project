@@ -1,12 +1,14 @@
 package com.example.csc207courseproject.use_case.login;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+/**
+ * Input Boundary for the Login Use Case.
+ */
 public interface LoginInputBoundary {
 
     /**
      * Executes the login use case.
+     * @return the browser URL where the user can log in
      */
-    void execute(AppCompatActivity activity);
+    String execute();
 
 }

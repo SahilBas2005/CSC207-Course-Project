@@ -6,12 +6,13 @@ package com.example.csc207courseproject.use_case.select_tournament;
 public interface SelectTournamentOutputBoundary {
 
     /**
-     * Prepares the success view for the Select Tournament Use Case.
+     * Prepares a view for when the use case is executed successfully.
+     * @param selectTournamentOutputData necessary data to prepare the view
      */
     void prepareSuccessView(SelectTournamentOutputData selectTournamentOutputData);
 
     /**
-     * Prepares the failure view for the Select Tournament Use Case.
+     * Prepares a view for when the use case fails.
      */
     void prepareFailView();
 }

@@ -344,7 +344,7 @@ public class MainBuilder {
         final SelectTournamentOutputBoundary selectTournamentPresenter = new SelectTournamentPresenter(
                 selectTournamentViewModel, selectEventViewModel);
         final SelectTournamentInputBoundary selectTournamentInteractor = new SelectTournamentInteractor(
-                apiDataAccessObject, selectTournamentPresenter, apiDataAccessObject);
+                selectTournamentPresenter, apiDataAccessObject);
         final SelectTournamentController controller = new SelectTournamentController(selectTournamentInteractor);
         SelectTournamentActivity.setSelectTournamentController(controller);
         SelectTournamentActivity.setSelectTournamentViewModel(selectTournamentViewModel);
