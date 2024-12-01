@@ -22,47 +22,25 @@
                 android:paddingBottom="16dp" />
 
         <!-- JTable Placeholder -->
+
+        <!-- Player Input and Update Button -->
+
+        <!-- Export Button -->
+
+        <!-- Popup Dialog Layout (Hidden Initially) -->
         <ListView
                 android:id="@+id/seeds_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="574dp"
                 android:divider="@android:color/darker_gray"
                 android:dividerHeight="1dp"
-                android:paddingTop="16dp" />
-
-        <!-- Player Input and Update Button -->
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingTop="8dp">
-
-            <EditText
-                    android:id="@+id/player_input"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="Enter Player ID"
-                    android:inputType="text" />
-
-            <Button
-                    android:id="@+id/update_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Update Specific Player"
-                    android:layout_marginStart="8dp" />
-        </LinearLayout>
-
-        <!-- Export Button -->
+                android:paddingTop="16dp"/>
         <Button
                 android:id="@+id/export_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Export to Spreadsheet"
-                android:layout_marginTop="16dp" />
-
-        <!-- Popup Dialog Layout (Hidden Initially) -->
+                android:layout_marginTop="16dp"/>
         <LinearLayout
                 android:id="@+id/popup_dialog_layout"
                 android:layout_width="match_parent"

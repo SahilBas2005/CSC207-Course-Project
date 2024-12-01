@@ -33,6 +33,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface, Main
     private List<Integer> overallSeeding;
     private JSONObject jsonResponse;
     private CountDownLatch countDownLatch;
+    private static HashMap<Integer, Participant> participantPaymentStatus = new HashMap<>();
 
     private void sendRequest(String query) {
         countDownLatch = new CountDownLatch(1);
@@ -146,7 +147,7 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface, Main
         }
     }
 
-    public HashMap<Integer, Participant> getParticipantPaymentStatus(int eventID, String slug) {
+    public HashMap<Integer, Participant> fetchParticipantPaymentStatus(int eventID) {
         // Create query
         String gotSlug = getTournamentSlug(String.valueOf(eventID), TOKEN) ;
 
@@ -167,8 +168,6 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface, Main
                 "} }";
 
         sendRequest(json); // Assuming sendRequest populates jsonResponse
-
-        HashMap<Integer, Participant> participantPaymentStatus = new HashMap<>();
 
         try {
             final JSONArray jsonParticipants = jsonResponse.getJSONObject("data")
@@ -196,13 +195,31 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface, Main
                 participantPaymentStatus.put(participantId, participant);
             }
         } catch (JSONException e) {
-            System.err.println("Error processing participant data: " + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException("Failed to parse participant JSON response", e);
+        } catch (Exception e) {
+            // generic exception
+            e.printStackTrace();
+
         }
 
         return participantPaymentStatus;
     }
+
+    @Override
+    public void modifyParticipantPaymentStatus(int participantId) {
+        Participant participantOfInterest = participantPaymentStatus.get(participantId);
+
+        // ensure that the participant of interest is not Null
+        assert participantOfInterest != null;
+        participantOfInterest.markAsPaid();
+    }
+
+    @Override
+    public Map<Integer, Participant> getParticipantPaymentStatus() {
+        return participantPaymentStatus;
+    }
+
     public String getTournamentSlug(String eventID, String apiKey) {
         String query = "{ \"query\": \"query GetTournamentByEventID($eventID: ID!) { event(id: $eventID) { tournament { id slug name } } }\", " +
                 "\"variables\": { \"eventID\": \"" + eventID + "\" } }";

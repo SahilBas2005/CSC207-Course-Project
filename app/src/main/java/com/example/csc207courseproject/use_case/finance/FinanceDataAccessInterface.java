@@ -11,6 +11,7 @@ public interface FinanceDataAccessInterface {
      * @param eventID The ID of the event
      * @return A map of all the phase IDs mapped to a participant entity
      */
-    Map<Integer, Participant> getParticipantPaymentStatus(int eventID, String slug);
-
+    Map<Integer, Participant> fetchParticipantPaymentStatus(int eventID);
+    void modifyParticipantPaymentStatus(int participantId);
+    Map<Integer, Participant> getParticipantPaymentStatus();
 }
