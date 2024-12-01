@@ -45,9 +45,18 @@ public class CallFragment extends AppFragment implements PropertyChangeListener 
         binding = FragmentCallBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        createStationButton();
+        if (callViewModel.getState().isEventStarted()) {
+            // Set visibility
+            binding.getSetsButton.setVisibility(View.INVISIBLE);
+            binding.getSetsWarning.setVisibility(View.INVISIBLE);
+            binding.setsText.setVisibility(View.VISIBLE);
+            binding.configureButton.setVisibility(View.VISIBLE);
 
-        upcomingSetsController.execute();
+            upcomingSetsController.execute();
+        } else {
+            createGetSetsButton();
+        }
+        createStationButton();
         getStationsController.execute();
 
         return root;
@@ -60,6 +69,20 @@ public class CallFragment extends AppFragment implements PropertyChangeListener 
         CallSetFragment.setCallViewModel(callViewModel);
         CallStationFragment.setCallViewModel(callViewModel);
         navc = Navigation.findNavController(view);
+    }
+
+    private void createGetSetsButton() {
+        CallSetState currentState = callViewModel.getState();
+        Button getSets = binding.getSetsButton;
+        getSets.setOnClickListener(view -> {
+            // Start the event and set the visibility of the view
+            currentState.setEventStarted(true);
+            upcomingSetsController.execute();
+            getSets.setVisibility(View.INVISIBLE);
+            binding.getSetsWarning.setVisibility(View.INVISIBLE);
+            binding.setsText.setVisibility(View.VISIBLE);
+            binding.configureButton.setVisibility(View.VISIBLE);
+        });
     }
 
     private void createDisplay() {

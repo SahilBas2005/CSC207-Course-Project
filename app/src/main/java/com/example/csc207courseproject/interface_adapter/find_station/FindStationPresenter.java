@@ -17,6 +17,7 @@ public class FindStationPresenter implements FindStationOutputBoundary {
     public void prepareSuccessView(FindStationOutputData outputData) {
         CallSetState currentState = viewModel.getState();
         currentState.getCurrentSet().setStation(outputData.getStation());
+        currentState.setOpenStream(outputData.getOpenStream());
         viewModel.firePropertyChanged("findsuccess");
     }
 

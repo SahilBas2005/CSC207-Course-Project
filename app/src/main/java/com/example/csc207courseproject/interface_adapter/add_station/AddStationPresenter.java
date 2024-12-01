@@ -16,7 +16,10 @@ public class AddStationPresenter implements AddStationOutputBoundary {
     @Override
     public void prepareSuccessView(AddStationOutputData outputData) {
         final CallSetState setState = viewModel.getState();
-        setState.addStation(outputData.getStation());
+
+        // Add station to state
+        setState.getLocalStations().add(outputData.getStation());
+        setState.getStations().add(outputData.getStation());
         viewModel.firePropertyChanged("addsuccess");
     }
 

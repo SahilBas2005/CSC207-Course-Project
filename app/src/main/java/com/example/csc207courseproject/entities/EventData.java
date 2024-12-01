@@ -14,7 +14,7 @@ public class EventData {
     private static Map<Integer, Participant> participants;
     private static SortedMap<String, Integer> characterIds;
     private static SortedMap<String, Integer> phaseIds;
-    private static final List<String> possibleTags = new ArrayList<>();
+    private static List<String> possibleTags ;
 
     public static void createEventData(int tourneyId, int eId, String eName, Map<Integer, Entrant> es,
                                        Map<Integer, Participant> ps, SortedMap<String, Integer> chars,
@@ -27,6 +27,9 @@ public class EventData {
         characterIds = chars;
         phaseIds = phases;
         stations = new HashMap<>();
+
+        // Set initial tags
+        possibleTags = new ArrayList<>();
         possibleTags.add("Stream setup");
         possibleTags.add("No DLC");
         possibleTags.add("No GCC adapter");

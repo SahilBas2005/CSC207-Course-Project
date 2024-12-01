@@ -6,6 +6,8 @@ import com.example.csc207courseproject.interface_adapter.add_station.AddStationC
 import com.example.csc207courseproject.interface_adapter.add_station.AddStationPresenter;
 import com.example.csc207courseproject.interface_adapter.call_set.CallSetController;
 import com.example.csc207courseproject.interface_adapter.call_set.CallSetPresenter;
+import com.example.csc207courseproject.interface_adapter.decline_set.DeclineSetController;
+import com.example.csc207courseproject.interface_adapter.decline_set.DeclineSetPresenter;
 import com.example.csc207courseproject.interface_adapter.find_station.FindStationController;
 import com.example.csc207courseproject.interface_adapter.find_station.FindStationPresenter;
 import com.example.csc207courseproject.interface_adapter.get_phases.GetPhasesController;
@@ -43,6 +45,9 @@ import com.example.csc207courseproject.ui.seeding.SeedingViewModel;
 import com.example.csc207courseproject.interface_adapter.update_seeding.UpdateSeedingController;
 import com.example.csc207courseproject.interface_adapter.update_seeding.UpdateSeedingPresenter;
 import com.example.csc207courseproject.ui.seeding.SeedingFragment;
+import com.example.csc207courseproject.use_case.decline_set.DeclineSetInputBoundary;
+import com.example.csc207courseproject.use_case.decline_set.DeclineSetInteractor;
+import com.example.csc207courseproject.use_case.decline_set.DeclineSetOutputBoundary;
 import com.example.csc207courseproject.use_case.get_phases.GetPhasesInputBoundary;
 import com.example.csc207courseproject.use_case.get_phases.GetPhasesInteractor;
 import com.example.csc207courseproject.use_case.get_phases.GetPhasesOutputBoundary;
@@ -237,6 +242,21 @@ public class MainBuilder {
         final FindStationController controller = new FindStationController(interactor,
                 callViewModel.getState());
         CallFragment.setFindStationController(controller);
+        return this;
+    }
+
+    /**
+     * Adds the decline set Use Case to the application.
+     * @return this builder
+     */
+    public MainBuilder addDeclineSetUseCase() {
+        final DeclineSetOutputBoundary outputBoundary = new DeclineSetPresenter(
+                callViewModel);
+        final DeclineSetInputBoundary interactor = new DeclineSetInteractor(outputBoundary);
+
+        final DeclineSetController controller = new DeclineSetController(interactor,
+                callViewModel.getState());
+        CallSetFragment.setDeclineSetController(controller);
         return this;
     }
 

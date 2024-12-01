@@ -33,7 +33,6 @@ public class SeedingFragment extends AppFragment implements PropertyChangeListen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        Log.d("here", "here");
         seedingViewModel.addPropertyChangeListener(this);
 
         binding = FragmentSeedingBinding.inflate(inflater, container, false);
