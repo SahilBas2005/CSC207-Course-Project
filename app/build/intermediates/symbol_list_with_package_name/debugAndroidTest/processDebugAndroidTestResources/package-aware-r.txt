@@ -1,3 +1,0 @@
-com.example.csc207courseproject.test
-style WhiteBackgroundDialogTheme
-style WhiteBackgroundTheme

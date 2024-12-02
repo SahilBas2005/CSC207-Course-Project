@@ -1,6 +1,0 @@
-com.example.csc207courseproject.test.app-annotation-experimental-1.3.0-0 C:\Users\ompat\.gradle\caches\transforms-4\68f2eaa6487f62ca0e07cdbe31d2317a\transformed\annotation-experimental-1.3.0\res
-com.example.csc207courseproject.test.app-core-1.5.0-1 C:\Users\ompat\.gradle\caches\transforms-4\911abf1594767401ef383664b6b5a17b\transformed\core-1.5.0\res
-com.example.csc207courseproject.test.app-androidTest-2 C:\Users\ompat\Desktop\CSC207-Course-Project\app\build\generated\res\resValues\androidTest\debug
-com.example.csc207courseproject.test.app-mergeDebugAndroidTestResources-3 C:\Users\ompat\Desktop\CSC207-Course-Project\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
-com.example.csc207courseproject.test.app-mergeDebugAndroidTestResources-4 C:\Users\ompat\Desktop\CSC207-Course-Project\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
-com.example.csc207courseproject.test.app-debugAndroidTest-5 C:\Users\ompat\Desktop\CSC207-Course-Project\app\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources
