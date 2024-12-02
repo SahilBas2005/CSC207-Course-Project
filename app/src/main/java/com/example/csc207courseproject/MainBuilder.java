@@ -1,6 +1,7 @@
 package com.example.csc207courseproject;//package com.example.csc207courseprojectandroid.app;
 
 import com.example.csc207courseproject.data_access.APIDataAccessObject;
+import com.example.csc207courseproject.data_access.CohereDataAccessObject;
 import com.example.csc207courseproject.entities.Entrant;
 import com.example.csc207courseproject.entities.EventData;
 import com.example.csc207courseproject.entities.Participant;
@@ -104,6 +105,7 @@ public class MainBuilder {
 
     private final APIDataAccessObject apiDataAccessObject = new APIDataAccessObject();
     private final OAuthDataAccessObject oAuthDataAccessObject = new OAuthDataAccessObject();
+    private final CohereDataAccessObject cohereDataAccessObject = new CohereDataAccessObject();
 
     private LoginViewModel loginViewModel;
     private SelectTournamentViewModel selectTournamentViewModel;
@@ -157,6 +159,7 @@ public class MainBuilder {
      */
     public MainBuilder addAnalysisView() {
         analysisViewModel = new AnalysisViewModel();
+        AnalysisFragment.setAnalysisViewModel(analysisViewModel);
         return this;
     }
 
@@ -389,7 +392,7 @@ public class MainBuilder {
         final TournamentDescriptionOutputBoundary tournamentDescriptionOutputBoundary = new TournamentDescriptionPresenter(
                 viewManagerModel, analysisViewModel);
         final TournamentDescriptionInputBoundary tournamentDescriptionInteractor = new TournamentDescriptionInteractor(
-                apiDataAccessObject, tournamentDescriptionOutputBoundary);
+                cohereDataAccessObject, tournamentDescriptionOutputBoundary);
 
         final TournamentDescriptionController controller = new TournamentDescriptionController(tournamentDescriptionInteractor);
         AnalysisFragment.setTournamentDescriptionController(controller);

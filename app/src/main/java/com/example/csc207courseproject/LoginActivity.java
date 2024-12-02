@@ -40,6 +40,8 @@ public class LoginActivity extends AppCompatActivity implements PropertyChangeLi
                 .addGetStationsUseCase()
                 .addReportGameUseCase()
                 .addReportSetUseCase()
+                .addAnalysisView()
+                .addTournamentDescriptionUseCase()
                 .addOngoingSetsUseCase();
 
         loginViewModel.addPropertyChangeListener(this);

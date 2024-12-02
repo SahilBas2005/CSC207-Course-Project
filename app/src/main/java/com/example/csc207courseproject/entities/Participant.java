@@ -24,9 +24,7 @@ public class Participant {
         return userId;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() {return name;}
 
     public String getSponsor() {
         return sponsor;

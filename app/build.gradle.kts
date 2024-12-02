@@ -70,6 +70,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.0")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.12.3")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.3")
+    implementation("org.nanohttpd:nanohttpd:2.3.1")
 
 }
 

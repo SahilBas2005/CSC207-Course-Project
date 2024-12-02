@@ -1,3 +1,4 @@
+
 package com.example.csc207courseproject.data_access;
 
 import android.content.Intent;
@@ -54,7 +55,7 @@ public class OAuthDataAccessObject implements LoginDataAccessInterface {
 //        return ACCESS_TOKEN;
 //    }
 
-     class OAuthServer extends NanoHTTPD {
+    class OAuthServer extends NanoHTTPD {
 
         /**
          * Starts a localhost server at port 8080.
@@ -161,8 +162,8 @@ public class OAuthDataAccessObject implements LoginDataAccessInterface {
     }
 
     public void stopServer() {
-         oAuthServer.stop();
-         serverThread.interrupt();
+        oAuthServer.stop();
+        serverThread.interrupt();
     }
 
     /**

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_call">
+
+    <navigation
+        android:id="@+id/nav_call"
+        app:startDestination="@+id/nav_call_mini">
+        <fragment
+                android:id="@+id/nav_call_mini"
+                android:label="@string/title_call"
+                tools:layout="@layout/fragment_call"
+                android:name="com.example.csc207courseproject.ui.call.CallFragment">
+            <action android:id="@+id/action_nav_call_to_callSetFragment"
+                    app:destination="@id/callSetFragment"/>
+            <action android:id="@+id/action_nav_call_to_callStationFragment"
+                    app:destination="@id/callStationFragment"/>
+        </fragment>
+
+        <fragment android:id="@+id/callSetFragment"
+                  android:name="com.example.csc207courseproject.ui.call.CallSetFragment"
+                  android:label="@string/title_call_set"/>
+        <fragment android:id="@+id/callStationFragment"
+                  android:name="com.example.csc207courseproject.ui.call.CallStationFragment"
+                  android:label="@string/title_station"/>
+    </navigation>
+
+    <navigation
+            android:id="@+id/nav_report"
+            app:startDestination="@+id/nav_report_mini">
+        <fragment
+                android:id="@+id/nav_report_mini"
+                android:name="com.example.csc207courseproject.ui.report.ReportFragment"
+                android:label="@string/title_report"
+                tools:layout="@layout/fragment_seeding">
+            <action android:id="@+id/action_nav_report_to_reportSetFragment"
+                    app:destination="@id/reportSetFragment"/>
+        </fragment>
+
+        <fragment android:id="@+id/reportSetFragment"
+                  android:name="com.example.csc207courseproject.ui.report.ReportSetFragment"
+                  android:label="@string/title_report_set"/>
+    </navigation>
+
+
+    <fragment
+            android:id="@+id/nav_finance"
+            android:name="com.example.csc207courseproject.ui.finance.FinanceFragment"
+            android:label="@string/title_finance"/>
+    <fragment android:id="@+id/nav_analysis"
+              android:name="com.example.csc207courseproject.ui.analysis.AnalysisFragment"
+              android:label="@string/title_analysis"/>
+    <fragment android:id="@+id/nav_seeding"
+              android:name="com.example.csc207courseproject.ui.seeding.SeedingFragment"
+              android:label="@string/title_seeding"/>
+</navigation>

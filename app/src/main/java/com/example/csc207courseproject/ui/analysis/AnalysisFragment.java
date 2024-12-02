@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,12 +12,15 @@ import com.example.csc207courseproject.databinding.FragmentAnalysisBinding;
 import com.example.csc207courseproject.interface_adapter.tournament_description.TournamentDescriptionController;
 import com.example.csc207courseproject.interface_adapter.player_statistics.PlayerStatisitcsController;
 import com.example.csc207courseproject.interface_adapter.tournament_description.TournamentState;
+import com.example.csc207courseproject.ui.AppFragment;
 import com.example.csc207courseproject.ui.seeding.SeedingViewModel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
-public class AnalysisFragment extends Fragment implements PropertyChangeListener {
+public class AnalysisFragment extends AppFragment implements PropertyChangeListener {
 
     private static AnalysisViewModel analysisViewModel;
     private static TournamentDescriptionController tournamentDescriptionController;
@@ -29,7 +30,7 @@ public class AnalysisFragment extends Fragment implements PropertyChangeListener
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        analysisViewModel = new AnalysisViewModel();
+
         analysisViewModel.addPropertyChangeListener(this);
 
         binding = FragmentAnalysisBinding.inflate(inflater, container, false);
@@ -42,12 +43,9 @@ public class AnalysisFragment extends Fragment implements PropertyChangeListener
     private void createTournamentDescriptionButton() {
         Button tournamentDescriptionButton = binding.generateTournamentDescriptionBtn;
         tournamentDescriptionButton.setOnClickListener(view -> {
-            if (tournamentDescriptionController != null) {
                 tournamentDescriptionController.execute();
                 showToast("Generating Description");
-
                 displayTournamentDescription();
-            }
         });
     }
 
@@ -67,20 +65,10 @@ public class AnalysisFragment extends Fragment implements PropertyChangeListener
         }
     }
 
-    private void showToast(String message) {
-        if (getContext() != null) {
-            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
     public static void setTournamentDescriptionController(TournamentDescriptionController controller) {
         tournamentDescriptionController = controller;
     }
 
-    public static AnalysisViewModel getAnalysisViewModel(){
-        return analysisViewModel;
-    }
 
 @Override
     public void onDestroyView() {
@@ -88,4 +76,6 @@ public class AnalysisFragment extends Fragment implements PropertyChangeListener
         analysisViewModel.removePropertyChangeListener(this);
         binding = null;
     }
+
+    public static void setAnalysisViewModel(AnalysisViewModel viewModel) {analysisViewModel = viewModel;}
 }

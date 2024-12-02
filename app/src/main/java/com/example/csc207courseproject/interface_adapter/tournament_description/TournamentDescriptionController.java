@@ -6,17 +6,13 @@ import com.example.csc207courseproject.use_case.tournament_description.Tournamen
 public class TournamentDescriptionController {
 
     private final TournamentDescriptionInputBoundary tournamentDescriptionUsecaseInteractor;
-//    private final TournamentState tournamentState;
 
     public TournamentDescriptionController(TournamentDescriptionInputBoundary tournamentDescriptionUsecaseInteractor) {
         this.tournamentDescriptionUsecaseInteractor = tournamentDescriptionUsecaseInteractor;
-//        this.tournamentState = tournamentState;
     }
 
     public void execute() {
-
-        Integer tournamentId = 1257516;
-        final TournamentDescriptionInputData tournamentDescriptionInputData = new TournamentDescriptionInputData(tournamentId);
+        TournamentDescriptionInputData tournamentDescriptionInputData = new TournamentDescriptionInputData();
         tournamentDescriptionUsecaseInteractor.execute(tournamentDescriptionInputData);
     }
 }

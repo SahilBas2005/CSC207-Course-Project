@@ -104,8 +104,8 @@ public class EventData {
 
     public static Map<Integer, Station> getStations() {
         return stations;
-    }  
-      
+    }
+
     public static SortedMap<String, Integer> getCharacterIds() {
         return characterIds;
     }

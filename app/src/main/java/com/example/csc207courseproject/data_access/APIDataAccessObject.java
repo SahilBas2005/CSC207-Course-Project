@@ -1,6 +1,10 @@
 package com.example.csc207courseproject.data_access;
 
+import android.util.Log;
 import com.example.csc207courseproject.BuildConfig;
+import com.cohere.api.Cohere;
+import com.cohere.api.requests.GenerateRequest;
+import com.cohere.api.types.Generation;
 import com.example.csc207courseproject.entities.*;
 import com.example.csc207courseproject.use_case.add_station.AddStationDataAccessInterface;
 import com.example.csc207courseproject.use_case.call_set.CallSetDataAccessInterface;
@@ -25,16 +29,17 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
-public class APIDataAccessObject implements SelectPhaseDataAccessInterface, MainDataAccessInterface,
-        MutateSeedingDataAccessInterface, ReportSetDataAccessInterface, TournamentDescriptionDataAccessInterface {
+//public class APIDataAccessObject implements SelectPhaseDataAccessInterface, MainDataAccessInterface,
+//        MutateSeedingDataAccessInterface, ReportSetDataAccessInterface, TournamentDescriptionDataAccessInterface {
 public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
         MutateSeedingDataAccessInterface, ReportSetDataAccessInterface, UpcomingSetsDataAccessInterface,
         OngoingSetsDataAccessInterface, GetStationsDataAccessInterface, AddStationDataAccessInterface,
         CallSetDataAccessInterface, SelectTournamentDataAccessInterface, SelectEventDataAccessInterface {
 
     private String TOKEN;
-    private final String TOKEN = BuildConfig.TOKEN;
+//    private final String TOKEN = BuildConfig.TOKEN;
     private final String API_URL = "https://api.start.gg/gql/alpha";
+    private final String Cohere_API = "https://api.cohere.ai/";
     private Map<Integer, Integer> idToSeedID = new HashMap<>();
     private int initialPhaseID;
     private List<Integer> overallSeeding;
@@ -79,8 +84,61 @@ public class APIDataAccessObject implements SelectPhaseDataAccessInterface,
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void cohere1Request(String query) {
+        countDownLatch = new CountDownLatch(1);
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+
+        RequestBody body = RequestBody.create(query, mediaType);
+        Request request = new Request.Builder()
+                .url(Cohere_API)
+                .addHeader("Authorization", "Bearer " + BuildConfig.COHERE)
+                .post(body)
+                .build();
+
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) {
+                try {
+                    String r = response.body().string();
+                    jsonResponse = new JSONObject(r);
+                    countDownLatch.countDown();
+                } catch (IOException | JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+
+        });
+        try {
+            countDownLatch.await();
+            Log.d("API Response", jsonResponse.toString());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
     }
+
+    public void cohereRequest(String query) {
+        Cohere cohere = Cohere.builder().token(BuildConfig.COHERE).build();
+        Generation response = cohere.generate(GenerateRequest.builder().prompt(query).build());
+        String aiMessage = response.getGenerations().get(0).getText();
+//        return aiMessage;
+    }
+
+
+
+
+
+
 
     /**
      * Get all the upcoming tournaments that the current user is organizing.

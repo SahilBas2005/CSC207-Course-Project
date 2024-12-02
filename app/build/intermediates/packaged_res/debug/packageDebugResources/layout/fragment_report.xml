@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.finance.FinanceFragment">
+    <TextView
+            android:text="@string/ongoing_sets"
+            android:layout_width="331dp"
+            android:layout_height="44dp" android:id="@+id/ongoing_sets_title"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="15dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="37dp" android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toTopOf="@+id/upcoming_sets" android:layout_marginEnd="43dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" android:textSize="34sp"
+            android:includeFontPadding="true" app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintVertical_bias="0.0" app:autoSizeTextType="none"/>
+    <view android:layout_width="0dp" android:layout_height="0dp" class="android.widget.ListView"
+          android:id="@+id/ongoing_sets" app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="100dp"
+          app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="30dp"
+          app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="30dp"
+          app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="250dp"
+          app:layout_constraintHorizontal_bias="0.0" app:layout_constraintVertical_bias="0.0"/>
+    <TextView
+            android:text="@string/no_ongoing"
+            android:layout_width="323dp"
+            android:layout_height="182dp" android:id="@+id/no_ongoing_sets"
+            android:textSize="48sp"
+            app:layout_constraintTop_toTopOf="@+id/ongoing_sets" android:layout_marginTop="45dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="50dp"
+            android:visibility="visible"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
