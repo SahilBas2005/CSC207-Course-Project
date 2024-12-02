@@ -1,8 +1,7 @@
 package com.example.csc207courseproject.use_case.select_phase;
 
-import android.util.Log;
-
-import java.util.Arrays;
+import com.example.csc207courseproject.data_access.DataAccessException;
+import com.example.csc207courseproject.entities.EventData;
 
 public class SelectPhaseInteractor implements SelectPhaseInputBoundary {
 
@@ -15,14 +14,13 @@ public class SelectPhaseInteractor implements SelectPhaseInputBoundary {
     }
 
     @Override
-    public void execute(SelectPhaseInputData selectPhaseInputData) {
-        int phaseID = selectPhaseInputData.getPhaseID();
-        Log.d("phaseID", String.valueOf(phaseID));
+    public void execute(SelectPhaseInputData inputData) {
         try {
+            int phaseID = EventData.getEventData().getPhaseIds().get(inputData.getPhaseName());
             SelectPhaseOutputData s = new SelectPhaseOutputData(dataAccess.getSeedingInPhase(phaseID));
             selectPhasePresenter.prepareSuccessView(s);
-        } catch (Exception e) {
-            selectPhasePresenter.prepareFailView("Something went wrong with the API call, try again.");
+        } catch (DataAccessException e) {
+            selectPhasePresenter.prepareFailView();
         }
     }
 }

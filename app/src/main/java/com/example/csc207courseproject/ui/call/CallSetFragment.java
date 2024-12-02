@@ -1,13 +1,10 @@
 package com.example.csc207courseproject.ui.call;
 
 import android.os.Bundle;
-import android.telecom.Call;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
@@ -16,8 +13,7 @@ import com.example.csc207courseproject.databinding.FragmentCallSetBinding;
 import com.example.csc207courseproject.entities.EventData;
 import com.example.csc207courseproject.interface_adapter.call_set.CallSetController;
 import com.example.csc207courseproject.interface_adapter.call_set.CallSetState;
-import com.example.csc207courseproject.interface_adapter.upcoming_sets.UpcomingSetsController;
-import com.example.csc207courseproject.interface_adapter.update_seeding.SeedingState;
+import com.example.csc207courseproject.interface_adapter.decline_set.DeclineSetController;
 import com.example.csc207courseproject.ui.AppFragment;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,6 +25,7 @@ public class CallSetFragment extends AppFragment implements PropertyChangeListen
 
     private static CallViewModel callViewModel;
     private static CallSetController callSetController;
+    private static DeclineSetController declineSetController;
 
     private FragmentCallSetBinding binding;
     private NavController navc;
@@ -59,8 +56,7 @@ public class CallSetFragment extends AppFragment implements PropertyChangeListen
     public void createSetTitle(){
         CallSetState currentState = callViewModel.getState();
         TextView text = binding.selectedText;
-        String outputText = currentState.getCurrentSet().toString() + " " +
-                currentState.getCurrentSet().getStation().toString();
+        String outputText = currentState.getCurrentSet().toString();
         text.setText(outputText);
     }
 
@@ -73,7 +69,7 @@ public class CallSetFragment extends AppFragment implements PropertyChangeListen
         CallSetState currentState = callViewModel.getState();
         // Create dropdown
         Spinner tagsView = binding.declineTagSelect;
-        List<String> tags = EventData.getPossibleTags();
+        List<String> tags = EventData.getEventData().getPossibleTags();
         ArrayAdapter<String> tagsAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item,
                 tags);
         tagsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -85,22 +81,23 @@ public class CallSetFragment extends AppFragment implements PropertyChangeListen
         declineButton.setOnClickListener(view -> {
             boolean p1Applied = binding.appliesP1.isChecked();
             boolean p2Applied = binding.appliesP2.isChecked();
-            currentState.declineSet(selectedOption, p1Applied, p2Applied);
-            navc.navigateUp();
+            declineSetController.execute(selectedOption, p1Applied, p2Applied);
         });
     }
 
     public void createStreamButton(){
         CallSetState currentState = callViewModel.getState();
         // Only display the stream button if streams are open
-        if (currentState.isStreamOpen()){
+        if (currentState.getOpenStream() != null) {
             binding.streamButton.setVisibility(View.VISIBLE);
         } else {
             binding.streamButton.setVisibility(View.INVISIBLE);
         }
         Button streamButton = binding.streamButton;
         streamButton.setOnClickListener(view -> {
-            currentState.findStream();
+
+            // Set the current set's station as the stream setup
+            currentState.getCurrentSet().setStation(currentState.getOpenStream());
             createSetTitle();
 
         });
@@ -117,7 +114,9 @@ public class CallSetFragment extends AppFragment implements PropertyChangeListen
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
-            case "callsuccess": navc.navigateUp(); break;
+            case "callsuccess":
+            case "declinesuccess":
+                navc.navigateUp(); break;
             case "callfail": showToast("Could not reach the api. Please try again."); break;
         }
     }
@@ -130,6 +129,8 @@ public class CallSetFragment extends AppFragment implements PropertyChangeListen
     public static void setCallViewModel(CallViewModel viewModel) {
         callViewModel = viewModel;
     }
+
+    public static void setDeclineSetController(DeclineSetController controller) {declineSetController = controller;}
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

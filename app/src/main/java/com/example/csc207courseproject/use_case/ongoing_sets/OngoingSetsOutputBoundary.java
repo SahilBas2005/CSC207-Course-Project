@@ -11,8 +11,7 @@ public interface OngoingSetsOutputBoundary {
 
     /**
      * Prepares the failure view for the get ongoing sets use Case.
-     * @param errorMessage the explanation of the failure
      */
-    void prepareFailView(String errorMessage);
+    void prepareFailView();
 
 }

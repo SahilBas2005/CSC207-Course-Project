@@ -1,6 +1,7 @@
 package com.example.csc207courseproject.use_case.upcoming_sets;
 
-import com.example.csc207courseproject.entities.SetData;
+
+import com.example.csc207courseproject.entities.CallSetData;
 
 import java.util.List;
 
@@ -14,5 +15,5 @@ public interface UpcomingSetsDataAccessInterface {
      * @param eventId The ID of the event
      * @return The upcoming sets
      */
-    public List<SetData> getUpcomingSets(int eventId);
+    public List<CallSetData> getUpcomingSets(int eventId);
 }

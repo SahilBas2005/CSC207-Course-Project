@@ -1,5 +1,6 @@
 package com.example.csc207courseproject.interface_adapter.mutate_seeding;
 
+import com.example.csc207courseproject.entities.Entrant;
 import com.example.csc207courseproject.interface_adapter.update_seeding.SeedingState;
 import com.example.csc207courseproject.use_case.mutate_seeding.MutateSeedingInputBoundary;
 import com.example.csc207courseproject.use_case.mutate_seeding.MutateSeedingInputData;
@@ -24,7 +25,7 @@ public class MutateSeedingController {
      */
     public void execute() {
 
-        List<Integer> seeding = seedingState.getSeeding();
+        List<Entrant> seeding = seedingState.getSeeding();
         final MutateSeedingInputData selectPhaseInputData = new MutateSeedingInputData(seeding);
 
         mutateSeedingUseCaseInteractor.execute(selectPhaseInputData);

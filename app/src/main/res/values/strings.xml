@@ -53,5 +53,12 @@
     <string name="report_explanation">Please note that DQs take priority over game data entry.\nDouble DQs result in a
         victory for the first player, but a retroactive DQ if they DQ next round, as is on Start.gg
     </string>
+    <string name="phase_warning">Can not switch phases until seeding changes are pushed to Start.gg or if they are
+    discarded by switching menus.</string>
     <string name="dash">-</string>
+    <string name="get_sets">Get sets from Start.gg</string>
+    <string name="get_sets_warning">Warning! If the tournament has not started, pressing this button will force the
+        tournament to be marked as in progress on Start.gg. This will prevent you from changing the seeding and can not
+        be reverted.</string>
+    <string name="dq_priority">(DQs take priority over reported games.)</string>
 </resources>

@@ -18,7 +18,7 @@ public class ReportGameController {
     /**
      * Execute the report game use case
      */
-    public void execute(int gameNumber, int winner, String p1Char, String p2Char) {
+    public void execute(int gameNumber, int winner) {
         int winnerID;
 
         if (winner == 1) {
@@ -28,7 +28,7 @@ public class ReportGameController {
         }
 
         reportGameUseCaseInteractor.execute(new ReportGameInputData(currState.getCurrentSet(),
-                gameNumber, winnerID, p1Char, p2Char));
+                gameNumber, winnerID));
 
     }
 }

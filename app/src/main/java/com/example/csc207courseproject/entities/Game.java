@@ -5,13 +5,13 @@ public class Game {
 
     private Integer winnerID;
 
-    private int player1CharacterID;
-    private int player2CharacterID;
+    private String player1Character;
+    private String player2Character;
 
 
     public Game() {
-        player1CharacterID = -1;
-        player2CharacterID = -1;
+        player1Character = "No Character";
+        player2Character = "No Character";
         winnerID = 0;
     }
 
@@ -19,12 +19,20 @@ public class Game {
         this.winnerID = winnerID;
     }
 
-    public void setCharacter(int player, int characterID) {
-        if (player == 1) {
-            this.player1CharacterID = characterID;
-        } else {
-            this.player2CharacterID = characterID;
-        }
+    public void setPlayer1Character(String player1Character) {
+        this.player1Character = player1Character;
+    }
+
+    public String getPlayer1Character() {
+        return player1Character;
+    }
+
+    public String getPlayer2Character() {
+        return player2Character;
+    }
+
+    public void setPlayer2Character(String player2Character) {
+            this.player2Character = player2Character;
     }
 
     public Integer getWinnerID() {

@@ -1,7 +1,6 @@
 package com.example.csc207courseproject.interface_adapter.report_set;
 
-import com.example.csc207courseproject.entities.SetData;
-import com.example.csc207courseproject.use_case.report_game.ReportGameOutputData;
+import com.example.csc207courseproject.entities.ReportSetData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +8,8 @@ import java.util.List;
 
 public class ReportSetState {
 
-    private SetData currentSet;
-    private List<SetData> ongoingSets;
+    private ReportSetData currentSet;
+    private List<ReportSetData> ongoingSets;
 
     // Attributes accessible for display in the ReportSetFragment
     private int p1Wins = 0;
@@ -71,19 +70,19 @@ public class ReportSetState {
     // so that the local menus are updated in real time rather than after the API
     // calls update, which can take up to a minute
     private List<Integer> reportedSetIDs = new ArrayList<>();
-    public void setCurrentSet(SetData currentSet) {
+    public void setCurrentSet(ReportSetData currentSet) {
         this.currentSet = currentSet;
     }
 
-    public void setOngoingSets(List<SetData> ongoingSets) {
+    public void setOngoingSets(List<ReportSetData> ongoingSets) {
         this.ongoingSets = ongoingSets;
     }
 
     public List<Integer> getReportedSetIDs() {return reportedSetIDs;}
 
-    public List<SetData> getOngoingSets() {return ongoingSets;}
+    public List<ReportSetData> getOngoingSets() {return ongoingSets;}
 
-    public SetData getCurrentSet() {return currentSet;}
+    public ReportSetData getCurrentSet() {return currentSet;}
 
 
 

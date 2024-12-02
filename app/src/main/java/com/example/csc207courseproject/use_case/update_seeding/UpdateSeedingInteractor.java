@@ -14,7 +14,7 @@ public class UpdateSeedingInteractor implements UpdateSeedingInputBoundary {
         int maxSeed = updateSeedingInputData.getMaxSeed();
 
         if (oldSeed <= 0 || newSeed <= 0 || oldSeed > maxSeed || newSeed > maxSeed) {
-            updateSeedingPresenter.prepareFailView("These are not valid seeds.");
+            updateSeedingPresenter.prepareFailView();
         } else {
             UpdateSeedingOutputData s = new UpdateSeedingOutputData(oldSeed, newSeed);
             updateSeedingPresenter.prepareSuccessView(s);

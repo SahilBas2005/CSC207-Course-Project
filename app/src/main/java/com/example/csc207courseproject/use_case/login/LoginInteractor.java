@@ -1,60 +1,72 @@
 package com.example.csc207courseproject.use_case.login;
 
-import android.content.Context;
-import android.util.Log;
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.csc207courseproject.data_access.APIDataAccessObject;
-import com.example.csc207courseproject.use_case.select_tournament.SelectTournamentDataAccessInterface;
-import org.json.JSONException;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.List;
-import java.util.Map;
+
+import com.example.csc207courseproject.data_access.DataAccessException;
+import com.example.csc207courseproject.data_access.OAuth.OAuthException;
+import org.json.JSONException;
 
 /**
- * The Login Interactor
+ * Interactor for the Login Use Case.
  */
 public class LoginInteractor implements LoginInputBoundary, PropertyChangeListener {
-    private final LoginDataAccessInterface loginDataAccessObject;
+    private final LoginOAuthDataAccessInterface loginOAuthDataAccessObject;
     private final LoginOutputBoundary loginPresenter;
-    private final SelectTournamentDataAccessInterface selectTournamentDataAccessObject;
+    private final LoginDataAccessInterface loginDataAccessObject;
 
-    public LoginInteractor(LoginDataAccessInterface loginDataAccessInterface,
+    /**
+     * The class constructor.
+     *
+     * @param loginOAuthDataAccessInterface the DAO to set for loginOAuthDataAccessObject.
+     * @param loginOutputBoundary           the presenter to set for loginPresenter
+     * @param loginDataAccessInterface      the DAO to set for loginDataAccessObject
+     */
+    public LoginInteractor(LoginOAuthDataAccessInterface loginOAuthDataAccessInterface,
                            LoginOutputBoundary loginOutputBoundary,
-                           SelectTournamentDataAccessInterface selectTournamentDataAccessInterface) {
-        this.loginDataAccessObject = loginDataAccessInterface;
+                           LoginDataAccessInterface loginDataAccessInterface) {
+        this.loginOAuthDataAccessObject = loginOAuthDataAccessInterface;
         this.loginPresenter = loginOutputBoundary;
-        this.selectTournamentDataAccessObject = selectTournamentDataAccessInterface;
+        this.loginDataAccessObject = loginDataAccessInterface;
 
-        loginDataAccessObject.addListener(this);
+        loginOAuthDataAccessObject.addListener(this);
     }
 
+    /**
+     * Executes the Login Use Case.
+     * @return the browser URL where the user can log in
+     */
     @Override
-    public void execute(AppCompatActivity activity) {
+    public String execute() {
         try {
-            loginDataAccessObject.getAuthCode(activity);
+            return loginOAuthDataAccessObject.getAuthUrl();
         }
-        catch(RuntimeException e) {
+        catch(DataAccessException e) {
             loginPresenter.prepareFailView();
+            return null;
         }
     }
 
+    /**
+     * Listens for when the local server receives the auth code, and then gets the user's access token.
+     * @param evt the event fired by the local server when it receives the auth code
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        String token;
+        final String token;
         try {
-            token = loginDataAccessObject.getToken();
+            token = loginOAuthDataAccessObject.getToken();
             if (token == null) {
                 loginPresenter.prepareFailView();
             }
-            selectTournamentDataAccessObject.setTOKEN(token);
-            final LoginOutputData loginOutputData = new LoginOutputData(selectTournamentDataAccessObject.getTournaments());
+            loginDataAccessObject.setToken(token);
+            final LoginOutputData loginOutputData =
+                    new LoginOutputData(loginDataAccessObject.getTournaments());
             loginPresenter.prepareSuccessView(loginOutputData);
         }
-        catch (JSONException | InterruptedException e) {
+        catch (DataAccessException | JSONException | InterruptedException e) {
             loginPresenter.prepareFailView();
         }
-        loginDataAccessObject.stopServer();
+        loginOAuthDataAccessObject.stopServer();
     }
 }

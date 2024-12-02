@@ -11,8 +11,7 @@ public interface AddStationOutputBoundary {
 
     /**
      * Prepares the failure view for the add station use Case.
-     * @param errorMessage the explanation of the failure
      */
-    void prepareFailView(String errorMessage);
+    void prepareFailView();
 
 }

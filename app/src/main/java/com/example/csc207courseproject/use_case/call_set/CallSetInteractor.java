@@ -1,7 +1,7 @@
 package com.example.csc207courseproject.use_case.call_set;
 
 
-import com.example.csc207courseproject.entities.EventData;
+import com.example.csc207courseproject.data_access.DataAccessException;
 import com.example.csc207courseproject.entities.Station;
 
 public class CallSetInteractor implements CallSetInputBoundary {
@@ -32,8 +32,8 @@ public class CallSetInteractor implements CallSetInputBoundary {
             CallSetOutputData s = new CallSetOutputData(station);
 
             presenter.prepareSuccessView(s);
-        } catch (Exception e) {
-            presenter.prepareFailView("Something went wrong with the API call, try again.");
+        } catch (DataAccessException e) {
+            presenter.prepareFailView();
         }
     }
 

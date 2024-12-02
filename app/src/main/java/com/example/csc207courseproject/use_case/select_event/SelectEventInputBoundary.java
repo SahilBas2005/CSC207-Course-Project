@@ -1,5 +1,8 @@
 package com.example.csc207courseproject.use_case.select_event;
 
+/**
+ * Input Boundary for the Select Event Use Case.
+ */
 public interface SelectEventInputBoundary {
     /**
      * Stores the event data in the EventData entity.

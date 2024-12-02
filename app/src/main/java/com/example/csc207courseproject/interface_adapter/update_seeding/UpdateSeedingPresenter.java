@@ -1,6 +1,6 @@
 package com.example.csc207courseproject.interface_adapter.update_seeding;
 
-import com.example.csc207courseproject.interface_adapter.ViewManagerModel;
+import com.example.csc207courseproject.entities.Entrant;
 import com.example.csc207courseproject.use_case.update_seeding.UpdateSeedingOutputBoundary;
 import com.example.csc207courseproject.use_case.update_seeding.UpdateSeedingOutputData;
 import com.example.csc207courseproject.ui.seeding.SeedingViewModel;
@@ -8,11 +8,9 @@ import com.example.csc207courseproject.ui.seeding.SeedingViewModel;
 public class UpdateSeedingPresenter implements UpdateSeedingOutputBoundary {
 
     private final SeedingViewModel seedingViewModel;
-    private final ViewManagerModel viewManagerModel;
 
-    public UpdateSeedingPresenter(SeedingViewModel seedingViewModel, ViewManagerModel viewManagerModel) {
+    public UpdateSeedingPresenter(SeedingViewModel seedingViewModel) {
         this.seedingViewModel = seedingViewModel;
-        this.viewManagerModel = viewManagerModel;
     }
 
     @Override
@@ -20,14 +18,17 @@ public class UpdateSeedingPresenter implements UpdateSeedingOutputBoundary {
         final SeedingState seedingState = seedingViewModel.getState();
         final int oldSeed = outputData.getOldSeed();
         final int newSeed = outputData.getNewSeed();
-        seedingState.moveSeed(oldSeed, newSeed);
+
+        // Move seeds
+        Entrant tempEntrant = seedingState.getSeeding().get(oldSeed - 1);
+        seedingState.getSeeding().remove(oldSeed - 1);
+        seedingState.getSeeding().add(newSeed - 1, tempEntrant);
+
         seedingViewModel.firePropertyChanged("updatesuccess");
     }
 
     @Override
-    public void prepareFailView(String errorMessage) {
-        final SeedingState seedingState = seedingViewModel.getState();
-        seedingState.setError(errorMessage);
+    public void prepareFailView() {
         seedingViewModel.firePropertyChanged("updatefail");
     }
 }

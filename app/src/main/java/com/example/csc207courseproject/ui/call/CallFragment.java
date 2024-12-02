@@ -12,7 +12,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import com.example.csc207courseproject.R;
 import com.example.csc207courseproject.databinding.FragmentCallBinding;
-import com.example.csc207courseproject.entities.SetData;
+import com.example.csc207courseproject.entities.CallSetData;
 import com.example.csc207courseproject.interface_adapter.call_set.CallSetState;
 import com.example.csc207courseproject.interface_adapter.find_station.FindStationController;
 import com.example.csc207courseproject.interface_adapter.get_stations.GetStationsController;
@@ -45,9 +45,18 @@ public class CallFragment extends AppFragment implements PropertyChangeListener 
         binding = FragmentCallBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        createStationButton();
+        if (callViewModel.getState().isEventStarted()) {
+            // Set visibility
+            binding.getSetsButton.setVisibility(View.INVISIBLE);
+            binding.getSetsWarning.setVisibility(View.INVISIBLE);
+            binding.setsText.setVisibility(View.VISIBLE);
+            binding.configureButton.setVisibility(View.VISIBLE);
 
-        upcomingSetsController.execute();
+            upcomingSetsController.execute();
+        } else {
+            createGetSetsButton();
+        }
+        createStationButton();
         getStationsController.execute();
 
         return root;
@@ -62,11 +71,25 @@ public class CallFragment extends AppFragment implements PropertyChangeListener 
         navc = Navigation.findNavController(view);
     }
 
+    private void createGetSetsButton() {
+        CallSetState currentState = callViewModel.getState();
+        Button getSets = binding.getSetsButton;
+        getSets.setOnClickListener(view -> {
+            // Start the event and set the visibility of the view
+            currentState.setEventStarted(true);
+            upcomingSetsController.execute();
+            getSets.setVisibility(View.INVISIBLE);
+            binding.getSetsWarning.setVisibility(View.INVISIBLE);
+            binding.setsText.setVisibility(View.VISIBLE);
+            binding.configureButton.setVisibility(View.VISIBLE);
+        });
+    }
+
     private void createDisplay() {
         CallSetState currentState = callViewModel.getState();
         List<String> setDisplay = new ArrayList<>();
         ListView setsView = binding.upcomingSets;
-        List<SetData> sets = currentState.getUpcomingSets();
+        List<CallSetData> sets = currentState.getUpcomingSets();
 
         // If there are no current upcoming sets, then display that there are no upcoming sets
         // Otherwise, create the set display menu
@@ -74,7 +97,7 @@ public class CallFragment extends AppFragment implements PropertyChangeListener 
         if(!sets.isEmpty()) {
             binding.noUpcomingSets.setVisibility(View.INVISIBLE);
             binding.previewMessage.setVisibility(View.INVISIBLE);
-            for (SetData set : sets) {
+            for (CallSetData set : sets) {
                 setDisplay.add(set.toString());
             }
         } else {

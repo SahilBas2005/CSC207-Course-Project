@@ -51,9 +51,8 @@ public class ReportSetController {
             }
         }
 
-        List<Game> games = currState.getCurrentSet().getGames();
-
-        final ReportSetInputData reportSetInputData = new ReportSetInputData(setID, winnerID, games, hasDQ);
+        final ReportSetInputData reportSetInputData = new ReportSetInputData(setID, winnerID,
+                currState.getCurrentSet(), hasDQ);
 
         reportSetUseCaseInteractor.execute(reportSetInputData);
     }

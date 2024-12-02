@@ -1,11 +1,9 @@
 package com.example.csc207courseproject.use_case.get_stations;
 
-
-import android.util.Log;
+import com.example.csc207courseproject.data_access.DataAccessException;
 import com.example.csc207courseproject.entities.EventData;
 import com.example.csc207courseproject.entities.Station;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class GetStationsInteractor implements GetStationsInputBoundary {
@@ -22,7 +20,7 @@ public class GetStationsInteractor implements GetStationsInputBoundary {
     @Override
     public void execute(GetStationsInputData inputData) {
         // Check if API call is successful
-        int eventId = EventData.getEventId();
+        int eventId = EventData.getEventData().getEventId();
         try {
             // Combine api stations with local stations
             List<Station> stations = dataAccess.getStations(eventId);
@@ -31,8 +29,8 @@ public class GetStationsInteractor implements GetStationsInputBoundary {
             GetStationsOutputData s = new GetStationsOutputData(stations);
 
             presenter.prepareSuccessView(s);
-        } catch (Exception e) {
-            presenter.prepareFailView("Something went wrong with the API call, try again.");
+        } catch (DataAccessException e) {
+            presenter.prepareFailView();
         }
     }
 

@@ -1,10 +1,7 @@
 package com.example.csc207courseproject.interface_adapter.report_game;
 
 import com.example.csc207courseproject.entities.Game;
-import com.example.csc207courseproject.interface_adapter.ViewManagerModel;
-import com.example.csc207courseproject.interface_adapter.update_seeding.SeedingState;
 import com.example.csc207courseproject.ui.report.ReportViewModel;
-import com.example.csc207courseproject.ui.seeding.SeedingViewModel;
 import com.example.csc207courseproject.use_case.report_game.ReportGameOutputBoundary;
 import com.example.csc207courseproject.use_case.report_game.ReportGameOutputData;
 import com.example.csc207courseproject.interface_adapter.report_set.ReportSetState;
@@ -16,11 +13,9 @@ import java.util.List;
 public class ReportGamePresenter implements ReportGameOutputBoundary {
 
     private final ReportViewModel reportViewModel;
-    private final ViewManagerModel viewManagerModel;
 
-    public ReportGamePresenter(ReportViewModel gameViewModel, ViewManagerModel viewManagerModel) {
+    public ReportGamePresenter(ReportViewModel gameViewModel) {
         this.reportViewModel = gameViewModel;
-        this.viewManagerModel = viewManagerModel;
     }
 
     @Override
@@ -48,13 +43,6 @@ public class ReportGamePresenter implements ReportGameOutputBoundary {
         reportSetState.setSetOver(setOver);
 
         reportViewModel.firePropertyChanged("reportgamesuccess");
-    }
-
-    @Override
-    public void prepareFailView(String errorMessage) {
-//        final SeedingState seedingState = gameViewModel.getState();
-//        seedingState.setError(errorMessage);
-//        gameViewModel.firePropertyChanged("updatefail");
     }
 
     private List<Boolean> updateWinnerBools(List<Game> games, int winnerID) {

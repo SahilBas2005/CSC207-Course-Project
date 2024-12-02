@@ -1,13 +1,15 @@
 package com.example.csc207courseproject.ui.seeding;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import com.example.csc207courseproject.databinding.FragmentSeedingBinding;
-import com.example.csc207courseproject.entities.EventData;
+import com.example.csc207courseproject.entities.Entrant;
+import com.example.csc207courseproject.interface_adapter.get_phases.GetPhasesController;
 import com.example.csc207courseproject.interface_adapter.mutate_seeding.MutateSeedingController;
 import com.example.csc207courseproject.interface_adapter.select_phase.SelectPhaseController;
 import com.example.csc207courseproject.interface_adapter.update_seeding.SeedingState;
@@ -22,6 +24,7 @@ import java.util.List;
 public class SeedingFragment extends AppFragment implements PropertyChangeListener, AdapterView.OnItemSelectedListener {
 
     private static SeedingViewModel seedingViewModel;
+    private static GetPhasesController getPhasesController;
     private static SelectPhaseController selectPhaseController;
     private static UpdateSeedingController updateSeedingController;
     private static MutateSeedingController mutateSeedingController;
@@ -31,12 +34,13 @@ public class SeedingFragment extends AppFragment implements PropertyChangeListen
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
         seedingViewModel.addPropertyChangeListener(this);
-        seedingViewModel.getState().setPhases(EventData.getPhaseIds());
 
         binding = FragmentSeedingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        
-        createPhaseSelect();
+
+        // Get phases on start up
+        getPhasesController.execute();
+
         createSeedingMenu();
         createMutateButton();
 
@@ -55,10 +59,10 @@ public class SeedingFragment extends AppFragment implements PropertyChangeListen
         SeedingState currentState = seedingViewModel.getState();
         List<String> seeds = new ArrayList<>();
         ListView seedsView = binding.seedsList;
-        List<Integer> seeding = currentState.getSeeding();
+        List<Entrant> seeding = currentState.getSeeding();
         if(seeding != null) {
             for (int i = 0; i < seeding.size(); i++) {
-                seeds.add((i + 1) + ". " + currentState.playerIdToString(seeding.get(i)));
+                seeds.add((i + 1) + ". " + seeding.get(i).toString());
             }
         }
         ArrayAdapter<String> seedsAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, seeds);
@@ -68,7 +72,7 @@ public class SeedingFragment extends AppFragment implements PropertyChangeListen
     private void createPhaseSelect() {
         SeedingState currentState = seedingViewModel.getState();
         Spinner phaseView = binding.phaseSelect;
-        List<String> phases = currentState.getPhases();
+        List<String> phases = currentState.getPhaseNames();
         ArrayAdapter<String> phaseAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item, phases);
         phaseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         phaseView.setAdapter(phaseAdapter);
@@ -94,8 +98,6 @@ public class SeedingFragment extends AppFragment implements PropertyChangeListen
         Button mutateButton = binding.mutateButton;
         mutateButton.setOnClickListener(view -> {
             mutateSeedingController.execute();
-            //Should this always just say a successful message?
-            showToast("The seeding has been successfully mutated on Start.gg!");
         });
     }
 
@@ -104,10 +106,14 @@ public class SeedingFragment extends AppFragment implements PropertyChangeListen
         switch (evt.getPropertyName()) {
             case "seedfail": showToast("Error finding seeds."); break;
             case "seedsuccess":
-            case "updatesuccess": createSeedDisplay(); break;
-            case "mutatefail": break;
-            case "mutatesuccess": break;
+            case "updatesuccess":
+                createSeedDisplay(); break;
+            case "mutatefail": showToast("The Start.gg API could not be reached. Seeding was not updated."); break;
+            case "mutatesuccess": showToast("The seeding has been successfully mutated on Start.gg!");
+                break;
             case "updatefail": showToast("Invalid seed. Try again."); break;
+            case "getphasessuccess": createPhaseSelect(); break;
+            case "getphasesfail": showToast("Could nor findin phases."); break;
         }
     }
 
@@ -123,18 +129,17 @@ public class SeedingFragment extends AppFragment implements PropertyChangeListen
         mutateSeedingController = controller;
     }
 
-    public static void setSeedingViewModel(SeedingViewModel viewModel) {
-        seedingViewModel = viewModel;
+    public static void setGetPhasesController(GetPhasesController controller) {
+        getPhasesController = controller;
     }
 
-    public static SeedingViewModel getSeedingViewModel(){
-        return seedingViewModel;
+    public static void setSeedingViewModel(SeedingViewModel viewModel) {
+        seedingViewModel = viewModel;
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         String selectedOption = (String) parent.getItemAtPosition(pos);
-        mutateSeedingController.execute();
         selectPhaseController.execute(selectedOption);
     }
 

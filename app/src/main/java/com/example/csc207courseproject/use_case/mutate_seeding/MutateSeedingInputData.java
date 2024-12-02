@@ -1,5 +1,7 @@
 package com.example.csc207courseproject.use_case.mutate_seeding;
 
+import com.example.csc207courseproject.entities.Entrant;
+
 import java.util.List;
 
 /**
@@ -7,13 +9,13 @@ import java.util.List;
  */
 public class MutateSeedingInputData {
 
-    private final List<Integer> finalSeeds;
+    private final List<Entrant> finalSeeds;
 
-    public MutateSeedingInputData(List<Integer> finalSeeds) {
+    public MutateSeedingInputData(List<Entrant> finalSeeds) {
         this.finalSeeds = finalSeeds;
     }
 
-    public List<Integer> getFinalSeeds() {
+    public List<Entrant> getFinalSeeds() {
         return finalSeeds;
     }
 

@@ -1,18 +1,18 @@
 package com.example.csc207courseproject.use_case.select_tournament;
 
-import org.json.JSONException;
-
 import java.util.List;
 
+import org.json.JSONException;
+
+/**
+ * DAI for the Select Tournament Use Case.
+ */
 public interface SelectTournamentDataAccessInterface {
     /**
-     * Gets a list of tournaments organized by the user.
-     * @return a map of tournaments by ids
+     * Get the events for a given tournament.
+     * @param tournamentID the id of the tournament
+     * @return A list containing event names (index 0) and event IDs (index 1)
+     * @throws JSONException if there is a problem with the JSON API
      */
-    List<List> getTournaments() throws JSONException;
-
-    /**
-     * Store the user's access token in the DAO.
-     */
-    void setTOKEN(String token);
+    List<List> getEventsInTournament(Integer tournamentID) throws JSONException;
 }

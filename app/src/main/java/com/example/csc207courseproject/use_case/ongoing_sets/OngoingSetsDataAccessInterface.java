@@ -1,6 +1,6 @@
 package com.example.csc207courseproject.use_case.ongoing_sets;
 
-import com.example.csc207courseproject.entities.SetData;
+import com.example.csc207courseproject.entities.ReportSetData;
 
 import java.util.List;
 
@@ -14,5 +14,5 @@ public interface OngoingSetsDataAccessInterface {
      * @param eventId The ID of the event
      * @return The upcoming sets
      */
-    public List<SetData> getOngoingSets(int eventId);
+    public List<ReportSetData> getOngoingSets(int eventId);
 }

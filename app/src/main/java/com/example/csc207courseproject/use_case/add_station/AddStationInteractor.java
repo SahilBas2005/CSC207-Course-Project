@@ -1,7 +1,7 @@
 package com.example.csc207courseproject.use_case.add_station;
 
 
-import android.util.Log;
+import com.example.csc207courseproject.data_access.DataAccessException;
 import com.example.csc207courseproject.entities.EventData;
 import com.example.csc207courseproject.entities.Station;
 
@@ -21,7 +21,7 @@ public class AddStationInteractor implements AddStationInputBoundary {
     @Override
     public void execute(AddStationInputData inputData) {
         // Check if API call is successful
-        int tournamentId = EventData.getTournamentId();
+        int tournamentId = EventData.getEventData().getTournamentId();
         try {
 
             int stationId = dataAccess.addStation(tournamentId, inputData.getStationNumber());
@@ -30,8 +30,8 @@ public class AddStationInteractor implements AddStationInputBoundary {
             AddStationOutputData s = new AddStationOutputData(station);
 
             presenter.prepareSuccessView(s);
-        } catch (Exception e) {
-            presenter.prepareFailView("Something went wrong with the API call, try again.");
+        } catch (DataAccessException e) {
+            presenter.prepareFailView();
         }
     }
 

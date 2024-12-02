@@ -1,32 +1,40 @@
 package com.example.csc207courseproject.use_case.select_tournament;
 
-import com.example.csc207courseproject.use_case.select_event.SelectEventDataAccessInterface;
-import com.example.csc207courseproject.use_case.select_event.SelectEventOutputData;
-import org.json.JSONException;
-
 import java.util.List;
 
-public class SelectTournamentInteractor implements SelectTournamentInputBoundary {
-    private final SelectTournamentDataAccessInterface selectTournamentDataAccessObject;
-    private final SelectTournamentOutputBoundary selectTournamentPresenter;
-    private final SelectEventDataAccessInterface selectEventDataAccessObject;
+import org.json.JSONException;
 
-    public SelectTournamentInteractor(SelectTournamentDataAccessInterface selectTournamentDataAccessObject,
-                                      SelectTournamentOutputBoundary selectTournamentPresenter,
-                                      SelectEventDataAccessInterface selectEventDataAccessObject) {
-        this.selectTournamentDataAccessObject = selectTournamentDataAccessObject;
+/**
+ * Interactor for the Select Tournament Use Case.
+ */
+public class SelectTournamentInteractor implements SelectTournamentInputBoundary {
+    private final SelectTournamentOutputBoundary selectTournamentPresenter;
+    private final SelectTournamentDataAccessInterface selectTournamentDataAccessInterface;
+
+    /**
+     * The class constructor.
+     * @param selectTournamentPresenter the presenter to set for selectTournamentPresenter
+     * @param selectTournamentDataAccessInterface the DAO to set for selectTournamentDataAccessInterface
+     */
+    public SelectTournamentInteractor(SelectTournamentOutputBoundary selectTournamentPresenter,
+                                      SelectTournamentDataAccessInterface selectTournamentDataAccessInterface) {
         this.selectTournamentPresenter = selectTournamentPresenter;
-        this.selectEventDataAccessObject = selectEventDataAccessObject;
+        this.selectTournamentDataAccessInterface = selectTournamentDataAccessInterface;
     }
 
+    /**
+     * Executes the Select Tournament Use Case.
+     * @param selectedTournamentId id of the tournament
+     */
     @Override
     public void execute(Integer selectedTournamentId) {
         try {
-            List<List> events = selectEventDataAccessObject.getEventsInTournament(selectedTournamentId);
+            final List<List> events = selectTournamentDataAccessInterface.getEventsInTournament(selectedTournamentId);
             final SelectTournamentOutputData selectTournamentOutputData =
                     new SelectTournamentOutputData(selectedTournamentId, events);
             selectTournamentPresenter.prepareSuccessView(selectTournamentOutputData);
-        } catch (JSONException e) {
+        }
+        catch (JSONException evt) {
             selectTournamentPresenter.prepareFailView();
         }
     }

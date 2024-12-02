@@ -89,7 +89,7 @@ public class CallStationFragment extends AppFragment implements PropertyChangeLi
 
                 // Create tag select
                 Spinner tagSelect = convertView.findViewById(R.id.tag_select);
-                List<String> possibleTags = EventData.getPossibleTags();
+                List<String> possibleTags = EventData.getEventData().getPossibleTags();
                 ArrayAdapter<String> tagsAdapter = new ArrayAdapter<>(mContext,
                         android.R.layout.simple_spinner_dropdown_item, possibleTags);
                 tagsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -122,7 +122,7 @@ public class CallStationFragment extends AppFragment implements PropertyChangeLi
 
         //Add the new tag to event data
         submitButton.setOnClickListener(view -> {
-            EventData.addPossibleTag(newTagInput.getText().toString());
+            EventData.getEventData().addPossibleTag(newTagInput.getText().toString());
             showToast("Added " + newTagInput.getText().toString() + " to tags.");
             createStationDisplay();
         });

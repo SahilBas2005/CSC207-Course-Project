@@ -8,9 +8,4 @@ public interface MutateSeedingInputBoundary {
      * @param mutateSeedingInputData the input data
      */
     void execute(MutateSeedingInputData mutateSeedingInputData);
-
-    /**
-     * Executes the switch to the Main Menu.
-     */
-    void switchToMainView();
 }

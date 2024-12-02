@@ -11,5 +11,5 @@ public interface ReportSetDataAccessInterface {
      * Reports the results for a certain match to start.gg
      * ADD PARAM TAGS WHEN IMPLEMENTED
      */
-    void reportSet(int setID, int winnerId, List<Game> games, boolean hasDQ);
+    void reportSet(int setID, int winnerId, List<Game> games, boolean hasDQ, int p1EntrantID, int p2EntrantID);
 }

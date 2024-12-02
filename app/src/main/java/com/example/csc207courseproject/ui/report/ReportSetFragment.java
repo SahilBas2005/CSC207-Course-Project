@@ -1,7 +1,6 @@
 package com.example.csc207courseproject.ui.report;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import com.example.csc207courseproject.entities.Game;
 import com.example.csc207courseproject.interface_adapter.report_game.ReportGameController;
 import com.example.csc207courseproject.interface_adapter.report_set.ReportSetController;
 import com.example.csc207courseproject.interface_adapter.report_set.ReportSetState;
-import com.example.csc207courseproject.interface_adapter.select_phase.SelectPhaseController;
 import com.example.csc207courseproject.ui.AppFragment;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,9 +23,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-public class ReportSetFragment extends AppFragment implements PropertyChangeListener, AdapterView.OnItemSelectedListener {
+public class ReportSetFragment extends AppFragment implements PropertyChangeListener {
 
     private static ReportViewModel reportViewModel;
 
@@ -38,8 +35,6 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
     private NavController navController;
 
     private FragmentReportSetBinding binding;
-
-    private AdapterView.OnItemSelectedListener listener = this;
 
 
     @Override
@@ -101,37 +96,64 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
 
                         // Create p1/p2 win buttons and make them exclusive
                         ToggleButton p1WinButton = convertView.findViewById(R.id.player1_win);
-                        p1WinButton.setChecked(currentState.getP1ButtonPresses().get(position));
+                        boolean p1IsClicked = currentState.getP1ButtonPresses().get(position);
+                        p1WinButton.setChecked(p1IsClicked);
+                        p1WinButton.setEnabled(!p1IsClicked);
+
                         ToggleButton p2WinButton = convertView.findViewById(R.id.player2_win);
-                        p2WinButton.setChecked(currentState.getP2ButtonPresses().get(position));
+                        boolean p2IsClicked = currentState.getP2ButtonPresses().get(position);
+                        p2WinButton.setChecked(p2IsClicked);
+                        p2WinButton.setEnabled(!p2IsClicked);
 
                         p1WinButton.setOnClickListener(view -> {
                             p2WinButton.setChecked(false);
-                            p2WinButton.setClickable(true);
+                            p2WinButton.setEnabled(true);
 
-                            p1WinButton.setClickable(false);
+                            p1WinButton.setEnabled(false);
 
-                            reportGameController.execute(position + 1, 1, "", "");
+                            reportGameController.execute(position + 1, 1);
                             updateScore();
                         });
                         p2WinButton.setOnClickListener(view ->{
                             p1WinButton.setChecked(false);
-                            p1WinButton.setClickable(true);
+                            p1WinButton.setEnabled(true);
 
-                            p2WinButton.setClickable(false);
+                            p2WinButton.setEnabled(false);
 
-                            reportGameController.execute(position + 1, 2, "", "");
+                            reportGameController.execute(position + 1, 2);
                             updateScore();
                         });
 
                         // Create p1 character list
                         Spinner p1CharSelect = convertView.findViewById(R.id.p1_char_select);
-                        Set<String> possibleChars = EventData.getCharacters().keySet();
+                        List<String> possibleChars = new ArrayList<>(
+                                EventData.getEventData().getCharacterIds().keySet());
+                        possibleChars.add(0, "No Character");
+
                         ArrayAdapter<String> chars1Adapter = new ArrayAdapter<>(mContext,
-                                android.R.layout.simple_spinner_dropdown_item, new ArrayList<String>(possibleChars));
+                                android.R.layout.simple_spinner_dropdown_item, possibleChars);
                         chars1Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         p1CharSelect.setAdapter(chars1Adapter);
-                        p1CharSelect.setOnItemSelectedListener(listener);
+
+                        // Set the selected character in the icon to the one stored in state
+                        String p1SelectedChar = currentState.getCurrentSet().
+                                getGame(position + 1).getPlayer1Character();
+                        p1CharSelect.setSelection(possibleChars.indexOf(p1SelectedChar));
+
+                        p1CharSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int i, long id) {
+                                String newP1Char = parent.getItemAtPosition(i).toString();
+                                currentState.getCurrentSet().getGame(position + 1)
+                                            .setPlayer1Character(newP1Char);
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+                                // When nothing is selected, the spinner should just stay on its value as before
+                            }
+                        });
 
                         // Create p2 character list
                         Spinner p2CharSelect = convertView.findViewById(R.id.p2_char_select);
@@ -139,8 +161,26 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
                                 android.R.layout.simple_spinner_dropdown_item, new ArrayList<String>(possibleChars));
                         chars1Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         p2CharSelect.setAdapter(chars2Adapter);
-                        p2CharSelect.setOnItemSelectedListener(listener);
 
+                        // Set the selected character stored in state
+                        String p2SelectedChar = currentState.getCurrentSet().
+                                getGame(position + 1).getPlayer2Character();
+                        p2CharSelect.setSelection(possibleChars.indexOf(p2SelectedChar));
+
+                        p2CharSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int i, long id) {
+                                String newP2Char = parent.getItemAtPosition(i).toString();
+                                currentState.getCurrentSet().getGame(position + 1)
+                                        .setPlayer2Character(newP2Char);
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+                                // When nothing is selected, the spinner should just stay on its value as before
+                            }
+                        });
 
                         return convertView;
                     }
@@ -198,16 +238,6 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
         Button mutateSetButton = binding.mutateSetButton;
         mutateSetButton.setOnClickListener(view -> reportSetController.execute(
                 binding.isP1DQ.isChecked(), binding.isP2DQ.isChecked()));
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String selectedOption = (String) adapterView.getItemAtPosition(i);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
 
 }

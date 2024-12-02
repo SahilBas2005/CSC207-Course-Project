@@ -4,7 +4,8 @@ public interface UpcomingSetsInputBoundary {
 
     /**
      * Executes the upcoming sets case.
+     * @param inputData The input data
      */
-    void execute();
+    void execute(UpcomingSetsInputData inputData);
 
 }

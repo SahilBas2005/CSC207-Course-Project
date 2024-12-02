@@ -6,12 +6,13 @@ package com.example.csc207courseproject.use_case.login;
 public interface LoginOutputBoundary {
 
     /**
-     * Prepares the success view for the Login Use Case.
+     * Prepares a view for when the use case is executed successfully.
+     * @param loginOutputData necessary data to prepare the view
      */
     void prepareSuccessView(LoginOutputData loginOutputData);
 
     /**
-     * Prepares the failure view for the Login Use Case.
+     * Prepares a view for when the use case fails.
      */
     void prepareFailView();
 }
