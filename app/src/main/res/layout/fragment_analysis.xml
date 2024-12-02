@@ -12,20 +12,20 @@
     <!-- Tournament Description Section -->
     <Button
             android:id="@+id/generateTournamentDescriptionBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Generate Tournament Description"
+            android:layout_width="277dp"
+            android:layout_height="40dp"
+            android:text="Generate Description"
             android:textSize="16sp"
             android:textColor="@android:color/white"
             android:backgroundTint="@color/purple_500"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="16dp" android:layout_marginTop="32dp" app:layout_constraintHorizontal_bias="0.531"/>
+            android:layout_margin="16dp" android:layout_marginTop="16dp"/>
     <androidx.cardview.widget.CardView
             android:id="@+id/tournamentDescriptionCardView"
-            android:layout_width="311dp"
-            android:layout_height="418dp"
+            android:layout_width="313dp"
+            android:layout_height="509dp"
             app:cardElevation="8dp"
             app:cardCornerRadius="12dp"
             app:layout_constraintTop_toBottomOf="@id/generateTournamentDescriptionBtn"
@@ -33,24 +33,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_margin="16dp"
-            android:padding="16dp" android:background="#FFFFFF" android:backgroundTint="@color/purple_500"
+            android:padding="16dp" android:background="#FFFFFF" android:backgroundTint="@color/white"
             app:layout_constraintVertical_bias="0.0">
 
         <ScrollView
                 android:id="@+id/tournamentDescriptionScrollView"
-                android:layout_width="309dp"
-                android:layout_height="396dp"
+                android:layout_width="313dp"
+                android:layout_height="487dp"
                 app:layout_constraintTop_toBottomOf="@id/generateTournamentDescriptionBtn"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="20dp" android:background="#FFFFFF" android:backgroundTint="@color/purple_500">
+                android:layout_marginTop="20dp" android:background="#FFFFFF">
 
             <TextView
                     android:id="@+id/tournamentDescriptionResult"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#FFFFFF" android:backgroundTint="@color/purple_500"
-                    android:textColor="#FFFFFF"/> <!-- White background -->
+                    android:background="#FFFFFF" android:backgroundTint="@color/white"
+                    android:textColor="#FF000000" android:textSize="16sp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textAlignment="center"/> <!-- White background -->
             <!--                    android:textColor="#6A1B9A" &lt;!&ndash; Purple text &ndash;&gt;-->
             <!--                    android:text="Tournament Description will appear here."-->
             <!--                    android:textSize="14sp"-->

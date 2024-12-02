@@ -14,10 +14,10 @@ public class TournamentDescriptionInteractor implements TournamentDescriptionInp
     }
 
     @Override
-    public void execute(TournamentDescriptionInputData tournamentDescriptionInputData) {
+    public void execute() {
         try {
             String eventName = EventData.getEventData().getEventName();
-            Integer noOfPlayers = EventData.getEventData().getParticipants().size();
+            int noOfPlayers = EventData.getEventData().getParticipants().size();
 
             // Delegate API call to Data Access Object
             String aiMessage = dataAccess.generateTournamentDescription(eventName, noOfPlayers);
