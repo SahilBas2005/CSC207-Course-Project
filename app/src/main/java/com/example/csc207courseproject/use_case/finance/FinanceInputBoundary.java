@@ -1,4 +1,6 @@
 package com.example.csc207courseproject.use_case.finance;
+import java.io.File;
+import java.util.List;
 
 /**
  * Input Boundary for actions which are related to finance.
@@ -6,10 +8,7 @@ package com.example.csc207courseproject.use_case.finance;
 
 public interface FinanceInputBoundary {
 
-    /**
-     * Executes the finance use case.
-     * @param financeInputData the input data
-     */
-   void execute(FinanceInputData financeInputData);
-
+    List<String> getAllFinanceEntries(FinanceInputData inputData);
+    void modifyPaymentStatus(FinanceInputData inputData);
+    void exportToCSV(FinanceInputData inputData);
 }

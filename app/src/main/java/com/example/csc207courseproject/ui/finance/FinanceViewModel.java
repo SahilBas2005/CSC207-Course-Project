@@ -1,43 +1,42 @@
 package com.example.csc207courseproject.ui.finance;
 
+import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import com.example.csc207courseproject.interface_adapter.finance.FinanceController;
+import com.example.csc207courseproject.use_case.finance.FinanceInputData;
+import com.example.csc207courseproject.use_case.finance.FinanceOutputBoundary;
+import com.example.csc207courseproject.use_case.finance.FinancePresenter;
 
-import com.example.csc207courseproject.data_access.APIDataAccessObject;
-import com.example.csc207courseproject.entities.Participant;
-
-
+// VIEW MODEL
 public class FinanceViewModel extends ViewModel {
 
-    private final MutableLiveData<List<String>> financialEntries;
+    private final MutableLiveData<List<String>> financialEntries = new MutableLiveData<>();
+    private final FinanceController controller;
+    FinanceOutputBoundary outputBoundary;
 
     public FinanceViewModel() {
+        // call the controller to fetch the data
         int fakeGameID = 1257516;
-        APIDataAccessObject apiDataAccessObject = new APIDataAccessObject();
-        HashMap<Integer, Participant> participantPaymentStatus =  apiDataAccessObject.fetchParticipantPaymentStatus(fakeGameID);
-        financialEntries = new MutableLiveData<>();
-        // Initialize with some default values
-        List<String> defaultEntries = new ArrayList<>();
-        for (Participant participant : participantPaymentStatus.values()) {
-            String entry = String.format(
-                    "%d, %s, Status: %s",
-                    participant.getParticipantId(),
-                    participant.getName(),
-                    participant.isPaid() ? "Paid" : "Unpaid"
-            );
-            defaultEntries.add(entry);
-        }
-        financialEntries.setValue(defaultEntries);
+        outputBoundary = new FinancePresenter()
+        controller = new FinanceController();
+        List<String> initialEntries = controller.initializeFinancialEntries(fakeGameID);
+        financialEntries.setValue(initialEntries);
     }
 
     public LiveData<List<String>> getFinancialEntries() {
         return financialEntries;
+    }
+
+    public void modifyParticipantPaymentStatus(String cashAmount, String eTransferAmount, String playerInfo) {
+        controller.modifyPartipantPaymentStatus(cashAmount, eTransferAmount, playerInfo);
+    }
+
+    public void exportParticipantPaymentData(Context context) {
+        controller.exportParticipantPaymentStatus(context);
     }
 
     public void updateFinancialEntries(List<String> updatedEntries) {

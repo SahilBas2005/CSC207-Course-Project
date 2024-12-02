@@ -2,35 +2,50 @@ package com.example.csc207courseproject.use_case.finance;
 
 import com.example.csc207courseproject.data_access.APIDataAccessObject;
 import com.example.csc207courseproject.entities.Participant;
-import android.content.Context;
-import com.example.csc207courseproject.interface_adapter.finance.FinancePresenter;
-import com.example.csc207courseproject.ui.finance.FinanceViewModel;
+import com.example.csc207courseproject.ui.finance.FinanceFragment;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 
 import java.util.*;
+
 public class FinanceInteractor implements FinanceInputBoundary {
     FinanceDataAccessInterface dataAccess = new APIDataAccessObject();
-    FinanceOutputBoundary outputBoundary = new FinancePresenter();
-    FinanceOutputData outputData = new FinanceOutputData();
+    FinanceOutputBoundary outputBoundary;
+
+    public FinanceInteractor() {}
+
     @Override
-    public void execute(FinanceInputData financeInputData) {
-        // need ti access the data here
-//        dataAccessObject.getParticipantPaymentStatus()
-        // need to send the updated data to the output data (through the output data)
+    public List<String> getAllFinanceEntries(FinanceInputData inputData) {
+        return convertMapToList(dataAccess.fetchParticipantPaymentStatus(inputData.eventID));
     }
 
-    public void exportToCSV(Context context, Map<Integer, Participant> participantPaymentStatus) {
-        // Define the file name
-        String fileName = "participant_payment_status.csv";
+    @Override
+    public void modifyPaymentStatus(FinanceInputData inputData) {
+        try {
+            if (inputData.eTransferAmount > 0 || inputData.cashAmount > 0) {
+                dataAccess.modifyParticipantPaymentStatus(inputData.participantID);
+                Map<Integer, Participant> updatedPaymentStatuses = dataAccess.getParticipantPaymentStatus();
+                FinanceOutputData outputData = new FinanceOutputData(updatedPaymentStatuses, inputData.participantID);
 
-        // Get the file path for internal storage
-        File file = new File(context.getFilesDir(), fileName);
+                // update the view
+                outputBoundary.updateStateAndShowToast(outputData);
 
+                // pass it back to the presenter
+                outputBoundary.showSuccessToast(outputData);
+            }
+        } catch (Exception e) {
+            FinanceOutputData outputData = new FinanceOutputData(inputData.participantID);
+            outputBoundary.showFailureToast(outputData);
+        }
+    }
+
+    @Override
+    public void exportToCSV(FinanceInputData inputData) {
+        File file = inputData.file;
+        Map<Integer, Participant> participantPaymentStatus = dataAccess.getParticipantPaymentStatus();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             // Write the header of the CSV file
             writer.write("Sponsor,Name,Status");
@@ -46,49 +61,25 @@ public class FinanceInteractor implements FinanceInputBoundary {
                 writer.newLine();
             }
 
-            System.out.println("File written to: " + file.getAbsolutePath());
+            outputBoundary.showExportSuccessToast();
         } catch (IOException e) {
-            System.err.println("Error writing to file: " + e.getMessage());
+            outputBoundary.showExportFailureToast();
         }
     }
 
-    public int safeParseInt(String input) {
-        try {
-            return Integer.parseInt(input.trim());
-        } catch (NumberFormatException e) {
-            return 0; // Return default value for invalid inputs
+
+    private List<String> convertMapToList(Map<Integer, Participant> entries) {
+        List<String> defaultEntries = new ArrayList<>();
+        for (Participant participant : entries.values()) {
+            String entry = String.format(
+                    "%d, %s, Status: %s",
+                    participant.getParticipantId(),
+                    participant.getName(),
+                    participant.isPaid() ? "Paid" : "Unpaid"
+            );
+            defaultEntries.add(entry);
         }
+        return defaultEntries;
     }
 
-    public static String extractUntilFirstComma(String input) {
-        if (input == null || input.isEmpty()) {
-            return ""; // Handle null or empty string
-        }
-
-        int commaIndex = input.indexOf(',');
-        if (commaIndex == -1) {
-            return input; // No comma found, return the entire string
-        }
-
-        return input.substring(0, commaIndex); // Extract until the first comma
-    }
-
-    public boolean handlePaymentStatusUpdate(String cashAmount, String eTransferAmount, String playerInfo, FinanceViewModel viewModel) {
-        if (safeParseInt(cashAmount) > 0 || safeParseInt(eTransferAmount) > 0) {
-            String participantID = extractUntilFirstComma(playerInfo);
-            int participantIDParsed = Integer.parseInt(participantID);
-            dataAccess.modifyParticipantPaymentStatus(participantIDParsed);
-
-            List<String> updatedEntries = outputData.updateFinancialEntries(dataAccess.getParticipantPaymentStatus());
-            // call the output boundary, the class that implements the output boundary calls the updateFinancialEntries
-//            outputBoundary.
-//            Map<Integer, Participant> currentPaymentState = dataAccess.getParticipantPaymentStatus();
-//            List<String> packagedData = new FinanceOutputData().updateFinancialEntries(currentPaymentState);
-//            viewModel.updateFinancialEntries(packagedData);
-////
-//          showToast(String.format("Player %s payment status was marked as paid.", playerInfo));
-            return true;
-        }
-        return false;
-    }
 }
