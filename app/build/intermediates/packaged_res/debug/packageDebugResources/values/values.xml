@@ -22,9 +22,14 @@
     <string name="dash">-</string>
     <string name="decline_button">Decline Set</string>
     <string name="decline_text">Decline reason:</string>
+    <string name="dq_priority">(DQs take priority over reported games.)</string>
     <string name="empty_station">Station #</string>
     <string name="empty_tags">Tags:</string>
     <string name="event_view_title">Select Event</string>
+    <string name="get_sets">Get sets from Start.gg</string>
+    <string name="get_sets_warning">Warning! If the tournament has not started, pressing this button will force the
+        tournament to be marked as in progress on Start.gg. This will prevent you from changing the seeding and can not
+        be reverted.</string>
     <string name="login_button">LOG IN</string>
     <string name="new_tag_hint">Enter new tag</string>
     <string name="no_events_message">This tournament does not have any events.</string>
@@ -37,6 +42,8 @@
     <string name="p1_win">Player 1 Win</string>
     <string name="p2DQ">DQ (P2)</string>
     <string name="p2_win">Player 2 Win</string>
+    <string name="phase_warning">Can not switch phases until seeding changes are pushed to Start.gg or if they are
+    discarded by switching menus.</string>
     <string name="player_1">Player 1</string>
     <string name="player_2">Player 2</string>
     <string name="preview_issue_message">If you are just starting a tournament \nfor the first time, the Start.gg

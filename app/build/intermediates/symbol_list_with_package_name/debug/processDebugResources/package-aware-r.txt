@@ -3282,6 +3282,7 @@ id disableIntraAutoTransition
 id disablePostScroll
 id disableScroll
 id disjoint
+id dq_priority_text
 id dragAnticlockwise
 id dragClockwise
 id dragDown
@@ -3329,6 +3330,8 @@ id fullscreen_header
 id game_num_title
 id games_list
 id generateTournamentDescriptionBtn
+id get_sets_button
+id get_sets_warning
 id ghost_view
 id ghost_view_holder
 id gone
@@ -3962,6 +3965,7 @@ string dash
 string decline_button
 string decline_text
 string dest_title
+string dq_priority
 string empty_station
 string empty_tags
 string error_a11y_label
@@ -3970,6 +3974,8 @@ string event_view_title
 string exposed_dropdown_menu_content_description
 string fab_transformation_scrim_behavior
 string fab_transformation_sheet_behavior
+string get_sets
+string get_sets_warning
 string hide_bottom_view_on_scroll_behavior
 string icon_content_description
 string item_view_role_description
@@ -4092,6 +4098,7 @@ string path_password_eye
 string path_password_eye_mask_strike_through
 string path_password_eye_mask_visible
 string path_password_strike_through
+string phase_warning
 string player_1
 string player_2
 string preview_issue_message

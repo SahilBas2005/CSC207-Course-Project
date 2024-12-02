@@ -2,9 +2,7 @@ package com.example.csc207courseproject;//package com.example.csc207courseprojec
 
 import com.example.csc207courseproject.data_access.api.APIDataAccessObject;
 import com.example.csc207courseproject.data_access.OAuth.OAuthDataAccessObject;
-import com.example.csc207courseproject.data_access.APIDataAccessObject;
 import com.example.csc207courseproject.data_access.CohereDataAccessObject;
-import com.example.csc207courseproject.interface_adapter.ViewManagerModel;
 import com.example.csc207courseproject.interface_adapter.add_station.AddStationController;
 import com.example.csc207courseproject.interface_adapter.add_station.AddStationPresenter;
 import com.example.csc207courseproject.interface_adapter.call_set.CallSetController;
@@ -104,7 +102,6 @@ import com.example.csc207courseproject.use_case.update_seeding.UpdateSeedingOutp
 import com.example.csc207courseproject.use_case.tournament_description.TournamentDescriptionOutputBoundary;
 import com.example.csc207courseproject.use_case.tournament_description.TournamentDescriptionInteractor;
 import com.example.csc207courseproject.use_case.tournament_description.TournamentDescriptionInputBoundary;
-import com.example.csc207courseproject.view.ViewManager;
 
 public class MainBuilder {
     private final APIDataAccessObject apiDataAccessObject = new APIDataAccessObject();
@@ -116,7 +113,6 @@ public class MainBuilder {
     private SelectEventViewModel selectEventViewModel;
     private SeedingViewModel seedingViewModel;
     private AnalysisViewModel analysisViewModel;
-    private MainViewModel mainViewModel;
     private CallViewModel callViewModel;
     private ReportViewModel reportViewModel;
 
@@ -398,7 +394,7 @@ public class MainBuilder {
      */
     public MainBuilder addTournamentDescriptionUseCase() {
         final TournamentDescriptionOutputBoundary tournamentDescriptionOutputBoundary = new TournamentDescriptionPresenter(
-                viewManagerModel, analysisViewModel);
+                analysisViewModel);
         final TournamentDescriptionInputBoundary tournamentDescriptionInteractor = new TournamentDescriptionInteractor(
                 cohereDataAccessObject, tournamentDescriptionOutputBoundary);
 

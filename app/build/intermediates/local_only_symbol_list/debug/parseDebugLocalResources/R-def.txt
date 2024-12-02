@@ -36,11 +36,14 @@ id dash_text
 id decline_button
 id decline_tag_select
 id decline_text
+id dq_priority_text
 id eventViewTitle
 id event_list
 id game_num_title
 id games_list
 id generateTournamentDescriptionBtn
+id get_sets_button
+id get_sets_warning
 id imageView
 id isP1DQ
 id isP2DQ
@@ -127,9 +130,12 @@ string create_tag
 string dash
 string decline_button
 string decline_text
+string dq_priority
 string empty_station
 string empty_tags
 string event_view_title
+string get_sets
+string get_sets_warning
 string login_button
 string new_tag_hint
 string no_events_message
@@ -142,6 +148,7 @@ string p1DQ
 string p1_win
 string p2DQ
 string p2_win
+string phase_warning
 string player_1
 string player_2
 string preview_issue_message

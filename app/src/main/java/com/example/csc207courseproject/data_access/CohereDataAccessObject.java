@@ -80,7 +80,7 @@ public class CohereDataAccessObject implements TournamentDescriptionDataAccessIn
     }
 
     public String generateTournamentDescription(String eventName, int noOfPlayers) {
-        String prompt = "Generate a detailed description for the " + eventName + " tournament, which involves " + noOfPlayers + " players. Include the purpose of the tournament, its format which is Single-Elimination, and any notable features and we will have Losers bracket.";
+        String prompt = "Generate a detailed description of about 100 words for the " + eventName + " tournament, which involves " + noOfPlayers + " players. Include the purpose of the tournament, its format which is Single-Elimination, and any notable features and we will have Losers bracket.";
 
         sendRequest(prompt);
 
