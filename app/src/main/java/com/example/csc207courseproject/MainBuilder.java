@@ -2,18 +2,22 @@ package com.example.csc207courseproject;//package com.example.csc207courseprojec
 
 import com.example.csc207courseproject.data_access.api.APIDataAccessObject;
 import com.example.csc207courseproject.data_access.OAuth.OAuthDataAccessObject;
+import com.example.csc207courseproject.data_access.CohereDataAccessObject;
 import com.example.csc207courseproject.interface_adapter.add_station.AddStationController;
 import com.example.csc207courseproject.interface_adapter.add_station.AddStationPresenter;
 import com.example.csc207courseproject.interface_adapter.call_set.CallSetController;
 import com.example.csc207courseproject.interface_adapter.call_set.CallSetPresenter;
+import com.example.csc207courseproject.interface_adapter.decline_set.DeclineSetController;
+import com.example.csc207courseproject.interface_adapter.decline_set.DeclineSetPresenter;
 import com.example.csc207courseproject.interface_adapter.find_station.FindStationController;
 import com.example.csc207courseproject.interface_adapter.find_station.FindStationPresenter;
+import com.example.csc207courseproject.interface_adapter.get_phases.GetPhasesController;
+import com.example.csc207courseproject.interface_adapter.get_phases.GetPhasesPresenter;
 import com.example.csc207courseproject.interface_adapter.login.LoginController;
 import com.example.csc207courseproject.interface_adapter.login.LoginPresenter;
 import com.example.csc207courseproject.interface_adapter.get_stations.GetStationsController;
 import com.example.csc207courseproject.interface_adapter.get_stations.GetStationsPresenter;
 import com.example.csc207courseproject.interface_adapter.login.LoginViewModel;
-import com.example.csc207courseproject.interface_adapter.main.MainViewModel;
 import com.example.csc207courseproject.interface_adapter.mutate_seeding.MutateSeedingController;
 import com.example.csc207courseproject.interface_adapter.mutate_seeding.MutateSeedingPresenter;
 import com.example.csc207courseproject.interface_adapter.ongoing_sets.OngoingSetsController;
@@ -42,6 +46,16 @@ import com.example.csc207courseproject.ui.seeding.SeedingViewModel;
 import com.example.csc207courseproject.interface_adapter.update_seeding.UpdateSeedingController;
 import com.example.csc207courseproject.interface_adapter.update_seeding.UpdateSeedingPresenter;
 import com.example.csc207courseproject.ui.seeding.SeedingFragment;
+import com.example.csc207courseproject.ui.analysis.AnalysisFragment;
+import com.example.csc207courseproject.ui.analysis.AnalysisViewModel;
+import com.example.csc207courseproject.interface_adapter.tournament_description.TournamentDescriptionController;
+import com.example.csc207courseproject.interface_adapter.tournament_description.TournamentDescriptionPresenter;
+import com.example.csc207courseproject.use_case.decline_set.DeclineSetInputBoundary;
+import com.example.csc207courseproject.use_case.decline_set.DeclineSetInteractor;
+import com.example.csc207courseproject.use_case.decline_set.DeclineSetOutputBoundary;
+import com.example.csc207courseproject.use_case.get_phases.GetPhasesInputBoundary;
+import com.example.csc207courseproject.use_case.get_phases.GetPhasesInteractor;
+import com.example.csc207courseproject.use_case.get_phases.GetPhasesOutputBoundary;
 import com.example.csc207courseproject.use_case.login.LoginInputBoundary;
 import com.example.csc207courseproject.use_case.login.LoginInteractor;
 import com.example.csc207courseproject.use_case.login.LoginOutputBoundary;
@@ -85,20 +99,20 @@ import com.example.csc207courseproject.use_case.upcoming_sets.UpcomingSetsOutput
 import com.example.csc207courseproject.use_case.update_seeding.UpdateSeedingInputBoundary;
 import com.example.csc207courseproject.use_case.update_seeding.UpdateSeedingInteractor;
 import com.example.csc207courseproject.use_case.update_seeding.UpdateSeedingOutputBoundary;
-import com.example.csc207courseproject.view.ViewManager;
+import com.example.csc207courseproject.use_case.tournament_description.TournamentDescriptionOutputBoundary;
+import com.example.csc207courseproject.use_case.tournament_description.TournamentDescriptionInteractor;
+import com.example.csc207courseproject.use_case.tournament_description.TournamentDescriptionInputBoundary;
 
 public class MainBuilder {
-    private final ViewManagerModel viewManagerModel = new ViewManagerModel();
-    private final ViewManager viewManager = new ViewManager(viewManagerModel);
-
     private final APIDataAccessObject apiDataAccessObject = new APIDataAccessObject();
     private final OAuthDataAccessObject oAuthDataAccessObject = new OAuthDataAccessObject();
+    private final CohereDataAccessObject cohereDataAccessObject = new CohereDataAccessObject();
 
     private LoginViewModel loginViewModel;
     private SelectTournamentViewModel selectTournamentViewModel;
     private SelectEventViewModel selectEventViewModel;
     private SeedingViewModel seedingViewModel;
-    private MainViewModel mainViewModel;
+    private AnalysisViewModel analysisViewModel;
     private CallViewModel callViewModel;
     private ReportViewModel reportViewModel;
 
@@ -140,6 +154,16 @@ public class MainBuilder {
     }
 
     /**
+     * Adds the Seeding View to the application.
+     * @return this builder
+     */
+    public MainBuilder addAnalysisView() {
+        analysisViewModel = new AnalysisViewModel();
+        AnalysisFragment.setAnalysisViewModel(analysisViewModel);
+        return this;
+    }
+
+    /**
      * Adds the Call Set View to the application.
      * @return this builder
      */
@@ -169,7 +193,7 @@ public class MainBuilder {
      */
     public MainBuilder addUpcomingSetsUseCase() {
         final UpcomingSetsOutputBoundary upcomingSetsOutputBoundary = new UpcomingSetsPresenter(
-                callViewModel, viewManagerModel);
+                callViewModel);
         final UpcomingSetsInputBoundary upcomingSetsInteractor = new UpcomingSetsInteractor(
                 apiDataAccessObject, upcomingSetsOutputBoundary);
 
@@ -243,17 +267,31 @@ public class MainBuilder {
     }
 
     /**
+     * Adds the decline set Use Case to the application.
+     * @return this builder
+     */
+    public MainBuilder addDeclineSetUseCase() {
+        final DeclineSetOutputBoundary outputBoundary = new DeclineSetPresenter(
+                callViewModel);
+        final DeclineSetInputBoundary interactor = new DeclineSetInteractor(outputBoundary);
+
+        final DeclineSetController controller = new DeclineSetController(interactor,
+                callViewModel.getState());
+        CallSetFragment.setDeclineSetController(controller);
+        return this;
+    }
+
+    /**
      * Adds the ongoing sets Use Case to the application.
      * @return this builder
      */
     public MainBuilder addOngoingSetsUseCase() {
         final OngoingSetsOutputBoundary ongoingSetsOutputBoundary = new OngoingSetsPresenter(
-                reportViewModel, viewManagerModel);
+                reportViewModel);
         final OngoingSetsInputBoundary ongoingSetsInteractor = new OngoingSetsInteractor(
                 apiDataAccessObject, ongoingSetsOutputBoundary);
 
-        final OngoingSetsController controller = new OngoingSetsController(ongoingSetsInteractor,
-                reportViewModel.getState());
+        final OngoingSetsController controller = new OngoingSetsController(ongoingSetsInteractor);
         ReportFragment.setOngoingSetsController(controller);
         return this;
     }
@@ -264,7 +302,7 @@ public class MainBuilder {
      */
     public MainBuilder addReportGameUseCase() {
         final ReportGameOutputBoundary reportGameOutputBoundary = new ReportGamePresenter(
-                reportViewModel, viewManagerModel);
+                reportViewModel);
         final ReportGameInputBoundary reportGameInteractor = new ReportGameInteractor(
                 reportGameOutputBoundary);
 
@@ -281,23 +319,13 @@ public class MainBuilder {
     public MainBuilder addReportSetUseCase() {
         //Figure out why this takes in two things, then do the api testing
         final ReportSetOutputBoundary reportSetOutputBoundary = new ReportSetPresenter(
-                reportViewModel, viewManagerModel);
+                reportViewModel);
         final ReportSetInputBoundary reportSetInteractor = new ReportSetInteractor(
                 apiDataAccessObject, reportSetOutputBoundary);
 
         final ReportSetController controller = new ReportSetController(reportSetInteractor,
                 reportViewModel.getState());
         ReportSetFragment.setReportSetController(controller);
-        return this;
-    }
-
-    /**
-     * Adds the Main View to the application. INCOMPLETE
-     * @return this builder
-     */
-    public MainBuilder addMainView() {
-
-        mainViewModel = new MainViewModel();
         return this;
     }
 
@@ -324,7 +352,7 @@ public class MainBuilder {
         final SelectTournamentOutputBoundary selectTournamentPresenter = new SelectTournamentPresenter(
                 selectTournamentViewModel, selectEventViewModel);
         final SelectTournamentInputBoundary selectTournamentInteractor = new SelectTournamentInteractor(
-                apiDataAccessObject, selectTournamentPresenter, apiDataAccessObject);
+                selectTournamentPresenter, apiDataAccessObject);
         final SelectTournamentController controller = new SelectTournamentController(selectTournamentInteractor);
         SelectTournamentActivity.setSelectTournamentController(controller);
         SelectTournamentActivity.setSelectTournamentViewModel(selectTournamentViewModel);
@@ -351,13 +379,41 @@ public class MainBuilder {
      */
     public MainBuilder addSelectPhaseUseCase() {
         final SelectPhaseOutputBoundary selectPhaseOutputBoundary = new SelectPhasePresenter(
-                seedingViewModel, viewManagerModel);
+                seedingViewModel);
         final SelectPhaseInputBoundary selectPhaseInteractor = new SelectPhaseInteractor(
                 apiDataAccessObject, selectPhaseOutputBoundary);
 
-        final SelectPhaseController controller = new SelectPhaseController(selectPhaseInteractor,
-                seedingViewModel.getState());
+        final SelectPhaseController controller = new SelectPhaseController(selectPhaseInteractor);
         SeedingFragment.setSelectPhaseController(controller);
+        return this;
+    }
+
+    /**
+     * Add the generate tournament description Use Case to the application
+     * @return this builder
+     */
+    public MainBuilder addTournamentDescriptionUseCase() {
+        final TournamentDescriptionOutputBoundary tournamentDescriptionOutputBoundary = new TournamentDescriptionPresenter(
+                analysisViewModel);
+        final TournamentDescriptionInputBoundary tournamentDescriptionInteractor = new TournamentDescriptionInteractor(
+                cohereDataAccessObject, tournamentDescriptionOutputBoundary);
+
+        final TournamentDescriptionController controller = new TournamentDescriptionController(tournamentDescriptionInteractor);
+        AnalysisFragment.setTournamentDescriptionController(controller);
+        return this;
+    }
+
+    /**
+     * Adds the get phases Use Case to the application.
+     * @return this builder
+     */
+    public MainBuilder addGetPhasesUseCase() {
+        final GetPhasesOutputBoundary outputBoundary = new GetPhasesPresenter(
+                seedingViewModel);
+        final GetPhasesInputBoundary interactor = new GetPhasesInteractor(outputBoundary);
+
+        final GetPhasesController controller = new GetPhasesController(interactor);
+        SeedingFragment.setGetPhasesController(controller);
         return this;
     }
 
@@ -367,7 +423,7 @@ public class MainBuilder {
      */
     public MainBuilder addUpdateSeedingUseCase() {
         final UpdateSeedingOutputBoundary updateSeedingOutputBoundary = new UpdateSeedingPresenter(
-                seedingViewModel, viewManagerModel);
+                seedingViewModel);
         final UpdateSeedingInputBoundary updateSeedingInteractor = new UpdateSeedingInteractor(
                 updateSeedingOutputBoundary);
 
@@ -382,8 +438,7 @@ public class MainBuilder {
      * @return this builder
      */
     public MainBuilder addMutateSeedingUseCase() {
-        final MutateSeedingOutputBoundary mutateSeedingOutputBoundary = new MutateSeedingPresenter(
-                mainViewModel, seedingViewModel, viewManagerModel);
+        final MutateSeedingOutputBoundary mutateSeedingOutputBoundary = new MutateSeedingPresenter(seedingViewModel);
         final MutateSeedingInputBoundary mutateSeedingInteractor = new MutateSeedingInteractor(
                 apiDataAccessObject, mutateSeedingOutputBoundary);
 
