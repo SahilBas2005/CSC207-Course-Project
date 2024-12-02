@@ -16,15 +16,14 @@ public class TournamentDescriptionPresenter implements TournamentDescriptionOutp
     @Override
     public void prepareSuccessView(TournamentDescriptionOutputData outputData) {
         final String aiMessage = outputData.getAiMessage();
-        System.out.println(aiMessage);
-        final TournamentState tournamentState = analysisViewModel.getState();
-        tournamentState.setaiMessage(aiMessage);
+        AnalysisState tournamentState = analysisViewModel.getState();
+        tournamentState.updateAiMessage(aiMessage);
         analysisViewModel.firePropertyChanged("updatesuccess");
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
-        final TournamentState tournamentState = analysisViewModel.getState();
+        final AnalysisState tournamentState = analysisViewModel.getState();
         tournamentState.setError(errorMessage);
         analysisViewModel.firePropertyChanged("updatefail");
     }
