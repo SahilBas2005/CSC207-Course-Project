@@ -22,7 +22,7 @@ class OngoingSetsInteractorTest {
 
     @Test
     void mutateFailureTest() {
-        // Create new getOngoingSets method which throws an exception for this test
+        // Create new getOngoingSets method which throws an API Data access exception for this test
         OngoingSetsDataAccessInterface failDataAccessInterface = new APIDataAccessObject() {
             @Override
             public List<ReportSetData> getOngoingSets(int eventId) {

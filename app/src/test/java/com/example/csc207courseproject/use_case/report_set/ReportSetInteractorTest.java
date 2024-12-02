@@ -111,7 +111,7 @@ class ReportSetInteractorTest {
 
             @Override
             public void prepareFailView(String error) {
-                fail("Use case fail is unexpected.");
+                fail("Use case failure is unexpected.");
             }
         };
 

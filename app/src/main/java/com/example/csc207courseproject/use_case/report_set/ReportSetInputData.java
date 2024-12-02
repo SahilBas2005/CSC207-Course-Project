@@ -4,7 +4,7 @@ package com.example.csc207courseproject.use_case.report_set;
 import com.example.csc207courseproject.entities.ReportSetData;
 
 /**
- * The Input Data for the SetReporting Use Case.
+ * The Input Data for the Report Set Use Case.
  */
 public class ReportSetInputData {
 
@@ -13,6 +13,7 @@ public class ReportSetInputData {
     private ReportSetData currSet;
 
     private boolean hasDQ;
+
     public ReportSetInputData(int setID, int winnerId, ReportSetData currSet, boolean hasDQ) {
         this.setID = setID;
         this.winnerId = winnerId;
@@ -22,10 +23,6 @@ public class ReportSetInputData {
 
     public int getSetID() {
         return setID;
-    }
-
-    public void setSetID(int setID) {
-        this.setID = setID;
     }
 
     public int getWinnerId() {

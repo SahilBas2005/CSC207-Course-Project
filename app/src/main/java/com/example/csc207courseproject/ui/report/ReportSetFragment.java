@@ -24,6 +24,9 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The ReportSet UI, contains options for reporting certain games in a set, and mutating to Start.gg.
+ */
 public class ReportSetFragment extends AppFragment implements PropertyChangeListener {
 
     private static ReportViewModel reportViewModel;
@@ -36,17 +39,16 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
 
     private FragmentReportSetBinding binding;
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         reportViewModel.addPropertyChangeListener(this);
         binding = FragmentReportSetBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-        ReportSetState currentState = reportViewModel.getState();
+        final View root = binding.getRoot();
+        final ReportSetState currentState = reportViewModel.getState();
 
-        TextView text = binding.playersTitle;
+        final TextView text = binding.playersTitle;
         text.setText(currentState.getCurrentSet().toString());
 
         updateScore();
@@ -62,10 +64,13 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
         navController = Navigation.findNavController(view);
     }
 
-    public void createGamesDisplay(){
-        ReportSetState currentState = reportViewModel.getState();
-        ListView gamesView = binding.gamesList;
-        List<Game> games = currentState.getCurrentSet().getGames();
+    /**
+     * Creates the list display of games and the buttons/dropdowns for game reporting
+     */
+    public void createGamesDisplay() {
+        final ReportSetState currentState = reportViewModel.getState();
+        final ListView gamesView = binding.gamesList;
+        final List<Game> games = currentState.getCurrentSet().getGames();
         
         ArrayAdapter<Game> gameAdapter =
                 new ArrayAdapter<Game>(mContext, android.R.layout.simple_list_item_1, games) {
@@ -90,18 +95,18 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
                         convertView = getLayoutInflater().inflate(R.layout.list_games, parent, false);
 
                         // Create title
-                        TextView gameTitle = convertView.findViewById(R.id.game_num_title);
-                        String gameText = "Game #" + (position + 1) + ":";
+                        final TextView gameTitle = convertView.findViewById(R.id.game_num_title);
+                        final String gameText = "Game #" + (position + 1) + ":";
                         gameTitle.setText(gameText);
 
                         // Create p1/p2 win buttons and make them exclusive
-                        ToggleButton p1WinButton = convertView.findViewById(R.id.player1_win);
-                        boolean p1IsClicked = currentState.getP1ButtonPresses().get(position);
+                        final ToggleButton p1WinButton = convertView.findViewById(R.id.player1_win);
+                        final boolean p1IsClicked = currentState.getP1ButtonPresses().get(position);
                         p1WinButton.setChecked(p1IsClicked);
                         p1WinButton.setEnabled(!p1IsClicked);
 
-                        ToggleButton p2WinButton = convertView.findViewById(R.id.player2_win);
-                        boolean p2IsClicked = currentState.getP2ButtonPresses().get(position);
+                        final ToggleButton p2WinButton = convertView.findViewById(R.id.player2_win);
+                        final boolean p2IsClicked = currentState.getP2ButtonPresses().get(position);
                         p2WinButton.setChecked(p2IsClicked);
                         p2WinButton.setEnabled(!p2IsClicked);
 
@@ -114,7 +119,7 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
                             reportGameController.execute(position + 1, 1);
                             updateScore();
                         });
-                        p2WinButton.setOnClickListener(view ->{
+                        p2WinButton.setOnClickListener(view -> {
                             p1WinButton.setChecked(false);
                             p1WinButton.setEnabled(true);
 
@@ -125,8 +130,8 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
                         });
 
                         // Create p1 character list
-                        Spinner p1CharSelect = convertView.findViewById(R.id.p1_char_select);
-                        List<String> possibleChars = new ArrayList<>(
+                        final Spinner p1CharSelect = convertView.findViewById(R.id.p1_char_select);
+                        final List<String> possibleChars = new ArrayList<>(
                                 EventData.getEventData().getCharacterIds().keySet());
                         possibleChars.add(0, "No Character");
 
@@ -136,7 +141,7 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
                         p1CharSelect.setAdapter(chars1Adapter);
 
                         // Set the selected character in the icon to the one stored in state
-                        String p1SelectedChar = currentState.getCurrentSet().
+                        final String p1SelectedChar = currentState.getCurrentSet().
                                 getGame(position + 1).getPlayer1Character();
                         p1CharSelect.setSelection(possibleChars.indexOf(p1SelectedChar));
 
@@ -144,7 +149,7 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
 
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int i, long id) {
-                                String newP1Char = parent.getItemAtPosition(i).toString();
+                                final String newP1Char = parent.getItemAtPosition(i).toString();
                                 currentState.getCurrentSet().getGame(position + 1)
                                             .setPlayer1Character(newP1Char);
                             }
@@ -156,22 +161,22 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
                         });
 
                         // Create p2 character list
-                        Spinner p2CharSelect = convertView.findViewById(R.id.p2_char_select);
-                        ArrayAdapter<String> chars2Adapter = new ArrayAdapter<>(mContext,
+                        final Spinner p2CharSelect = convertView.findViewById(R.id.p2_char_select);
+                        final ArrayAdapter<String> chars2Adapter = new ArrayAdapter<>(mContext,
                                 android.R.layout.simple_spinner_dropdown_item, new ArrayList<String>(possibleChars));
                         chars1Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         p2CharSelect.setAdapter(chars2Adapter);
 
                         // Set the selected character stored in state
-                        String p2SelectedChar = currentState.getCurrentSet().
-                                getGame(position + 1).getPlayer2Character();
+                        final String p2SelectedChar = currentState.getCurrentSet()
+                                .getGame(position + 1).getPlayer2Character();
                         p2CharSelect.setSelection(possibleChars.indexOf(p2SelectedChar));
 
                         p2CharSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int i, long id) {
-                                String newP2Char = parent.getItemAtPosition(i).toString();
+                                final String newP2Char = parent.getItemAtPosition(i).toString();
                                 currentState.getCurrentSet().getGame(position + 1)
                                         .setPlayer2Character(newP2Char);
                             }
@@ -189,14 +194,17 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
         gamesView.setAdapter(gameAdapter);
     }
 
-    private void updateScore(){
+    /**
+     * Adds the score to the display (0-0, 1-0, etc.).
+     */
+    private void updateScore() {
 
-        ReportSetState currentState = reportViewModel.getState();
+        final ReportSetState currentState = reportViewModel.getState();
 
-        TextView p1Score = binding.player1Score;
+        final TextView p1Score = binding.player1Score;
         p1Score.setText(String.valueOf(currentState.getP1Wins()));
 
-        TextView p2Score = binding.player2Score;
+        final TextView p2Score = binding.player2Score;
         p2Score.setText(String.valueOf(currentState.getP2Wins()));
 
     }
@@ -215,9 +223,12 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
                 showToast("The set has been reported to Start.gg!");
                 navController.navigateUp();
                 break;
-            case "reportgamesuccess": break;
-            case "apicallerror": showToast("We can't reach Start.gg right now."); break;
-            case "incompletesetinfo": showToast("The set information is not complete!"); break;
+            case "reportgamesuccess":
+                break;
+            case "apicallerror": showToast("We can't reach Start.gg right now.");
+                break;
+            case "incompletesetinfo": showToast("The set information is not complete!");
+                break;
         }
     }
 
@@ -233,9 +244,11 @@ public class ReportSetFragment extends AppFragment implements PropertyChangeList
         reportViewModel = viewModel;
     }
 
-    //Function for the report to start.gg option
-    private void createMutateButton(){
-        Button mutateSetButton = binding.mutateSetButton;
+    /**
+     * Creates the Report to Start.gg button to the UI.
+     */
+    private void createMutateButton() {
+        final Button mutateSetButton = binding.mutateSetButton;
         mutateSetButton.setOnClickListener(view -> reportSetController.execute(
                 binding.isP1DQ.isChecked(), binding.isP2DQ.isChecked()));
     }

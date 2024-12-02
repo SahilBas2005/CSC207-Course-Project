@@ -1,6 +1,9 @@
 
 package com.example.csc207courseproject.use_case.report_set;
 
+/**
+ * The OutputBoundary for the Report Set use case.
+ */
 public interface ReportSetOutputBoundary {
 
     /**

@@ -1,5 +1,7 @@
 package com.example.csc207courseproject.ui.report;
 
+import org.jetbrains.annotations.NotNull;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,13 +18,16 @@ import com.example.csc207courseproject.entities.ReportSetData;
 import com.example.csc207courseproject.interface_adapter.ongoing_sets.OngoingSetsController;
 import com.example.csc207courseproject.interface_adapter.report_set.ReportSetState;
 import com.example.csc207courseproject.ui.AppFragment;
-import org.jetbrains.annotations.NotNull;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fragment when the Report section is clicked. Shows a list of ongoing sets to be reported.
+ */
 public class ReportFragment extends AppFragment implements PropertyChangeListener {
 
     private static ReportViewModel reportViewModel;
@@ -37,7 +42,7 @@ public class ReportFragment extends AppFragment implements PropertyChangeListene
         reportViewModel.addPropertyChangeListener(this);
 
         binding = FragmentReportBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        final View root = binding.getRoot();
         
         ongoingSetsController.execute();
 
@@ -45,7 +50,8 @@ public class ReportFragment extends AppFragment implements PropertyChangeListene
     }
 
     @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull @NotNull View view,
+                              @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         ReportSetFragment.setReportViewModel(reportViewModel);
@@ -62,14 +68,14 @@ public class ReportFragment extends AppFragment implements PropertyChangeListene
 
     private void createDisplay() {
         ReportSetState currentState = reportViewModel.getState();
-        List<String> setDisplay = new ArrayList<>();
-        ListView setsView = binding.ongoingSets;
-        List<ReportSetData> sets = currentState.getOngoingSets();
+        final List<String> setDisplay = new ArrayList<>();
+        final ListView setsView = binding.ongoingSets;
+        final List<ReportSetData> sets = currentState.getOngoingSets();
 
         // If there are no current ongoing sets, then display that there are no ongoing sets
         // Otherwise, create the set display menu
 
-        if(!sets.isEmpty()) {
+        if (!sets.isEmpty()) {
             binding.noOngoingSets.setVisibility(View.INVISIBLE);
             for (ReportSetData set : sets) {
                 setDisplay.add(set.toString());
@@ -78,17 +84,18 @@ public class ReportFragment extends AppFragment implements PropertyChangeListene
             binding.noOngoingSets.setVisibility(View.VISIBLE);
         }
 
-        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, setDisplay);
+        final ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1,
+                setDisplay);
         setsView.setAdapter(itemsAdapter);
         setsView.setOnItemClickListener((list, view, position, id) -> {
-            //Set the state to a new report set view with the selected information
+            // Set the state to a new report set view with the selected information
             reportViewModel.getState().setCurrentSet(sets.get(position));
             reportViewModel.getState().setP1Wins(0);
             reportViewModel.getState().setP2Wins(0);
 
-            List<Boolean> newP1 = new ArrayList<>();
+            final List<Boolean> newP1 = new ArrayList<>();
             newP1.add(false);
-            List<Boolean> newP2 = new ArrayList<>();
+            final List<Boolean> newP2 = new ArrayList<>();
             newP2.add(false);
             reportViewModel.getState().setP1ButtonPresses(newP1);
             reportViewModel.getState().setP2ButtonPresses(newP2);
@@ -100,8 +107,10 @@ public class ReportFragment extends AppFragment implements PropertyChangeListene
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
             case "getsetssuccess":
-                createDisplay(); break;
-            case "getsetsfail": Log.d("Fail", "fail"); break;
+                createDisplay();
+                break;
+            case "getsetsfail": Log.d("Fail", "fail");
+                break;
         }
     }
 
@@ -109,5 +118,7 @@ public class ReportFragment extends AppFragment implements PropertyChangeListene
         ongoingSetsController = controller;
     }
 
-    public static void setReportViewModel(ReportViewModel viewModel) {reportViewModel = viewModel;}
+    public static void setReportViewModel(ReportViewModel viewModel) {
+        reportViewModel = viewModel;
+    }
 }

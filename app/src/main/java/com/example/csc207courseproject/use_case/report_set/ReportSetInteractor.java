@@ -1,11 +1,14 @@
 package com.example.csc207courseproject.use_case.report_set;
 
+import java.util.List;
+
 import com.example.csc207courseproject.data_access.DataAccessException;
 import com.example.csc207courseproject.entities.Game;
 import com.example.csc207courseproject.entities.ReportSetData;
 
-import java.util.List;
-
+/**
+ * The Interactor for the Report Set Use Case.
+ */
 public class ReportSetInteractor implements ReportSetInputBoundary {
 
     private final ReportSetDataAccessInterface dataAccess;
@@ -20,28 +23,26 @@ public class ReportSetInteractor implements ReportSetInputBoundary {
     @Override
     public void execute(ReportSetInputData reportSetInputData) {
 
-
         try {
-            int setID = reportSetInputData.getSetID();
-            int winnerID = reportSetInputData.getWinnerId();
-            ReportSetData currSet = reportSetInputData.getCurrSet();
+            final int setID = reportSetInputData.getSetID();
+            final int winnerID = reportSetInputData.getWinnerId();
+            final ReportSetData currSet = reportSetInputData.getCurrSet();
 
             if (winnerID < 0) {
                 reportSetPresenter.prepareFailView("incompletesetinfo");
             } else {
-                List<Game> games = currSet.getGames();
-                boolean isDQ = reportSetInputData.hasDQ();
-                int p1EntrantID = currSet.getPlayers()[0].getId();
-                int p2EntrantID = currSet.getPlayers()[1].getId();
+                final List<Game> games = currSet.getGames();
+                final boolean isDQ = reportSetInputData.hasDQ();
+                final int p1EntrantID = currSet.getPlayers()[0].getId();
+                final int p2EntrantID = currSet.getPlayers()[1].getId();
                 dataAccess.reportSet(setID, winnerID, games, isDQ, p1EntrantID, p2EntrantID);
                 reportSetPresenter.prepareSuccessView();
             }
 
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             reportSetPresenter.prepareFailView("apicallerror");
         }
 
     }
-
 
 }

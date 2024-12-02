@@ -5,7 +5,9 @@ import com.example.csc207courseproject.entities.ReportSetData;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * The State for the Report Set Use Case.
+ */
 public class ReportSetState {
 
     private ReportSetData currentSet;
@@ -31,10 +33,10 @@ public class ReportSetState {
         this.setOver = setOver;
     }
 
-    public List<Boolean> getP1ButtonPresses () {
+    public List<Boolean> getP1ButtonPresses() {
         return p1ButtonPresses;
     }
-    public List<Boolean> getP2ButtonPresses () {
+    public List<Boolean> getP2ButtonPresses() {
         return p2ButtonPresses;
     }
 
@@ -71,19 +73,17 @@ public class ReportSetState {
     // calls update, which can take up to a minute
     private List<Integer> reportedSetIDs = new ArrayList<>();
     public void setCurrentSet(ReportSetData currentSet) {
-        this.currentSet = currentSet;
+          this.currentSet = currentSet;
     }
 
     public void setOngoingSets(List<ReportSetData> ongoingSets) {
-        this.ongoingSets = ongoingSets;
+         this.ongoingSets = ongoingSets;
     }
 
-    public List<Integer> getReportedSetIDs() {return reportedSetIDs;}
+    public List<Integer> getReportedSetIDs() { return reportedSetIDs;}
 
-    public List<ReportSetData> getOngoingSets() {return ongoingSets;}
+    public List<ReportSetData> getOngoingSets() { return ongoingSets;}
 
-    public ReportSetData getCurrentSet() {return currentSet;}
-
-
+    public ReportSetData getCurrentSet() { return currentSet;}
 
 }
