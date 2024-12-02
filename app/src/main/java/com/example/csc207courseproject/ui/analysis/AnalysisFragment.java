@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.csc207courseproject.databinding.FragmentAnalysisBinding;
 import com.example.csc207courseproject.interface_adapter.tournament_description.TournamentDescriptionController;
-import com.example.csc207courseproject.interface_adapter.player_statistics.PlayerStatisitcsController;
 import com.example.csc207courseproject.interface_adapter.tournament_description.TournamentState;
 import com.example.csc207courseproject.ui.AppFragment;
 import com.example.csc207courseproject.ui.seeding.SeedingViewModel;
@@ -24,7 +23,6 @@ public class AnalysisFragment extends AppFragment implements PropertyChangeListe
 
     private static AnalysisViewModel analysisViewModel;
     private static TournamentDescriptionController tournamentDescriptionController;
-    private static PlayerStatisitcsController playerStatisitcsController;
 
     private FragmentAnalysisBinding binding;
 

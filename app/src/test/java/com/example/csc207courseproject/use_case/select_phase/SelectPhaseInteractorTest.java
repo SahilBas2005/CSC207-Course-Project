@@ -1,6 +1,6 @@
 package com.example.csc207courseproject.use_case.select_phase;
 
-import com.example.csc207courseproject.data_access.APIDataAccessObject;
+import com.example.csc207courseproject.data_access.api.APIDataAccessObject;
 import com.example.csc207courseproject.entities.Entrant;
 import org.junit.jupiter.api.Test;
 

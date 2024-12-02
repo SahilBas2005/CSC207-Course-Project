@@ -7,7 +7,7 @@ import com.example.csc207courseproject.entities.EventData;
 import com.example.csc207courseproject.entities.Participant;
 
 /**
- * A state containing the tournaments to be displayed to the user in the Select Tournament view.
+ * A state containing the tournament description to be displayed to the user in the Analysis view.
  */
 public class TournamentState {
     private String aiMessage ;
@@ -15,17 +15,24 @@ public class TournamentState {
 
 
     public void setError(String error) {
+
         this.error = error;
     }
-    public String getError() {
-        return error;
-    }
-
     public void setaiMessage(String aiMessage) {
+
         this.aiMessage = aiMessage;
     }
-    public void updateAiMessage(String aiMessage) {this.aiMessage = aiMessage;}
+
+
+    public String getError() {
+
+        return error;
+    }
     public String getaiMessage() {
+
         return aiMessage;
     }
+
+    public void updateAiMessage(String aiMessage) {
+        this.aiMessage = aiMessage;}
 }
