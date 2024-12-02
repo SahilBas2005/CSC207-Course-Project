@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.csc207courseproject.databinding.FragmentAnalysisBinding;
 import com.example.csc207courseproject.interface_adapter.tournament_description.TournamentDescriptionController;
-import com.example.csc207courseproject.interface_adapter.tournament_description.TournamentState;
+import com.example.csc207courseproject.interface_adapter.tournament_description.AnalysisState;
 import com.example.csc207courseproject.ui.AppFragment;
 import com.example.csc207courseproject.ui.seeding.SeedingViewModel;
 
@@ -49,7 +49,7 @@ public class AnalysisFragment extends AppFragment implements PropertyChangeListe
 
     private void displayTournamentDescription() {
         TextView aiMessage = binding.tournamentDescriptionResult;
-        TournamentState currentState = analysisViewModel.getState();
+        AnalysisState currentState = analysisViewModel.getState();
         String reponse = currentState.getaiMessage();
         aiMessage.setText(reponse);
     }
