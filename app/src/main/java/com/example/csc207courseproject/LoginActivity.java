@@ -14,7 +14,7 @@ import com.example.csc207courseproject.interface_adapter.login.LoginController;
 import com.example.csc207courseproject.interface_adapter.login.LoginViewModel;
 
 /**
- * The View for the Login Use Case.
+ * The View for the Login Use Case and main app.
  */
 public class LoginActivity extends AppCompatActivity implements PropertyChangeListener {
 
